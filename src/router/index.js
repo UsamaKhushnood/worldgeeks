@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
 Vue.use(VueRouter);
 
 const routes = [
@@ -33,6 +32,34 @@ const routes = [
     name: "Upload Files",
     meta: { layout: "userLayout" },
     component: () => import("../views/UploadFiles.vue"),
+  },
+  // admin links
+  {
+    path: "/admin",
+    name: "Admin",
+    // meta: { layout: "userLayout" },
+    component: () => import("../layouts/TheContainer.vue"),
+    redirect: "/admin/dashboard",
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Dashboard.vue"),
+      },
+      {
+        path: "videos",
+        name: "Videos",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Videos.vue"),
+      },
+      {
+        path: "*",
+        name: "404",
+        meta: { layout: "adminLayout" },
+        component: () => import("../components/admin/PageNotFound.vue"),
+      },
+    ],
   },
 ];
 

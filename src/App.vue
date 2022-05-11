@@ -1,7 +1,7 @@
 <template>
   <div id="app">
+    <AdminLayout v-if="$route.meta.layout === 'adminLayout'" />
     <UserLayout v-if="$route.meta.layout === 'userLayout'" />
-    <AdminLayout v-else />
   </div>
 </template>
 <script>

@@ -2,7 +2,7 @@
   <div class="login-page d-flex justify-content-center">
     <div class="login-page-content mt-5 pt-5">
       <div class="login-page-title">
-        <h1 class="text-center mb-5">Sign in to WorldGeeks</h1>
+        <h1 class="text-center mb-5">Sign in to {{ $appName }}</h1>
       </div>
       <div class="login-page-form">
         <form @submit.prevent="login">

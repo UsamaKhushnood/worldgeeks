@@ -9,6 +9,8 @@ import "./style.scss";
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 
+Vue.prototype.$appName = "WorldGeeks";
+
 Vue.config.productionTip = false;
 
 new Vue({
