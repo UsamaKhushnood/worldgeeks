@@ -1,11 +1,11 @@
 <template>
   <div class="the-header">
     <b-navbar toggleable="lg" type="dark" variant="primary">
-      <b-navbar-brand href="#">MyBox</b-navbar-brand>
+      <router-link to="/" tag="b-navbar-brand"> WorldGeeks </router-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="header-pages-links">
-          <router-link to="/my-files" tag="b-nav-item"> My Files </router-link>
+          <router-link to="/" tag="b-nav-item" exact> My Files </router-link>
           <router-link to="/upload" tag="b-nav-item"> Upload </router-link>
         </b-navbar-nav>
         <!-- Right aligned nav items -->

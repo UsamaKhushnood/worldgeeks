@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <TheHeader />
-    <router-view />
-    <TheFooter />
+    <UserLayout v-if="$route.meta.layout === 'userLayout'" />
+    <AdminLayout v-else />
   </div>
 </template>
 <script>
-import TheHeader from './components/main/TheHeader.vue'
-import TheFooter from './components/main/TheFooter.vue'
+import UserLayout from './layouts/UserLayout.vue'
+import AdminLayout from './layouts/AdminLayout.vue'
+
 export default {
   components: {
-    TheHeader,
-    TheFooter,
+    UserLayout,
+    AdminLayout,
   },
 }
 </script>
