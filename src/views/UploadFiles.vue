@@ -26,12 +26,16 @@
     </div>
 
     <div class="paste-url">
-      <div class="d-flex">
+      <div class="d-flex flex-column-xs">
         <b-form-input
           v-model="text"
           placeholder="Paste URL here"
         ></b-form-input>
-        <b-button title="Upload file from URL" variant="primary" class="ml-2">
+        <b-button
+          title="Upload file from URL"
+          variant="primary"
+          class="ml-md-2 ml-sm-0 mt-xs-2"
+        >
           <span class="d-flex align-items-center">
             <b-icon
               icon="cloud-upload"
@@ -88,5 +92,23 @@ export default {
 .paste-url {
   width: 600px;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 576px) {
+  .image-container {
+    width: 300px !important;
+  }
+
+  .flex-column-xs {
+    flex-direction: column;
+  }
+
+  .mt-xs-2 {
+    margin-top: 5px;
+  }
+
+  .paste-url {
+    width: 300px;
+  }
 }
 </style>

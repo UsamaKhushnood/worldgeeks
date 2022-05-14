@@ -1,15 +1,15 @@
 <template>
-  <div class="my-files mt-5">
-    <b-table hover :items="items" :fields="fields">
+  <div class="manage-user">
+    <b-table hover :items="items" :fields="fields" class="bg-white">
       <template #head(action)> <span></span></template>
-      <template #cell(file_name)="data">
-        <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
+      <template #cell(user_name)="data">
+        <b-icon icon="person-fill" variant="primary" class="mr-2"></b-icon>
         <span> {{ data.value }} </span>
       </template>
       <template #cell(action)>
         <div class="d-flex justify-content-end align-items-center">
-          <b-button variant="outline-primary" size="sm">
-            <b-icon icon="back"></b-icon>
+          <b-button variant="outline-danger" size="sm">
+            <b-icon icon="trash"></b-icon>
           </b-button>
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
             <template #button-content>
@@ -51,7 +51,6 @@
         </div>
       </template>
     </b-table>
-    <p class="text-black-50 text-center">No more files.</p>
   </div>
 </template>
 
@@ -61,43 +60,38 @@ export default {
     return {
       fields: [
         {
-          key: 'file_name',
+          key: 'user_name',
           sortable: false,
         },
         {
-          key: 'item_id',
+          key: 'user_id',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
-        {
-          key: 'create_time',
-          sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
-        },
+
         'action',
       ],
       items: [
         {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
+          user_name: 'Username',
+          user_id: 'fsadf45ff125w5r54',
+          create_date: '6/4/2022 10:41PM',
         },
         {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
+          user_name: 'Username',
+          user_id: 'fsadf45ff125w5r54',
+          create_date: '6/4/2022 10:41PM',
         },
         {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
+          user_name: 'Username',
+          user_id: 'fsadf45ff125w5r54',
+          create_date: '6/4/2022 10:41PM',
         },
         {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
+          user_name: 'Username',
+          user_id: 'fsadf45ff125w5r54',
+          create_date: '6/4/2022 10:41PM',
         },
       ],
     }

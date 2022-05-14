@@ -54,8 +54,26 @@ const routes = [
         component: () => import("../views/admin/Videos.vue"),
       },
       {
+        path: "manage-user",
+        name: "Manage User",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/ManageUsers.vue"),
+      },
+      {
+        path: "add-user",
+        name: "Add User",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/AddUser.vue"),
+      },
+      {
+        path: "site-settings",
+        name: "Site Settings",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/SiteSettings.vue"),
+      },
+      {
         path: "*",
-        name: "404",
+        name: "Page Not Found",
         meta: { layout: "adminLayout" },
         component: () => import("../components/admin/PageNotFound.vue"),
       },

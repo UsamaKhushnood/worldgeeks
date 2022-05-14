@@ -1,7 +1,11 @@
 <template>
   <div class="dashboard p-3">
     <div class="row">
-      <div class="col-3" v-for="(card, index) in cards" :key="index">
+      <div
+        class="col-md-3 col-sm-12 mb-sm-3 mb-md-0"
+        v-for="(card, index) in cards"
+        :key="index"
+      >
         <CCard
           :title="card.title"
           :quantity="card.quantity"
@@ -13,8 +17,8 @@
     </div>
 
     <div class="row p-3">
-      <div class="col-4">
-        <div class="row p-3 videos-sizes-box d-flex align-item-center bg-light">
+      <div class="col-md-4 col-sm-12 mb-md-0 mb-sm-3 card">
+        <div class="row p-3 videos-sizes-box">
           <div class="col-6 flex-column d-flex justify-content-center">
             <h6>All Video Sizes</h6>
             <h2>30.36MB</h2>

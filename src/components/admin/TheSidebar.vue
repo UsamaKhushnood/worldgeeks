@@ -19,7 +19,7 @@
       <b-icon icon="person"></b-icon> Add User</router-link
     >
     <h5 class="ml-1 my-3">Settings</h5>
-    <router-link to="/admin/manage-user" class="sidebar-link">
+    <router-link to="/admin/site-settings" class="sidebar-link">
       <b-icon icon="pen"></b-icon> Site Setting</router-link
     >
     <router-link to="/admin/add-user" class="sidebar-link">

@@ -8,21 +8,18 @@
         <TheSidebar />
       </div>
       <div class="col-10 dashboard-height main-content">
-        <h6 class="p-3 border-bottom text-primary">{{ $route.name }}</h6>
+        <h6 class="p-3 border-bottom text-primary mb-0">{{ $route.name }}</h6>
         <router-view />
-        <TheFooter />
       </div>
     </div>
   </div>
 </template>
 <script>
 import AdminHeader from '../components/admin/AdminHeader.vue'
-import TheFooter from '../components/admin/TheFooter.vue'
 import TheSidebar from '../components/admin/TheSidebar.vue'
 export default {
   components: {
     AdminHeader,
-    TheFooter,
     TheSidebar,
   },
 }
