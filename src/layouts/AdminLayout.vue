@@ -4,10 +4,16 @@
       <div class="col-12 border-bottom">
         <AdminHeader />
       </div>
-      <div class="col-2 bg-light border-right dashboard-height">
+      <div
+        class="col-md-2 col-sm-12 bg-light border-right dashboard-height"
+        :class="[$store.state.openSidebar ? '' : 'd-none']"
+      >
         <TheSidebar />
       </div>
-      <div class="col-10 dashboard-height main-content">
+      <div
+        class="col-sm-12 dashboard-height main-content"
+        :class="[$store.state.openSidebar ? 'col-md-10' : 'col-md-12']"
+      >
         <h6 class="p-3 border-bottom text-primary mb-0">{{ $route.name }}</h6>
         <router-view />
       </div>
@@ -22,6 +28,11 @@ export default {
     AdminHeader,
     TheSidebar,
   },
+  data() {
+    return {
+      openSidebar: false,
+    }
+  },
 }
 </script>
 
@@ -33,5 +44,9 @@ export default {
 
 .main-content {
   background: #eaf0f8;
+}
+
+.transition {
+  transition: 0.3s all ease;
 }
 </style>
