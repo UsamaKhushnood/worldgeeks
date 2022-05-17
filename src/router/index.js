@@ -33,6 +33,18 @@ const routes = [
     meta: { layout: "userLayout" },
     component: () => import("../views/UploadFiles.vue"),
   },
+  {
+    path: "/terms-and-services",
+    name: "Terms and Services",
+    meta: { layout: "userLayout" },
+    component: () => import("../views/Terms&Services.vue"),
+  },
+  {
+    path: "/dmca",
+    name: "DMCA",
+    meta: { layout: "userLayout" },
+    component: () => import("../views/DMCA.vue"),
+  },
   // admin links
   {
     path: "/admin",
@@ -54,6 +66,12 @@ const routes = [
         component: () => import("../views/admin/Videos.vue"),
       },
       {
+        path: "withdraws",
+        name: "Withdraws Requests",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Withdraw.vue"),
+      },
+      {
         path: "manage-user",
         name: "Manage User",
         meta: { layout: "adminLayout" },
@@ -70,6 +88,24 @@ const routes = [
         name: "Site Settings",
         meta: { layout: "adminLayout" },
         component: () => import("../views/admin/SiteSettings.vue"),
+      },
+      {
+        path: "upload",
+        name: "Upload",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Uploads.vue"),
+      },
+      {
+        path: "earning-settings",
+        name: "Earning Settings",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/EarningSettings.vue"),
+      },
+      {
+        path: "player",
+        name: "Player",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Player.vue"),
       },
       {
         path: "*",

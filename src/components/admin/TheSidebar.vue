@@ -22,13 +22,13 @@
     <router-link to="/admin/site-settings" class="sidebar-link">
       <b-icon icon="pen"></b-icon> Site Setting</router-link
     >
-    <router-link to="/admin/add-user" class="sidebar-link">
+    <router-link to="/admin/earning-settings" class="sidebar-link">
       <b-icon icon="box-arrow-in-right"></b-icon> Earning Setting</router-link
     >
-    <router-link to="/admin/add-user" class="sidebar-link">
+    <router-link to="/admin/upload" class="sidebar-link">
       <b-icon icon="upload"></b-icon> Upload</router-link
     >
-    <router-link to="/admin/add-user" class="sidebar-link">
+    <router-link to="/admin/player" class="sidebar-link">
       <b-icon icon="play-btn"></b-icon> Player</router-link
     >
   </div>

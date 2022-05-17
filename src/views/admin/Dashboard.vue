@@ -16,8 +16,8 @@
       </div>
     </div>
 
-    <div class="row p-3">
-      <div class="col-md-4 col-sm-12 mb-md-0 mb-sm-3 card">
+    <div class="row align-items-start p-3">
+      <div class="col-md-4 col-sm-12 mb-md-0 mb-sm-3 mt-3 card">
         <div class="row p-3 videos-sizes-box">
           <div class="col-6 flex-column d-flex justify-content-center">
             <h6>All Video Sizes</h6>
@@ -33,17 +33,57 @@
           </div>
         </div>
       </div>
+      <div class="col-md-8 col-sm-12">
+        <Bar
+          :chart-options="chartOptions"
+          :chart-data="chartData"
+          height="200"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import CCard from '@/components/CCard.vue'
+import { Bar } from 'vue-chartjs/legacy'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
+
 export default {
   name: 'Dashboard',
-  components: { CCard },
+  components: { CCard, Bar },
+
   data() {
     return {
+      chartData: {
+        labels: [
+          'January',
+          'February',
+          'March',
+          'April',
+          'May',
+          'June',
+          'July',
+          'August',
+          'September',
+          'October',
+          'November',
+          'December',
+        ],
+        datasets: [{ data: [40, 20, 12, 12, 20, 20, 15, 20, 20, 15, 20, 40] }],
+      },
+      chartOptions: {
+        responsive: true,
+      },
       cards: [
         {
           title: 'Videos',

@@ -1,33 +1,30 @@
 <template>
-  <div class="manage-user">
+  <div class="videos-page pb-5">
     <b-table hover :items="items" :fields="fields" class="bg-white">
       <template #head(action)> <span></span></template>
-      <template #cell(user_name)="data">
-        <b-icon icon="person-fill" variant="primary" class="mr-2"></b-icon>
+      <template #cell(file_name)="data">
         <span> {{ data.value }} </span>
       </template>
       <template #cell(action)>
         <div class="d-flex justify-content-end align-items-center">
-          <b-button variant="outline-danger" size="sm">
-            <b-icon icon="trash"></b-icon>
-          </b-button>
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
             <template #button-content>
               <b-icon icon="three-dots"></b-icon>
             </template>
             <b-dropdown-item>
-              <span>View Details</span>
+              <span>View User</span>
             </b-dropdown-item>
             <b-dropdown-item>
-              <span>Ban Account</span>
+              <span>Approve</span>
             </b-dropdown-item>
             <b-dropdown-item>
-              <span>Delete User</span>
+              <span>Reject</span>
             </b-dropdown-item>
           </b-dropdown>
         </div>
       </template>
     </b-table>
+    <p class="text-black-50 text-center">No more Requests.</p>
   </div>
 </template>
 
@@ -37,38 +34,43 @@ export default {
     return {
       fields: [
         {
-          key: 'user_name',
+          key: 'Withdraw_request_id',
           sortable: false,
         },
         {
           key: 'user_id',
           sortable: false,
-          // tdClass: 'sm-hidden',
-          // thClass: 'sm-hidden',
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
         },
-        'last_login',
+        {
+          key: 'create_time',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
         'action',
       ],
       items: [
         {
-          user_name: 'Username',
+          Withdraw_request_id: '$10',
           user_id: 'fsadf45ff125w5r54',
-          create_date: '6/4/2022 10:41PM',
+          create_time: '6/4/2022 10:41PM',
         },
         {
-          user_name: 'Username',
+          Withdraw_request_id: '$10',
           user_id: 'fsadf45ff125w5r54',
-          create_date: '6/4/2022 10:41PM',
+          create_time: '6/4/2022 10:41PM',
         },
         {
-          user_name: 'Username',
+          Withdraw_request_id: '$10',
           user_id: 'fsadf45ff125w5r54',
-          create_date: '6/4/2022 10:41PM',
+          create_time: '6/4/2022 10:41PM',
         },
         {
-          user_name: 'Username',
+          Withdraw_request_id: '$10',
           user_id: 'fsadf45ff125w5r54',
-          create_date: '6/4/2022 10:41PM',
+          create_time: '6/4/2022 10:41PM',
         },
       ],
     }

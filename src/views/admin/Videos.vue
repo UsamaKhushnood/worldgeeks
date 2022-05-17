@@ -16,36 +16,13 @@
               <b-icon icon="three-dots"></b-icon>
             </template>
             <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-primary text-white">
-                  <b-icon icon="back"></b-icon>
-                </div>
-                <span class="ml-2">Copy Link</span>
-              </div>
+              <span>Copy Link</span>
             </b-dropdown-item>
             <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-warning text-white">
-                  <b-icon icon="pencil-fill"></b-icon>
-                </div>
-                <span class="ml-2">Rename</span>
-              </div>
+              <span>View User</span>
             </b-dropdown-item>
             <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-success text-white">
-                  <b-icon icon="cloud-download-fill"></b-icon>
-                </div>
-                <span class="ml-2">Download</span>
-              </div>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-danger text-white">
-                  <b-icon icon="trash"></b-icon>
-                </div>
-                <span class="ml-2">Delete</span>
-              </div>
+              <span>Delete Video</span>
             </b-dropdown-item>
           </b-dropdown>
         </div>
