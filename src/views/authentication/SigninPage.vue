@@ -48,11 +48,40 @@
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-    }
+      email: "",
+      password: "",
+    };
   },
-}
+  methods: {
+    login() {
+      const vm = this;
+      this.$http
+        .post(process.env.VUE_APP_API_URL + "/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          console.log("data::", response.data.data);
+            vm.$toast.success("User Login Successfully");
+            const token = response.data.data.token;
+            localStorage.setItem("token", token);
+            vm.$store.commit("SET_AUTH_TOKEN", token);
+            vm.$store.commit("SET_USER", response.data.data);
+            vm.$router.push({ path: 'admin/dashboard' })
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            this.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
+  },
+};
 </script>
 <style lang="scss">
 .login-page-content {

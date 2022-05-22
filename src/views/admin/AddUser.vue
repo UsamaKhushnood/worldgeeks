@@ -2,7 +2,7 @@
   <div class="add-new-user p-3">
     <b-row>
       <b-col cols="12" md="6">
-        <b-form @submit="submit">
+        <b-form @submit.prevent="addUser">
           <b-form-group>
             <b-form-input
               id="first_name"
@@ -30,6 +30,7 @@
           <b-form-group>
             <b-form-input
               id="password"
+              type="password"
               placeholder="Password"
               v-model="password"
               required
@@ -38,8 +39,9 @@
           <b-form-group>
             <b-form-input
               id="confirm_password"
+              type="password"
               placeholder="Confirm Password"
-              v-model="confirm_password"
+              v-model="password_confirmation"
               required
             ></b-form-input>
           </b-form-group>
@@ -60,8 +62,39 @@ export default {
       last_name: null,
       email: null,
       password: null,
-      confirm_password: null,
+      password_confirmation: null,
     }
+  },
+  methods: {
+    addUser() {
+      const vm = this;
+      this.$http
+        .post(process.env.VUE_APP_API_URL + "/users", {
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation,
+          first_name: this.first_name,
+          last_name: this.last_name,
+        })
+        .then((response) => {
+          console.log("data::", response.data.data);
+            vm.$toast.success("User Added Successfully");
+            vm.email =null
+            vm.password =null
+            vm.first_name =null
+            vm.last_name =null
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            this.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
   },
 }
 </script>
