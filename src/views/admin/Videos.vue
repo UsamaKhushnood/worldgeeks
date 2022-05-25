@@ -1,6 +1,13 @@
 <template>
-  <div class="videos-page pb-5">
-    <b-table hover :items="items" :fields="fields" class="bg-white">
+  <div class="videos-page p-3">
+    <b-table
+      hover
+      :items="items"
+      :fields="fields"
+      class="bg-white"
+      :current-page="currentPage"
+      :per-page="perPage"
+    >
       <template #head(action)> <span></span></template>
       <template #cell(file_name)="data">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
@@ -16,18 +23,57 @@
               <b-icon icon="three-dots"></b-icon>
             </template>
             <b-dropdown-item>
-              <span>Copy Link</span>
+              <div class="d-flex">
+                <div class="dropdown-icon bg-primary text-white">
+                  <b-icon icon="back"></b-icon>
+                </div>
+                <span class="ml-2">Copy Link</span>
+              </div>
             </b-dropdown-item>
             <b-dropdown-item>
-              <span>View User</span>
+              <div class="d-flex">
+                <div class="dropdown-icon bg-warning text-dark">
+                  <b-icon icon="eye-fill"></b-icon>
+                </div>
+                <span class="ml-2">View User</span>
+              </div>
             </b-dropdown-item>
             <b-dropdown-item>
-              <span>Delete Video</span>
+              <div class="d-flex">
+                <div class="dropdown-icon bg-danger text-white">
+                  <b-icon icon="trash"></b-icon>
+                </div>
+                <span class="ml-2">Delete Video</span>
+              </div>
             </b-dropdown-item>
           </b-dropdown>
         </div>
       </template>
     </b-table>
+
+    <div class="pagination-options ml-auto">
+      <div class="row">
+        <div class="col-3">
+          <b-form-select
+            id="per-page-select"
+            v-model="perPage"
+            :options="pageOptions"
+            size="sm"
+          ></b-form-select>
+        </div>
+        <div class="col-9">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+          ></b-pagination>
+        </div>
+      </div>
+    </div>
+
     <p class="text-black-50 text-center">No more files.</p>
   </div>
 </template>
@@ -36,6 +82,10 @@
 export default {
   data() {
     return {
+      currentPage: 1,
+      totalRows: 1,
+      perPage: 5,
+      pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
       fields: [
         {
           key: 'file_name',
@@ -67,7 +117,7 @@ export default {
           create_time: '6/4/2022 10:41PM',
         },
         {
-          file_name: 'something.mp4',
+          file_name: 'fd.mp4',
           item_id: 'fsadf45ff125w5r54',
           create_time: '6/4/2022 10:41PM',
         },
@@ -78,6 +128,9 @@ export default {
         },
       ],
     }
+  },
+  mounted() {
+    this.totalRows = this.items.length
   },
 }
 </script>

@@ -37,3 +37,12 @@
   justify-content: center;
   font-size: 10px;
 }
+
+input:focus {
+  border-bottom: 3px solid var(--blue) !important;
+}
+
+.pagination-options {
+  max-width: 400px;
+  width: 100%;
+}
