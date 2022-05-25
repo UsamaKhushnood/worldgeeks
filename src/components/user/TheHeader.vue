@@ -19,7 +19,9 @@
           </router-link>
           <b-nav-item-dropdown right>
             <template #button-content> Username </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <router-link tag="b-dropdown-item" to="/profile">
+              Profile
+            </router-link>
             <b-dropdown-item href="#">Settings</b-dropdown-item>
           </b-nav-item-dropdown>
           <router-link to="/signin" tag="b-nav-item"> Sign In </router-link>

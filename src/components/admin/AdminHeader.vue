@@ -32,7 +32,14 @@
             <b-avatar variant="dark" text="U" size="2em" class="mr-2"></b-avatar
             >Username
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
+          <router-link
+            to="/admin/profile"
+            tag="b-dropdown-item"
+            class="text-left"
+          >
+            Profile
+          </router-link>
+
           <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
