@@ -79,7 +79,12 @@ export default {
           'November',
           'December',
         ],
-        datasets: [{ data: [36, 20, 12, 12, 20, 20, 15, 20, 20, 15, 20, 36] }],
+        datasets: [
+          {
+            data: [36, 20, 12, 12, 20, 20, 15, 20, 20, 15, 20, 36],
+            backgroundColor: ['#007bff '],
+          },
+        ],
       },
       chartOptions: {
         responsive: true,
