@@ -7,51 +7,51 @@ const routes = [
   {
     path: "/",
     name: "My Files",
-    meta: { 
+    meta: {
       layout: "userLayout",
-      requiresAuth: true
+      requiresAuth: true,
     },
     component: () => import("../views/MyFiles.vue"),
   },
   {
     path: "/signin",
     name: "Sign In",
-    meta: { 
-      layout: "userLayout"
+    meta: {
+      layout: "userLayout",
     },
     component: () => import("../views/authentication/SigninPage.vue"),
   },
   {
     path: "/forgot-password",
     name: "Reset Password",
-    meta: { 
-      layout: "userLayout"
+    meta: {
+      layout: "userLayout",
     },
     component: () => import("../views/authentication/ForgotPassword.vue"),
   },
   {
     path: "/signup",
     name: "Sign Up",
-    meta: { 
-      layout: "userLayout"
+    meta: {
+      layout: "userLayout",
     },
     component: () => import("../views/authentication/SingupPage.vue"),
   },
   {
     path: "/upload",
     name: "Upload Files",
-    meta: { 
+    meta: {
       layout: "userLayout",
-      requiresAuth: true
+      requiresAuth: true,
     },
     component: () => import("../views/UploadFiles.vue"),
   },
   {
     path: "/terms-and-services",
     name: "Terms and Services",
-    meta: { 
+    meta: {
       layout: "userLayout",
-      requiresAuth: true
+      requiresAuth: true,
     },
     component: () => import("../views/Terms&Services.vue"),
   },
@@ -67,6 +67,12 @@ const routes = [
     meta: { layout: "userLayout" },
     component: () => import("../views/UserProfile.vue"),
   },
+  {
+    path: "*",
+    name: "Page Not Found",
+    meta: { layout: "userLayout" },
+    component: () => import("../components/admin/PageNotFound.vue"),
+  },
   // admin links
   {
     path: "/admin",
@@ -77,84 +83,83 @@ const routes = [
       {
         path: "dashboard",
         name: "Dashboard",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/Dashboard.vue"),
       },
       {
         path: "videos",
         name: "Videos",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/Videos.vue"),
       },
       {
         path: "withdraws",
         name: "Withdraws Requests",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/Withdraw.vue"),
       },
       {
         path: "manage-user",
         name: "Manage User",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/ManageUsers.vue"),
       },
       {
         path: "add-user",
         name: "Add User",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/AddUser.vue"),
       },
       {
         path: "site-settings",
         name: "Site Settings",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/SiteSettings.vue"),
       },
       {
         path: "upload",
         name: "Upload",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/Uploads.vue"),
       },
       {
         path: "earning-settings",
         name: "Earning Settings",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/EarningSettings.vue"),
       },
       {
         path: "player",
         name: "Player",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          requiresAuth: true
+          requiresAuth: true,
         },
         component: () => import("../views/admin/Player.vue"),
-
       },
       {
         path: "profile",
@@ -162,6 +167,7 @@ const routes = [
         meta: { layout: "adminLayout" },
         component: () => import("../views/admin/Profile.vue"),
       },
+
       {
         path: "*",
         name: "Page Not Found",
@@ -172,10 +178,9 @@ const routes = [
   },
   {
     path: "/player",
-    name: "player",
-    component: () => import("../layouts/TheContainer.vue"),
-    redirect: "/admin/dashboard",
-    children: [],
+    name: "Player",
+    meta: { layout: "universal" },
+    component: () => import("../views/Player.vue"),
   },
 ];
 
@@ -183,22 +188,21 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-  linkActiveClass: "active",
+  linkActiveClass: "active router-link-active",
   routes,
 });
 
-router.beforeEach((to,from,next) =>{
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    if(!store.state.user){
-       next({
-          name:"Sign In"
-       });
-    }else{
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.state.user) {
+      next({
+        name: "Sign In",
+      });
+    } else {
       next();
     }
-  }else{
+  } else {
     next();
   }
-
 });
 export default router;

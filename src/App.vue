@@ -2,6 +2,7 @@
   <div id="app">
     <AdminLayout v-if="$route.meta.layout === 'adminLayout'" />
     <UserLayout v-if="$route.meta.layout === 'userLayout'" />
+    <router-view v-if="$route.meta.layout === 'universal'"></router-view>
   </div>
 </template>
 <script>

@@ -1,6 +1,12 @@
 <template>
   <div class="my-files mt-5">
-    <b-table hover :items="items" :fields="fields">
+    <b-table
+      :current-page="currentPage"
+      :per-page="perPage"
+      hover
+      :items="items"
+      :fields="fields"
+    >
       <template #head(action)> <span></span></template>
       <template #cell(file_name)="data">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
@@ -51,6 +57,28 @@
         </div>
       </template>
     </b-table>
+    <div class="pagination-options ml-auto">
+      <div class="row">
+        <div class="col-3">
+          <b-form-select
+            id="per-page-select"
+            v-model="perPage"
+            :options="pageOptions"
+            size="sm"
+          ></b-form-select>
+        </div>
+        <div class="col-9">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            align="fill"
+            size="sm"
+            class="my-0"
+          ></b-pagination>
+        </div>
+      </div>
+    </div>
     <p class="text-black-50 text-center">No more files.</p>
   </div>
 </template>
@@ -59,6 +87,10 @@
 export default {
   data() {
     return {
+      currentPage: 1,
+      totalRows: 1,
+      perPage: 5,
+      pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
       fields: [
         {
           key: 'file_name',
@@ -101,6 +133,9 @@ export default {
         },
       ],
     }
+  },
+  mounted() {
+    this.totalRows = this.items.length
   },
 }
 </script>
