@@ -3,12 +3,13 @@
     <b-navbar toggleable="lg" type="dark" variant="primary">
       <router-link to="/" tag="b-navbar-brand"> {{ $appName }} </router-link>
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
+      <b-collapse id=
+      "nav-collapse" is-nav>
         <b-navbar-nav class="header-pages-links" v-if="getUser !==''">
-          <router-link v-if="getUser && getUser.user_type !=='user'" to="/" tag="b-nav-item" exact class="px-2">
+          <router-link v-if="getUser && getUser.user_type =='user'" to="/" tag="b-nav-item" exact class="px-2">
             My Files
           </router-link>
-          <router-link v-if="getUser  && getUser.user_type !=='user'" to="/upload" tag="b-nav-item" class="px-2">
+          <router-link v-if="getUser  && getUser.user_type =='user'" to="/upload" tag="b-nav-item" class="px-2">
             Upload
           </router-link>
         </b-navbar-nav>
