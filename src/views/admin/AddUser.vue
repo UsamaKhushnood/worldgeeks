@@ -93,8 +93,8 @@ export default {
           first_name: this.first_name,
           last_name: this.last_name,
         })
-        .then((response) => {
-          console.log('data::', response.data.data)
+        .then(() => {
+        
           vm.$toast.success('User Added Successfully')
           vm.email = null
           vm.password = null

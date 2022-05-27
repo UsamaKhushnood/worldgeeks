@@ -122,7 +122,6 @@ export default {
       this.$http
         .get(process.env.VUE_APP_API_URL + '/users')
         .then((response) => {
-          console.log('data::', response.data.data)
           vm.items = response.data.data
         })
         .catch((errors) => {
@@ -150,10 +149,16 @@ export default {
           vm.getUsers()
         })
         .catch((errors) => {
-          var err = ''
-          if (errors.response.data.errors.email) {
-            err += errors.response.data.errors.email
-            console.log(err)
+          // var err = ''
+          if (errors.response.data.errors) {
+           
+              vm.$toast.error('Invalid Request', {
+                  position: 'top-right',
+                  closeButton: 'button',
+                  icon: true,
+                  rtl: false,
+                });
+            // console.log(err)
           }
         })
     },

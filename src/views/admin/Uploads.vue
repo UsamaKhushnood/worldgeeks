@@ -168,6 +168,7 @@ export default {
     }
   },
   methods: {
+    /* eslint-disable no-console */
     uploadImageSuccess(formData, index, fileList) {
       console.log(formData, 'index:', index, fileList, 'upload success')
       this.imageList.push(fileList[index].path)
