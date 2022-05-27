@@ -27,13 +27,20 @@
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown right v-if="getUser !== null" >
+        <b-nav-item-dropdown right v-if="getUser !== null">
           <template #button-content>
             <b-avatar variant="dark" text="U" size="2em" class="mr-2"></b-avatar
-            >{{getUser.first_name}} 
+            >{{ getUser.first_name }}
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item @click.prevent="logout()">Sign Out</b-dropdown-item>
+          <router-link
+            to="/admin/profile"
+            tag="b-dropdown-item"
+            class="text-left"
+          >
+            Profile
+          </router-link>
+
+          <b-dropdown-item href="#">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>
@@ -46,7 +53,7 @@ export default {
   computed: {
     ...mapGetters(['getUser']),
   },
-  methods:{
+  methods: {
     logout() {
       const vm = this
       this.$http
@@ -59,9 +66,9 @@ export default {
             rtl: false,
           })
           vm.$router.push({ path: '/signin' })
-          localStorage.setItem("token", null);
-          vm.$store.commit("SET_AUTH_TOKEN", null);
-          vm.$store.commit("SET_USER", null);
+          localStorage.setItem('token', null)
+          vm.$store.commit('SET_AUTH_TOKEN', null)
+          vm.$store.commit('SET_USER', null)
         })
         .catch((errors) => {
           if (errors)
@@ -73,6 +80,6 @@ export default {
             })
         })
     },
-  }
+  },
 }
 </script>

@@ -79,7 +79,7 @@ export default {
           'November',
           'December',
         ],
-        datasets: [{ data: [40, 20, 12, 12, 20, 20, 15, 20, 20, 15, 20, 40] }],
+        datasets: [{ data: [36, 20, 12, 12, 20, 20, 15, 20, 20, 15, 20, 36] }],
       },
       chartOptions: {
         responsive: true,

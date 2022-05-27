@@ -61,11 +61,16 @@ const routes = [
     meta: { layout: "userLayout" },
     component: () => import("../views/DMCA.vue"),
   },
+  {
+    path: "/profile",
+    name: "User Profile",
+    meta: { layout: "userLayout" },
+    component: () => import("../views/UserProfile.vue"),
+  },
   // admin links
   {
     path: "/admin",
     name: "Admin",
-    // meta: { layout: "userLayout" },
     component: () => import("../layouts/TheContainer.vue"),
     redirect: "/admin/dashboard",
     children: [
@@ -152,12 +157,25 @@ const routes = [
 
       },
       {
+        path: "profile",
+        name: "Admin Profile",
+        meta: { layout: "adminLayout" },
+        component: () => import("../views/admin/Profile.vue"),
+      },
+      {
         path: "*",
         name: "Page Not Found",
         meta: { layout: "adminLayout" },
         component: () => import("../components/admin/PageNotFound.vue"),
       },
     ],
+  },
+  {
+    path: "/player",
+    name: "player",
+    component: () => import("../layouts/TheContainer.vue"),
+    redirect: "/admin/dashboard",
+    children: [],
   },
 ];
 
