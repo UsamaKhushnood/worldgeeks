@@ -207,19 +207,17 @@ const router = new VueRouter({
   routes,
 });
 
-console.log(store);
-
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!store.state.user) {
-//       next({
-//         name: "Sign In",
-//       });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.state.user) {
+      next({
+        name: "Sign In",
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 export default router;
