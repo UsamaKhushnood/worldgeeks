@@ -162,10 +162,25 @@ const routes = [
         component: () => import("../views/admin/Player.vue"),
       },
       {
+        path: "user-details/:id",
+        name: "User Details",
+        meta: {
+          layout: "adminLayout",
+          requiresAuth: true,
+        },
+        component: () => import("../views/admin/UserDetails.vue"),
+      },
+      {
         path: "profile",
         name: "Admin Profile",
         meta: { layout: "adminLayout" },
         component: () => import("../views/admin/Profile.vue"),
+      },
+      {
+        path: "login",
+        name: "Admin Login",
+        meta: { layout: "universal" },
+        component: () => import("../views/admin/SigninPage.vue"),
       },
 
       {
@@ -192,17 +207,19 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.state.user) {
-      next({
-        name: "Sign In",
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-});
+console.log(store);
+
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//     if (!store.state.user) {
+//       next({
+//         name: "Sign In",
+//       });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
 export default router;
