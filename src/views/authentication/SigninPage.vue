@@ -61,13 +61,14 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          console.log("data::", response.data.data);
             vm.$toast.success("User Login Successfully");
             const token = response.data.data.token;
             localStorage.setItem("token", token);
             vm.$store.commit("SET_AUTH_TOKEN", token);
             vm.$store.commit("SET_USER", response.data.data);
-            vm.$router.push({ path: 'admin/dashboard' })
+            response.data.data.user_type =='admin' ?
+            vm.$router.push({ path: 'admin/dashboard' }) :
+            vm.$router.push({ path: '/' })
         })
         .catch((errors) => {
           if (errors.response.data) {
