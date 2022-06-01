@@ -25,14 +25,27 @@
     <router-link to="/admin/earning-settings" class="sidebar-link">
       <b-icon icon="box-arrow-in-right"></b-icon> Earning Setting</router-link
     >
-    <router-link to="/admin/upload" class="sidebar-link">
+    <router-link to="/admin/upload" v-if="user" class="sidebar-link">
       <b-icon icon="upload"></b-icon> Upload</router-link
     >
-    <router-link to="/admin/player" class="sidebar-link">
+    <router-link to="/admin/player" v-if="user" class="sidebar-link">
       <b-icon icon="play-btn"></b-icon> Player</router-link
     >
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+export default {
+  computed: {
+    ...mapGetters(['getUser']),
+
+      user(){
+        return this.getUser.use_type ==='user'
+      }
+  },
+}
+</script>
 <style lang="scss">
 .sidebar-link {
   display: flex;
