@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "../store";
+import admin from '../middleware/admin.js';
+import user from '../middleware/user.js';
 Vue.use(VueRouter);
 
 const routes = [
@@ -10,6 +12,7 @@ const routes = [
     meta: {
       layout: "userLayout",
       requiresAuth: true,
+      middleware: user,
     },
     component: () => import("../views/MyFiles.vue"),
   },
@@ -43,6 +46,7 @@ const routes = [
     meta: {
       layout: "userLayout",
       requiresAuth: true,
+      middleware: user,
     },
     component: () => import("../views/UploadFiles.vue"),
   },
@@ -52,19 +56,26 @@ const routes = [
     meta: {
       layout: "userLayout",
       requiresAuth: true,
+      middleware: user,
     },
     component: () => import("../views/Terms&Services.vue"),
   },
   {
     path: "/dmca",
     name: "DMCA",
-    meta: { layout: "userLayout" },
+    meta: { 
+      layout: "userLayout",
+      middleware: user,
+    },
     component: () => import("../views/DMCA.vue"),
   },
   {
     path: "/profile",
     name: "User Profile",
-    meta: { layout: "userLayout" },
+    meta: { 
+      layout: "userLayout",
+      middleware: user
+    },
     component: () => import("../views/UserProfile.vue"),
   },
   {
@@ -85,6 +96,7 @@ const routes = [
         name: "Dashboard",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/Dashboard.vue"),
@@ -94,6 +106,7 @@ const routes = [
         name: "Videos",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/Videos.vue"),
@@ -103,6 +116,7 @@ const routes = [
         name: "Withdraws Requests",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/Withdraw.vue"),
@@ -112,6 +126,7 @@ const routes = [
         name: "Manage User",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/ManageUsers.vue"),
@@ -121,6 +136,7 @@ const routes = [
         name: "Add User",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/AddUser.vue"),
@@ -130,42 +146,47 @@ const routes = [
         name: "Site Settings",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/SiteSettings.vue"),
       },
-      {
-        path: "upload",
-        name: "Upload",
-        meta: {
-          layout: "adminLayout",
-          requiresAuth: true,
-        },
-        component: () => import("../views/admin/Uploads.vue"),
-      },
+      // {
+      //   path: "upload",
+      //   name: "Upload",
+      //   meta: {
+      //     layout: "adminLayout",
+      //     requiresAuth: true,
+      //     middleware: user
+      //   },
+      //   component: () => import("../views/admin/Uploads.vue"),
+      // },
       {
         path: "earning-settings",
         name: "Earning Settings",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/EarningSettings.vue"),
       },
-      {
-        path: "player",
-        name: "Player",
-        meta: {
-          layout: "adminLayout",
-          requiresAuth: true,
-        },
-        component: () => import("../views/admin/Player.vue"),
-      },
+      // {
+      //   path: "player",
+      //   name: "Player",
+      //   meta: {
+      //     layout: "adminLayout",
+      //     requiresAuth: true,
+      //     
+      //   },
+      //   component: () => import("../views/admin/Player.vue"),
+      // },
       {
         path: "user-details/:id",
         name: "User Details",
         meta: {
           layout: "adminLayout",
+          middleware: admin,
           requiresAuth: true,
         },
         component: () => import("../views/admin/UserDetails.vue"),
@@ -173,20 +194,31 @@ const routes = [
       {
         path: "profile",
         name: "Admin Profile",
-        meta: { layout: "adminLayout" },
+        meta: { 
+          layout: "adminLayout",
+          middleware: admin,
+          requiresAuth: true,
+         
+         },
         component: () => import("../views/admin/Profile.vue"),
       },
       {
         path: "login",
         name: "Admin Login",
-        meta: { layout: "universal" },
+        meta: { 
+          layout: "universal",
+          middleware: admin
+         },
         component: () => import("../views/admin/SigninPage.vue"),
       },
 
       {
         path: "*",
         name: "Page Not Found",
-        meta: { layout: "adminLayout" },
+        meta: { 
+          layout: "adminLayout",
+          middleware: admin
+         },
         component: () => import("../components/admin/PageNotFound.vue"),
       },
     ],
@@ -194,7 +226,11 @@ const routes = [
   {
     path: "/player",
     name: "Player",
-    meta: { layout: "universal" },
+    meta: { 
+      layout: "universal",
+      middleware: admin,
+      requiresAuth: true,
+    },
     component: () => import("../views/Player.vue"),
   },
 ];
@@ -203,21 +239,67 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-  linkActiveClass: "active router-link-active",
+   linkActiveClass: "active router-link-active",
   routes,
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (!store.state.user) {
-      next({
-        name: "Sign In",
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
+// router.beforeEach((to, from, next) => {
+//   if (to.matched.some((record) => record.meta.requiresAuth)) {
+//   console.log(store.state.user)
+    
+//     // if (!store.state.user) {
+//     //   next({
+//     //     name: "Sign In",
+//     //   });
+//     // } else {
+//       next();
+//     // }
+//   } else {
+//     next();
+//   }
+// });
+
+
+// Creates a `nextMiddleware()` function which not only
+// runs the default `next()` callback but also triggers
+// the subsequent Middleware function.
+function nextFactory(context, middleware, index) {
+    const subsequentMiddleware = middleware[index];
+    // If no subsequent Middleware exists,
+    // the default `next()` callback is returned.
+    if (!subsequentMiddleware) return context.next;
+  
+    return (...parameters) => {
+      // Run the default Vue Router `next()` callback first.
+      context.next(...parameters);
+      // Then run the subsequent Middleware with a new
+      // `nextMiddleware()` callback.
+      const nextMiddleware = nextFactory(context, middleware, index +1);
+      subsequentMiddleware({ ...context, next: nextMiddleware });
+    };
   }
-});
+  
+  router.beforeEach((to, from, next) => {
+    if (to.meta.middleware) {
+      const middleware = Array.isArray(to.meta.middleware)
+        ? to.meta.middleware
+        : [to.meta.middleware];
+  
+      const context = {
+        from,
+        next,
+        router,
+        to,
+      };
+      const nextMiddleware = nextFactory(context, middleware, 1);
+  
+      return middleware[0]({ ...context, next: nextMiddleware });
+    }
+  
+    return next();
+  });
+
+
+
+
 export default router;
