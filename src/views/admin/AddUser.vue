@@ -103,12 +103,12 @@ export default {
         })
         .catch((errors) => {
           if (errors.response.data) {
-            this.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
+            // this.$toast.error(errors.response.data.message, {
+            //   position: 'top-right',
+            //   closeButton: 'button',
+            //   icon: true,
+            //   rtl: false,
+            // })
           }
         })
     },

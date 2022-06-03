@@ -13,8 +13,10 @@
               class="form-control"
               id="email"
               v-model="email"
+              required
               placeholder="Enter email"
             />
+             <span class="text-danger" v-if="errors.email" id="input-2-live-feedback">{{ errors.email[0] }}</span>
           </div>
 
           <button type="submit" class="btn btn-primary btn-block">
@@ -34,6 +36,7 @@
 export default {
   data() {
     return {
+      errors: '',
       email: '',
       password: '',
     }
@@ -41,6 +44,9 @@ export default {
   methods: {
     registered() {
       const vm = this;
+      if(this.email===''){
+        return;
+      }
       this.$http
         .post(process.env.VUE_APP_API_URL + "/register", {
           email: this.email
@@ -51,12 +57,13 @@ export default {
         })
         .catch((errors) => {
           if (errors.response.data) {
-            this.$toast.error(errors.response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
+              this.errors =errors.response.data.errors
+            // this.$toast.error(errors.response.data.message, {
+            //   position: "top-right",
+            //   closeButton: "button",
+            //   icon: true,
+            //   rtl: false,
+            // });
           }
         });
     },

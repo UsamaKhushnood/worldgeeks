@@ -15,15 +15,16 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.use(Toast);
 
-Vue.prototype.$appName = "WorldGeeks";
-Vue.prototype.$http = Axios;
-Axios.defaults.baseURL = process.env.VUE_APP_API_URL
+
 const token = localStorage.getItem('token');
 Axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 Axios.defaults.headers.common['Content-Type'] = 'application/json'
 Axios.defaults.headers.common['Accept'] = 'application/json'
 
+Vue.prototype.$appName = "WorldGeeks";
+Vue.prototype.$http = Axios;
+Axios.defaults.baseURL = process.env.VUE_APP_API_URL
 
 Vue.config.productionTip = false;
 

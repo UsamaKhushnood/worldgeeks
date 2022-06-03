@@ -103,7 +103,7 @@ export default {
           thClass: 'sm-hidden',
         },
         {
-          key: 'create_time',
+          key: 'created_at',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
@@ -111,31 +111,55 @@ export default {
         'action',
       ],
       items: [
-        {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          file_name: 'something.mp4',
-          item_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
+        // {
+        //   file_name: 'something.mp4',
+        //   item_id: 'fsadf45ff125w5r54',
+        //   create_time: '6/4/2022 10:41PM',
+        // },
+        // {
+        //   file_name: 'something.mp4',
+        //   item_id: 'fsadf45ff125w5r54',
+        //   create_time: '6/4/2022 10:41PM',
+        // },
+        // {
+        //   file_name: 'something.mp4',
+        //   item_id: 'fsadf45ff125w5r54',
+        //   create_time: '6/4/2022 10:41PM',
+        // },
+        // {
+        //   file_name: 'something.mp4',
+        //   item_id: 'fsadf45ff125w5r54',
+        //   create_time: '6/4/2022 10:41PM',
+        // },
       ],
     }
   },
-  mounted() {
+  beforeMount() {
+    this.getFiles()
     this.totalRows = this.items.length
   },
+  methods:{
+    getFiles() {
+      const vm = this
+      this.$http
+        .get(process.env.VUE_APP_API_URL + '/videos')
+        .then((response) => {
+          vm.items = response.data.data
+          vm.items = response.data.data
+          this.totalRows = response.data.total
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    },
+  }
+
 }
 </script>

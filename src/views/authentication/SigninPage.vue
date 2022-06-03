@@ -13,8 +13,11 @@
               class="form-control"
               id="email"
               v-model="email"
+              required
               placeholder="Enter email"
             />
+               <!-- v-on:keyup="login" -->
+             <span class="text-danger" v-if="errors.email" id="input-2-live-feedback">{{ errors.email[0] }}</span>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -22,9 +25,11 @@
               type="password"
               class="form-control"
               id="password"
+              required
               v-model="password"
               placeholder="Password"
             />
+         <span class="text-danger" v-if="errors.password" id="input-2-live-feedback">{{ errors.password[0]  }}</span>
           </div>
           <div class="mb-3 text-right">
             <router-link to="/forgot-password">Forgot Password?</router-link>
@@ -45,39 +50,64 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       email: "",
       password: "",
+      errors: "",
     };
   },
+  computed: {
+    ...mapGetters(['getUser']),
+  },
+  created(){
+      this.email= ""
+      this.password= ""
+      this.errors= ""
+  },
+  beforeMount(){
+    this.getUser.user_type =='admin' ?
+    this.$router.push({ path: 'admin/dashboard' }) :
+    this.$router.push({ path: '/'})
+  },
+
   methods: {
     login() {
       const vm = this;
+       if(this.email==='' && this.password===''){
+        return;
+      }
       this.$http
         .post(process.env.VUE_APP_API_URL + "/login", {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
-            vm.$toast.success("User Login Successfully");
+            // vm.$toast.success("User Login Successfully");
             const token = response.data.data.token;
             localStorage.setItem("token", token);
-            vm.$store.commit("SET_AUTH_TOKEN", token);
-            vm.$store.commit("SET_USER", response.data.data);
-            response.data.data.user_type =='admin' ?
-            vm.$router.push({ path: 'admin/dashboard' }) :
-            vm.$router.push({ path: '/' })
+            setTimeout(() => {
+              vm.$store.commit("SET_AUTH_TOKEN", token);
+              vm.$store.commit("SET_USER", response.data.data);
+              window.location.reload()
+                // response.data.data.user_type =='admin' ?
+                  // vm.$router.push({ path: 'admin/dashboard' }) :
+                  // vm.$router.push({ path: '/' })
+            }, 2000);
         })
         .catch((errors) => {
           if (errors.response.data) {
-            this.$toast.error(errors.response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
+              this.errors =errors.response.data.errors
+          
+            // this.$toast.error(errors.response.data.message, {
+            //   position: "top-right",
+            //   closeButton: "button",
+            //   icon: true,
+            //   rtl: false,
+            // });
           }
         });
     },

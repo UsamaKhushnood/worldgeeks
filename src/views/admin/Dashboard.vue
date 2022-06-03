@@ -47,6 +47,7 @@
 <script>
 import CCard from '@/components/CCard.vue'
 import { Bar } from 'vue-chartjs/legacy'
+import { mapGetters } from 'vuex'
 import {
   Chart as ChartJS,
   Title,
@@ -56,11 +57,16 @@ import {
   CategoryScale,
   LinearScale,
 } from 'chart.js'
+
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
   name: 'Dashboard',
   components: { CCard, Bar },
+  computed: {
+    ...mapGetters(['getUser']),
+  },
+
 
   data() {
     return {

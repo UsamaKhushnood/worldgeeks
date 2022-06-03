@@ -35,8 +35,8 @@
           </router-link>
           <b-nav-item-dropdown right v-if="getUser !== null">
             <template #button-content> {{ getUser.first_name }} </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Settings</b-dropdown-item>
+            <!-- <b-dropdown-item href="#">Profile</b-dropdown-item>
+            <b-dropdown-item href="#">Settings</b-dropdown-item> -->
             <b-dropdown-item href="#"  @click="logout()">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
           <router-link to="/signin" v-if="getUser == null"  tag="b-nav-item"> Sign In </router-link>
@@ -56,13 +56,14 @@ export default {
       const vm = this
       this.$http
         .post(process.env.VUE_APP_API_URL + '/logout')
-        .then((response) => {
-          vm.$toast.success(response.data.message, {
-            position: 'top-right',
-            closeButton: 'button',
-            icon: true,
-            rtl: false,
-          })
+        .then(() => {
+
+          // vm.$toast.success(response.data.message, {
+          //   position: 'top-right',
+          //   closeButton: 'button',
+          //   icon: true,
+          //   rtl: false,
+          // })
           vm.$router.push({ path: '/signin' })
           localStorage.setItem('token', null)
           vm.$store.commit('SET_AUTH_TOKEN', null)

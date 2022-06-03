@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import store from "../store";
+// import store from "../store";
 import admin from '../middleware/admin.js';
 import user from '../middleware/user.js';
 Vue.use(VueRouter);
@@ -90,6 +90,10 @@ const routes = [
     name: "Admin",
     component: () => import("../layouts/TheContainer.vue"),
     redirect: "/admin/dashboard",
+    meta: {
+      middleware: admin,
+      requiresAuth: true,
+    },
     children: [
       {
         path: "dashboard",
@@ -280,6 +284,7 @@ function nextFactory(context, middleware, index) {
   }
   
   router.beforeEach((to, from, next) => {
+    
     if (to.meta.middleware) {
       const middleware = Array.isArray(to.meta.middleware)
         ? to.meta.middleware
