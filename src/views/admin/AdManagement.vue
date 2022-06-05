@@ -9,16 +9,19 @@
       class="bg-white"
     >
       <template #head(action)> <span></span></template>
-      <template #cell(user_name)="data">
-        <span> {{ data.item.user_name + ' ' + data.item.last_name }} </span>
+      <template #cell(ad_title)="data">
+        <span> {{ data.item.ad_title + ' ' + data.item.last_name }} </span>
       </template>
       <template #cell(status)="data">
         <span> {{ data.item.status ? data.item.status : '---' }} </span>
       </template>
 
-      <template #cell(action)>
+      <template #cell(action)="data">
         <div class="d-flex justify-content-end align-items-center">
-          <b-button variant="outline-success" size="sm"> Approve </b-button>
+          <router-link :to="`ad-mangement/${data.item.id}`">
+            <b-button variant="outline-success" size="sm">
+              <b-icon icon="pencil"></b-icon> </b-button
+          ></router-link>
         </div>
       </template>
     </b-table>
@@ -62,17 +65,20 @@ export default {
           // tdClass: 'sm-hidden',
         },
         {
-          key: 'user_name',
+          key: 'ad_title',
           sortable: false,
         },
         {
-          key: 'earning',
+          key: 'ad_size',
           sortable: false,
         },
-
+        {
+          key: 'status',
+          sortable: false,
+        },
         'action',
       ],
-      items: [{ id: 1, user_name: 'John', earning: '$1000' }],
+      items: [{ id: 1, ad_title: 'John', ad_size: '1', status: 'Active' }],
     }
   },
   created() {

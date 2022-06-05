@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import store from "../store";
-import admin from '../middleware/admin.js';
-import user from '../middleware/user.js';
+import admin from "../middleware/admin.js";
+import user from "../middleware/user.js";
 Vue.use(VueRouter);
 
 const routes = [
@@ -63,7 +63,7 @@ const routes = [
   {
     path: "/dmca",
     name: "DMCA",
-    meta: { 
+    meta: {
       layout: "userLayout",
       middleware: user,
     },
@@ -72,9 +72,9 @@ const routes = [
   {
     path: "/profile",
     name: "User Profile",
-    meta: { 
+    meta: {
       layout: "userLayout",
-      middleware: user
+      middleware: user,
     },
     component: () => import("../views/UserProfile.vue"),
   },
@@ -175,13 +175,33 @@ const routes = [
         },
         component: () => import("../views/admin/EarningSettings.vue"),
       },
+      {
+        path: "ad-management",
+        name: "Ad Management",
+        meta: {
+          layout: "adminLayout",
+          middleware: admin,
+          requiresAuth: true,
+        },
+        component: () => import("../views/admin/AdManagement.vue"),
+      },
+      {
+        path: "ad-mangement/:id",
+        name: "Ad Management",
+        meta: {
+          layout: "adminLayout",
+          middleware: admin,
+          requiresAuth: true,
+        },
+        component: () => import("../views/admin/EditAd.vue"),
+      },
       // {
       //   path: "player",
       //   name: "Player",
       //   meta: {
       //     layout: "adminLayout",
       //     requiresAuth: true,
-      //     
+      //
       //   },
       //   component: () => import("../views/admin/Player.vue"),
       // },
@@ -198,31 +218,30 @@ const routes = [
       {
         path: "profile",
         name: "Admin Profile",
-        meta: { 
+        meta: {
           layout: "adminLayout",
           middleware: admin,
           requiresAuth: true,
-         
-         },
+        },
         component: () => import("../views/admin/Profile.vue"),
       },
       {
         path: "login",
         name: "Admin Login",
-        meta: { 
+        meta: {
           layout: "universal",
-          middleware: admin
-         },
+          middleware: admin,
+        },
         component: () => import("../views/admin/SigninPage.vue"),
       },
 
       {
         path: "*",
         name: "Page Not Found",
-        meta: { 
+        meta: {
           layout: "adminLayout",
-          middleware: admin
-         },
+          middleware: admin,
+        },
         component: () => import("../components/admin/PageNotFound.vue"),
       },
     ],
@@ -230,7 +249,7 @@ const routes = [
   {
     path: "/player",
     name: "Player",
-    meta: { 
+    meta: {
       layout: "universal",
       middleware: admin,
       requiresAuth: true,
@@ -243,14 +262,14 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   scrollBehavior: () => ({ y: 0 }),
-   linkActiveClass: "active router-link-active",
+  linkActiveClass: "active router-link-active",
   routes,
 });
 
 // router.beforeEach((to, from, next) => {
 //   if (to.matched.some((record) => record.meta.requiresAuth)) {
 //   console.log(store.state.user)
-    
+
 //     // if (!store.state.user) {
 //     //   next({
 //     //     name: "Sign In",
@@ -263,48 +282,43 @@ const router = new VueRouter({
 //   }
 // });
 
-
 // Creates a `nextMiddleware()` function which not only
 // runs the default `next()` callback but also triggers
 // the subsequent Middleware function.
 function nextFactory(context, middleware, index) {
-    const subsequentMiddleware = middleware[index];
-    // If no subsequent Middleware exists,
-    // the default `next()` callback is returned.
-    if (!subsequentMiddleware) return context.next;
-  
-    return (...parameters) => {
-      // Run the default Vue Router `next()` callback first.
-      context.next(...parameters);
-      // Then run the subsequent Middleware with a new
-      // `nextMiddleware()` callback.
-      const nextMiddleware = nextFactory(context, middleware, index +1);
-      subsequentMiddleware({ ...context, next: nextMiddleware });
+  const subsequentMiddleware = middleware[index];
+  // If no subsequent Middleware exists,
+  // the default `next()` callback is returned.
+  if (!subsequentMiddleware) return context.next;
+
+  return (...parameters) => {
+    // Run the default Vue Router `next()` callback first.
+    context.next(...parameters);
+    // Then run the subsequent Middleware with a new
+    // `nextMiddleware()` callback.
+    const nextMiddleware = nextFactory(context, middleware, index + 1);
+    subsequentMiddleware({ ...context, next: nextMiddleware });
+  };
+}
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.middleware) {
+    const middleware = Array.isArray(to.meta.middleware)
+      ? to.meta.middleware
+      : [to.meta.middleware];
+
+    const context = {
+      from,
+      next,
+      router,
+      to,
     };
+    const nextMiddleware = nextFactory(context, middleware, 1);
+
+    return middleware[0]({ ...context, next: nextMiddleware });
   }
-  
-  router.beforeEach((to, from, next) => {
-    
-    if (to.meta.middleware) {
-      const middleware = Array.isArray(to.meta.middleware)
-        ? to.meta.middleware
-        : [to.meta.middleware];
-  
-      const context = {
-        from,
-        next,
-        router,
-        to,
-      };
-      const nextMiddleware = nextFactory(context, middleware, 1);
-  
-      return middleware[0]({ ...context, next: nextMiddleware });
-    }
-  
-    return next();
-  });
 
-
-
+  return next();
+});
 
 export default router;
