@@ -1,7 +1,9 @@
 <template>
   <div id="userLayout">
     <TheHeader />
-    <router-view />
+    <div class="content-container">
+      <router-view />
+    </div>
     <TheFooter />
   </div>
 </template>
@@ -15,3 +17,8 @@ export default {
   },
 }
 </script>
+<style>
+.content-container {
+  min-height: calc(100vh - 110px);
+}
+</style>

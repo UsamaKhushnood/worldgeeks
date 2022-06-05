@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page d-flex justify-content-center">
+  <div class="login-page px-4 d-flex justify-content-center">
     <div class="login-page-content mt-5 pt-5">
       <div class="login-page-title">
         <h1 class="text-center mb-5">Sign in to {{ $appName }}</h1>
@@ -16,8 +16,13 @@
               required
               placeholder="Enter email"
             />
-               <!-- v-on:keyup="login" -->
-             <span class="text-danger" v-if="errors.email" id="input-2-live-feedback">{{ errors.email[0] }}</span>
+            <!-- v-on:keyup="login" -->
+            <span
+              class="text-danger"
+              v-if="errors.email"
+              id="input-2-live-feedback"
+              >{{ errors.email[0] }}</span
+            >
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -29,7 +34,12 @@
               v-model="password"
               placeholder="Password"
             />
-         <span class="text-danger" v-if="errors.password" id="input-2-live-feedback">{{ errors.password[0]  }}</span>
+            <span
+              class="text-danger"
+              v-if="errors.password"
+              id="input-2-live-feedback"
+              >{{ errors.password[0] }}</span
+            >
           </div>
           <div class="mb-3 text-right">
             <router-link to="/forgot-password">Forgot Password?</router-link>
@@ -55,53 +65,53 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      errors: "",
-    };
+      email: '',
+      password: '',
+      errors: '',
+    }
   },
   computed: {
     ...mapGetters(['getUser']),
   },
-  created(){
-      this.email= ""
-      this.password= ""
-      this.errors= ""
+  created() {
+    this.email = ''
+    this.password = ''
+    this.errors = ''
   },
-  beforeMount(){
-    this.getUser.user_type =='admin' ?
-    this.$router.push({ path: 'admin/dashboard' }) :
-    this.$router.push({ path: '/'})
+  beforeMount() {
+    this.getUser.user_type == 'admin'
+      ? this.$router.push({ path: 'admin/dashboard' })
+      : this.$router.push({ path: '/' })
   },
 
   methods: {
     login() {
-      const vm = this;
-       if(this.email==='' && this.password===''){
-        return;
+      const vm = this
+      if (this.email === '' && this.password === '') {
+        return
       }
       this.$http
-        .post(process.env.VUE_APP_API_URL + "/login", {
+        .post(process.env.VUE_APP_API_URL + '/login', {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
-            // vm.$toast.success("User Login Successfully");
-            const token = response.data.data.token;
-            localStorage.setItem("token", token);
-            setTimeout(() => {
-              vm.$store.commit("SET_AUTH_TOKEN", token);
-              vm.$store.commit("SET_USER", response.data.data);
-              window.location.reload()
-                // response.data.data.user_type =='admin' ?
-                  // vm.$router.push({ path: 'admin/dashboard' }) :
-                  // vm.$router.push({ path: '/' })
-            }, 2000);
+          // vm.$toast.success("User Login Successfully");
+          const token = response.data.data.token
+          localStorage.setItem('token', token)
+          setTimeout(() => {
+            vm.$store.commit('SET_AUTH_TOKEN', token)
+            vm.$store.commit('SET_USER', response.data.data)
+            window.location.reload()
+            // response.data.data.user_type =='admin' ?
+            // vm.$router.push({ path: 'admin/dashboard' }) :
+            // vm.$router.push({ path: '/' })
+          }, 2000)
         })
         .catch((errors) => {
           if (errors.response.data) {
-              this.errors =errors.response.data.errors
-          
+            this.errors = errors.response.data.errors
+
             // this.$toast.error(errors.response.data.message, {
             //   position: "top-right",
             //   closeButton: "button",
@@ -109,10 +119,10 @@ export default {
             //   rtl: false,
             // });
           }
-        });
+        })
     },
   },
-};
+}
 </script>
 <style lang="scss">
 .login-page-content {

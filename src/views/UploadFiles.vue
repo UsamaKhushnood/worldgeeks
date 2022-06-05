@@ -9,20 +9,35 @@
       </p>
     </div>
     <div class="image-uploader d-flex justify-content-center my-5">
-      <vue-upload-multiple-image
+      <!-- <vue-upload-multiple-image
         dragText="Drag &amp; Drop your files here"
         browseText="or Click to upload"
         primaryText="Default"
         markIsPrimaryText="Set as default"
         popupText="This image will be displayed as default"
         dropText="Drop your files here..."
-        maxImage="5"
+        maxImage="5"  
         @upload-success="uploadImageSuccess"
         @before-remove="beforeRemove"
         @edit-image="editImage"
         @data-change="dataChange"
         :data-images="uploadedImages"
-      ></vue-upload-multiple-image>
+      ></vue-upload-multiple-image> -->
+      <div class="uploader-wrapper">
+        <vue-dropzone
+          ref="myVueDropzone"
+          id="dropzone"
+          :options="dropzoneOptions"
+          :useCustomSlot="true"
+        >
+          <div class="dropzone-custom-content">
+            <h3 class="dropzone-custom-title text-primary">
+              Drag and drop to upload content!
+            </h3>
+            <div class="subtitle">...or click to select a file</div>
+          </div></vue-dropzone
+        >
+      </div>
     </div>
 
     <div class="paste-url">
@@ -50,13 +65,22 @@
   </div>
 </template>
 <script>
-import VueUploadMultipleImage from 'vue-upload-multiple-image'
+// import VueUploadMultipleImage from 'vue-upload-multiple-image'
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
   components: {
-    VueUploadMultipleImage,
+    vueDropzone: vue2Dropzone,
   },
   data() {
     return {
+      dropzoneOptions: {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 180,
+        maxFilesize: 200000,
+        addRemoveLinks: true,
+        headers: { 'My-Awesome-Header': 'header value' },
+      },
       imageList: [],
       uploadedImages: [],
     }
@@ -94,7 +118,39 @@ export default {
   margin: 0 auto;
 }
 
+.uploader-wrapper {
+  width: 600px;
+}
+
+.dropzone-custom-content {
+  width: 550px;
+}
+
+div#dropzone {
+  border: 1px dashed #aeaeae !important;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+}
+
+.dropzone .dz-preview .dz-error-message {
+  top: 0 !important;
+}
+
+a.dz-remove {
+  left: 50% !important;
+  transform: translate(-50%) !important;
+  width: 80% !important;
+  margin: 0 !important ;
+}
+
 @media screen and (max-width: 576px) {
+  .dropzone-custom-content {
+    width: 300px;
+  }
+  .uploader-wrapper {
+    width: 100%;
+    padding: 0 20px;
+  }
   .image-container {
     width: 300px !important;
   }

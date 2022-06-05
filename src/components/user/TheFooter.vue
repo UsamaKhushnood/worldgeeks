@@ -6,10 +6,4 @@
     &copy; {{ new Date().getFullYear() }} {{ $appName }}. All rights Reserved.
   </div>
 </template>
-<style>
-.the-footer {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-}
-</style>
+<style></style>
