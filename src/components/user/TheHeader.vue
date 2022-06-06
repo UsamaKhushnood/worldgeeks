@@ -33,13 +33,12 @@
           >
             {{ getUser.first_name }}
           </router-link>
-          <b-nav-item-dropdown right v-if="getUser !== null">
-            <template #button-content> {{ getUser.first_name }} </template>
-            <!-- <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Settings</b-dropdown-item> -->
-            <b-dropdown-item href="#"  @click="logout()">Logout</b-dropdown-item>
-          </b-nav-item-dropdown>
-          <router-link to="/signin" v-if="getUser == null"  tag="b-nav-item"> Sign In </router-link>
+          <b-nav-item v-if="getUser !== null" @click="logout()">
+            Logout
+          </b-nav-item>
+          <router-link to="/signin" v-if="getUser == null" tag="b-nav-item">
+            Sign In
+          </router-link>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -57,7 +56,6 @@ export default {
       this.$http
         .post(process.env.VUE_APP_API_URL + '/logout')
         .then(() => {
-
           // vm.$toast.success(response.data.message, {
           //   position: 'top-right',
           //   closeButton: 'button',
@@ -79,7 +77,7 @@ export default {
             })
         })
     },
-  }
+  },
 }
 </script>
 <style lang="scss">

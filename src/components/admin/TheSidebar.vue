@@ -19,6 +19,9 @@
       <b-icon icon="person"></b-icon> Add User</router-link
     >
     <h5 class="ml-1 my-3">Settings</h5>
+    <router-link to="/admin/ad-management" class="sidebar-link">
+      <b-icon icon="badge-ad"></b-icon> Ad Management</router-link
+    >
     <router-link to="/admin/site-settings" class="sidebar-link">
       <b-icon icon="pen"></b-icon> Site Setting</router-link
     >
@@ -40,9 +43,9 @@ export default {
   computed: {
     ...mapGetters(['getUser']),
 
-      user(){
-        return this.getUser.use_type ==='user'
-      }
+    user() {
+      return this.getUser.use_type === 'user'
+    },
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="login-page d-flex justify-content-center">
+  <div class="login-page px-4 d-flex justify-content-center">
     <div class="login-page-content mt-5 pt-5">
       <div class="login-page-title">
         <h1 class="text-center mb-5">Reset Password</h1>
