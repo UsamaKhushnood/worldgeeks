@@ -9,26 +9,13 @@
       </p>
     </div>
     <div class="image-uploader d-flex justify-content-center my-5">
-      <!-- <vue-upload-multiple-image
-        dragText="Drag &amp; Drop your files here"
-        browseText="or Click to upload"
-        primaryText="Default"
-        markIsPrimaryText="Set as default"
-        popupText="This image will be displayed as default"
-        dropText="Drop your files here..."
-        maxImage="5"  
-        @upload-success="uploadImageSuccess"
-        @before-remove="beforeRemove"
-        @edit-image="editImage"
-        @data-change="dataChange"
-        :data-images="uploadedImages"
-      ></vue-upload-multiple-image> -->
       <div class="uploader-wrapper">
         <vue-dropzone
           ref="myVueDropzone"
           id="dropzone"
           :options="dropzoneOptions"
           :useCustomSlot="true"
+         
         >
           <div class="dropzone-custom-content">
             <h3 class="dropzone-custom-title text-primary">
@@ -65,7 +52,6 @@
   </div>
 </template>
 <script>
-// import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
@@ -77,6 +63,7 @@ export default {
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
         thumbnailWidth: 180,
+        acceptedFiles: ".mp4,.mkv,.avi",
         maxFilesize: 200000,
         addRemoveLinks: true,
         headers: { 'My-Awesome-Header': 'header value' },
