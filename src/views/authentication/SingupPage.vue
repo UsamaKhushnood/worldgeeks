@@ -41,6 +41,10 @@ export default {
       password: '',
     }
   },
+  created(){
+    this.email=''
+    this.errors=''
+  },
   methods: {
     registered() {
       const vm = this;

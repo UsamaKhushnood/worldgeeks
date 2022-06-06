@@ -68,12 +68,6 @@ export default {
       this.password= ""
       this.errors= ""
   },
-  beforeMount(){
-    this.getUser.user_type =='admin' ?
-    this.$router.push({ path: 'admin/dashboard' }) :
-    this.$router.push({ path: '/'})
-  },
-
   methods: {
     login() {
       const vm = this;
@@ -89,14 +83,13 @@ export default {
             // vm.$toast.success("User Login Successfully");
             const token = response.data.data.token;
             localStorage.setItem("token", token);
-            setTimeout(() => {
               vm.$store.commit("SET_AUTH_TOKEN", token);
               vm.$store.commit("SET_USER", response.data.data);
-              window.location.reload()
-                // response.data.data.user_type =='admin' ?
-                  // vm.$router.push({ path: 'admin/dashboard' }) :
-                  // vm.$router.push({ path: '/' })
-            }, 2000);
+              // window.location.href ='/'
+              response.data.data.user_type =='admin' ?
+                window.location.href= '/admin':
+                window.location.href= '/'
+      
         })
         .catch((errors) => {
           if (errors.response.data) {

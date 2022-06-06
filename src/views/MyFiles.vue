@@ -137,6 +137,13 @@ export default {
   beforeMount() {
     this.getFiles()
     this.totalRows = this.items.length
+          console.log(this.getUser)
+       setTimeout(function(){
+          if(this.getUser !=null)
+            this.getUser.user_type =='admin' ?
+            this.$router.push({ path: 'admin/dashboard' }) :
+            this.$router.replace('/')
+          },2000)
   },
   methods:{
     getFiles() {
