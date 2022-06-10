@@ -17,9 +17,15 @@
               placeholder="Enter email"
             />
             <!-- v-on:keyup="login" -->
+             <span
+              class="text-danger"
+              v-if="errorMsg"
+              id="input-2-live-feedback"
+              >{{ errorMsg }}
+            </span>
             <span
               class="text-danger"
-              v-if="errors.email"
+              v-if="errors && errors.email"
               id="input-2-live-feedback"
               >{{ errors.email[0] }}</span
             >
@@ -34,12 +40,14 @@
               v-model="password"
               placeholder="Password"
             />
+            
             <span
               class="text-danger"
-              v-if="errors.password"
+              v-if="errors && errors.password"
               id="input-2-live-feedback"
-              >{{ errors.password[0] }}</span
-            >
+              >{{ errors.password[0] }}
+            </span>
+           
           </div>
           <div class="mb-3 text-right">
             <router-link to="/forgot-password">Forgot Password?</router-link>
@@ -68,15 +76,20 @@ export default {
       email: '',
       password: '',
       errors: '',
+      message: '',
     }
   },
   computed: {
     ...mapGetters(['getUser']),
+    errorMsg(){
+      return this.message
+    }
   },
   created() {
     this.email = ''
     this.password = ''
     this.errors = ''
+    this.message = ''
   },
   methods: {
     login() {
@@ -103,6 +116,8 @@ export default {
         })
         .catch((errors) => {
           if (errors.response.data) {
+        
+            this.message = errors.response.data.message
             this.errors = errors.response.data.errors
 
             // this.$toast.error(errors.response.data.message, {

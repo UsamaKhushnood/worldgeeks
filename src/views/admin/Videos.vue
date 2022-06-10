@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -129,6 +130,9 @@ export default {
       ],
     }
   },
+  computed:{
+    ...mapGetters(['getUser'])
+  },
   beforeMount() {
     this.getFiles()
   },
@@ -136,7 +140,9 @@ export default {
     getFiles() {
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/videos')
+        .get(process.env.VUE_APP_API_URL + '/videos',{headers:{
+          'Authorization': 'Bearer '+this.getUser.token
+        }})
         .then((response) => {
           vm.items = response.data.data
           vm.items = response.data.data

@@ -66,7 +66,9 @@ export default {
   computed: {
     ...mapGetters(['getUser']),
   },
-
+  beforeCreate(){
+      // this.$router.go()
+  },
 
   data() {
     return {

@@ -99,6 +99,7 @@ const routes = [
         path: "dashboard",
         name: "Dashboard",
         meta: {
+          reload: true,
           layout: "adminLayout",
           middleware: admin,
           requiresAuth: true,
@@ -230,7 +231,6 @@ const routes = [
         name: "Admin Login",
         meta: {
           layout: "universal",
-          middleware: admin,
         },
         component: () => import("../views/admin/SigninPage.vue"),
       },

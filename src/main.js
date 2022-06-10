@@ -16,7 +16,7 @@ Vue.use(IconsPlugin);
 Vue.use(Toast);
 
 
-const token = localStorage.getItem('token');
+const token = store.state.user ?  store.state.user.token :localStorage.getItem('token');
 Axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 Axios.defaults.headers.common['Content-Type'] = 'application/json'

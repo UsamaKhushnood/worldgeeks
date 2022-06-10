@@ -26,6 +26,12 @@
                 v-model="email"
                 placeholder="Enter email"
               />
+                <span
+              class="text-danger"
+              v-if="errors &&errors.email"
+              id="input-2-live-feedback"
+              >{{ errors.email[0] }}</span
+            >
             </div>
             <div class="form-group">
               <label for="password">Password</label>
@@ -36,6 +42,18 @@
                 v-model="password"
                 placeholder="Password"
               />
+                 <span
+              class="text-danger"
+             v-if="errors && errors.password"
+              id="input-2-live-feedback"
+              >{{ errors.password[0] }}</span
+            >
+            <span
+              class="text-danger"
+              v-if="errors && errors.email"
+              id="input-2-live-feedback"
+              >{{ errors.email[0] }}
+              </span>
             </div>
             <div class="mb-3 text-right">
               <!-- <router-link to="/forgot-password">Forgot Password?</router-link> -->
@@ -53,35 +71,49 @@
 export default {
   data() {
     return {
+      errors: '',
       email: '',
       password: '',
+      message: '',
     }
+  },
+  created() {
+    this.email = ''
+    this.password = ''
+    this.errors = ''
+    this.message = ''
   },
   methods: {
     login() {
       const vm = this
       this.$http
-        .post(process.env.VUE_APP_API_URL + '/login', {
+        .post(process.env.VUE_APP_API_URL + '/admin-login', {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
-          console.log('data::', response.data.data)
+          // console.log('data::', response.data.data)
           vm.$toast.success('User Login Successfully')
           const token = response.data.data.token
           localStorage.setItem('token', token)
           vm.$store.commit('SET_AUTH_TOKEN', token)
           vm.$store.commit('SET_USER', response.data.data)
-          vm.$router.push({ path: 'admin/dashboard' })
+      
+          setTimeout(() => {
+            vm.$router.push({ name: 'Dashboard' })
+          }, 1000);
+          // window.location.re='admin/dashboard'
         })
         .catch((errors) => {
           if (errors.response.data) {
-            this.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
+            this.message = errors.response.data.message
+            this.errors = errors.response.data.errors
+            // this.$toast.error(errors.response.data.message, {
+            //   position: 'top-right',
+            //   closeButton: 'button',
+            //   icon: true,
+            //   rtl: false,
+            // })
           }
         })
     },
