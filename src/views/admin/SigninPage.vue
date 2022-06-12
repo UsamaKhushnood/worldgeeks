@@ -1,6 +1,6 @@
 <template>
-  <div class="row no-gutters px-4 login-page px-4">
-    <div class="col-md-5 col-sm-12 background p-5 position-relative">
+  <div class="row no-gutters login-page">
+    <div class="col-md-5 col-sm-12 background p-5 position-relative sm-hidden">
       <h1 class="text-white">{{ $appName }}</h1>
       <p class="mb-0 rights-reserved text-light">
         &copy; {{ new Date().getFullYear() }}
