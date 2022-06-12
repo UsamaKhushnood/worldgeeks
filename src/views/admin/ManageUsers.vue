@@ -120,7 +120,7 @@ export default {
     getUsers() {
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/users')
+        .get(process.env.VUE_APP_API_URL + '/admin/users')
         .then((response) => {
           vm.items = response.data.data
         })
@@ -138,7 +138,7 @@ export default {
     deleteUser(id) {
       const vm = this
       this.$http
-        .delete(process.env.VUE_APP_API_URL + '/users/' + id)
+        .delete(process.env.VUE_APP_API_URL + '/admin/users/' + id)
         .then((response) => {
           vm.$toast.success(response.data.message, {
             position: 'top-right',

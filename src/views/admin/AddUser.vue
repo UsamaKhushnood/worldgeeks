@@ -86,7 +86,7 @@ export default {
     addUser() {
       const vm = this
       this.$http
-        .post(process.env.VUE_APP_API_URL + '/users', {
+        .post(process.env.VUE_APP_API_URL + '/admin/users', {
           email: this.email,
           password: this.password,
           password_confirmation: this.password_confirmation,

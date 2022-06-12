@@ -100,7 +100,8 @@ export default {
           vm.$store.commit('SET_USER', response.data.data)
       
           setTimeout(() => {
-            vm.$router.push({ name: 'Dashboard' })
+            // vm.$router.push({ name: 'Dashboard' })
+                   window.location.href= '/admin'
           }, 1000);
           // window.location.re='admin/dashboard'
         })

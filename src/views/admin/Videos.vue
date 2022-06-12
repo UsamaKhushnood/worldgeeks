@@ -140,7 +140,7 @@ export default {
     getFiles() {
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/videos',{headers:{
+        .get(process.env.VUE_APP_API_URL + '/admin/videos',{headers:{
           'Authorization': 'Bearer '+this.getUser.token
         }})
         .then((response) => {
