@@ -1,5 +1,5 @@
 <template>
-  <div class="upload-files">
+  <div class="upload-files content-container position-relative">
     <div class="bg-light py-2">
       <p class="container mb-0 small">
         You are not allowed to upload copyrighted, pornographic, violent, or any
@@ -15,7 +15,6 @@
           id="dropzone"
           :options="dropzoneOptions"
           :useCustomSlot="true"
-         
         >
           <div class="dropzone-custom-content">
             <h3 class="dropzone-custom-title text-primary">
@@ -49,6 +48,27 @@
         >
       </div>
     </div>
+    <div class="bottom-sheet border" :class="[expanded ? 'expanded' : '']">
+      <div class="d-flex justify-content-between sheet-header">
+        <h6 class="mb-0 p-2 bg-light">File Upload</h6>
+        <b-button variant="link" size="sm" pill @click="expanded = !expanded">
+          <b-icon icon="chevron-up"></b-icon>
+        </b-button>
+      </div>
+      <div class="sheet-body my-3 px-2">
+        <div
+          class="uploading-file d-flex justify-content-between py-1"
+          v-for="i in 9"
+          :key="i"
+        >
+          <h6 class="mb-0 small mr-3">
+            <span class="text-primary">{{ i }}</span
+            >- File Name.mp4
+          </h6>
+          <h6 class="mb-0 small text-success">Uploading</h6>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -60,10 +80,11 @@ export default {
   },
   data() {
     return {
+      expanded: true,
       dropzoneOptions: {
         url: 'https://httpbin.org/post',
         thumbnailWidth: 180,
-        acceptedFiles: ".mp4,.mkv,.avi",
+        acceptedFiles: '.mp4,.mkv,.avi',
         maxFilesize: 200000,
         addRemoveLinks: true,
         headers: { 'My-Awesome-Header': 'header value' },
@@ -128,6 +149,28 @@ a.dz-remove {
   transform: translate(-50%) !important;
   width: 80% !important;
   margin: 0 !important ;
+}
+
+.bottom-sheet {
+  width: 400px;
+  position: absolute;
+  bottom: 0;
+  right: 5px;
+  border-radius: 3px 3px 0 0;
+  border-bottom: 0 !important;
+  padding: 5px;
+}
+
+.bottom-sheet {
+  height: 50px;
+  overflow: hidden;
+}
+
+.bottom-sheet.expanded {
+  height: auto;
+  svg.bi-chevron-up.b-icon.bi {
+    transform: rotate(180deg);
+  }
 }
 
 @media screen and (max-width: 576px) {
