@@ -4,10 +4,16 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
-      :items="items"
+      :busy="loading"
+      :items="items.data"
       :fields="fields"
       class="bg-white"
     >
+      <template #table-busy>
+        <div class="text-center text-dark my-2">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
+      </template>
       <template #head(action)> <span></span></template>
       <template #cell(first_name)="data">
         <b-icon icon="person-fill" variant="primary" class="mr-2"></b-icon>
@@ -32,7 +38,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <span class="ml-2">View User</span>
+                <span class="ml-2"> <router-link :to="'/admin/user-details/'+data.item.id">View User</router-link> </span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -86,6 +92,7 @@
 export default {
   data() {
     return {
+      loading: false,
       currentPage: 1,
       totalRows: 1,
       perPage: 5,
@@ -118,14 +125,17 @@ export default {
   },
   methods: {
     getUsers() {
+      this.loading= true
       const vm = this
       this.$http
         .get(process.env.VUE_APP_API_URL + '/admin/users')
         .then((response) => {
+          vm.loading= false
           vm.items = response.data.data
         })
         .catch((errors) => {
           if (errors.response.data) {
+            vm.loading= false
             vm.$toast.error(errors.response.data.message, {
               position: 'top-right',
               closeButton: 'button',

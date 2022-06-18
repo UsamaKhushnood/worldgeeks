@@ -92,7 +92,6 @@ export default {
           password: this.password,
         })
         .then((response) => {
-          // console.log('data::', response.data.data)
           vm.$toast.success('User Login Successfully')
           const token = response.data.data.token
           localStorage.setItem('token', token)
@@ -100,21 +99,15 @@ export default {
           vm.$store.commit('SET_USER', response.data.data)
       
           setTimeout(() => {
-            // vm.$router.push({ name: 'Dashboard' })
-                   window.location.href= '/admin'
-          }, 1000);
-          // window.location.re='admin/dashboard'
+            window.location.href= '/admin'
+          }, 500);
+     
         })
         .catch((errors) => {
           if (errors.response.data) {
             this.message = errors.response.data.message
             this.errors = errors.response.data.errors
-            // this.$toast.error(errors.response.data.message, {
-            //   position: 'top-right',
-            //   closeButton: 'button',
-            //   icon: true,
-            //   rtl: false,
-            // })
+         
           }
         })
     },

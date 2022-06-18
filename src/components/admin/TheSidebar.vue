@@ -22,6 +22,8 @@
     <router-link to="/admin/ad-management" class="sidebar-link">
       <b-icon icon="badge-ad"></b-icon> Ad Management</router-link
     >
+    <router-link to="/admin/set-cpm" class="sidebar-link">
+    <b-icon icon="calculator-fill"></b-icon> Set CPM</router-link>
     <router-link to="/admin/site-settings" class="sidebar-link">
       <b-icon icon="pen"></b-icon> Site Setting</router-link
     >

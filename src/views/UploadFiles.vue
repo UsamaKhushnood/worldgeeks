@@ -37,7 +37,7 @@
           variant="primary"
           class="ml-md-2 ml-sm-0 mt-xs-2"
         >
-          <span class="d-flex align-items-center">
+          <span class="d-flex align-items-center" @click="uploadVideo">
             <b-icon
               icon="cloud-upload"
               aria-hidden="true"
@@ -58,12 +58,12 @@
       <div class="sheet-body my-3 px-2">
         <div
           class="uploading-file d-flex justify-content-between py-1"
-          v-for="i in 9"
-          :key="i"
+          v-for="(data,index) in files"
+          :key="index"
         >
           <h6 class="mb-0 small mr-3">
-            <span class="text-primary">{{ i }}</span
-            >- File Name.mp4
+            <span class="text-primary">{{ data }}</span
+            >
           </h6>
           <h6 class="mb-0 small text-success">Uploading</h6>
         </div>
@@ -72,22 +72,33 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
 import vue2Dropzone from 'vue2-dropzone'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 export default {
   components: {
     vueDropzone: vue2Dropzone,
   },
+  computed:{
+    apiUrl(){
+      return process.env.VUE_APP_API_URL
+    }
+  },
+  beforeMount(){
+    this.getUrl()
+  },
   data() {
     return {
       expanded: true,
+      text:'',
+      files:[],
       dropzoneOptions: {
-        url: 'https://httpbin.org/post',
+        url:'',
         thumbnailWidth: 180,
         acceptedFiles: '.mp4,.mkv,.avi',
         maxFilesize: 200000,
         addRemoveLinks: true,
-        headers: { 'My-Awesome-Header': 'header value' },
+        headers: { 'Authorization': 'Bearer '+this.$store.state.user.token },
       },
       imageList: [],
       uploadedImages: [],
@@ -98,8 +109,12 @@ export default {
       console.log(formData, 'index:', index, fileList, 'upload success')
       this.imageList.push(fileList[index].path)
     },
+   
     beforeRemove() {
       return confirm('Are you sure you want to delete this file?')
+    },
+    getUrl() {
+       this.dropzoneOptions.url = this.apiUrl+'/videos' 
     },
     editImage(formData, index, fileList) {
       console.log(formData, 'index:', index, fileList, 'edit image')
@@ -107,6 +122,36 @@ export default {
     dataChange(data) {
       console.log(data, 'dataChange')
     },
+    arrayRemove(arr, value) { 
+        return arr.filter(function(ele){ 
+            return ele != value; 
+        });
+    },
+    uploadVideo() {
+      let vm = this
+      let link =this.text
+      vm.files.push(link)
+      vm.text=''
+      vm.$http
+        .post(process.env.VUE_APP_API_URL + '/videos',{
+          url:link
+        })
+        .then(() => {
+          Vue.$toast.success("File is Successfully Uploaded")
+          vm.arrayRemove(vm.files, link);
+
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    }
   },
 }
 </script>

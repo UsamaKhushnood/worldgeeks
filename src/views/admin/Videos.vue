@@ -3,20 +3,26 @@
     <b-table
       hover
       :items="items"
+      :busy="loading"
       :fields="fields"
       class="bg-white"
       :current-page="currentPage"
       :per-page="perPage"
     >
-      <template #head(action)> <span></span></template>
-      <template #cell(file_name)="data">
-        <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-        <span> {{ data.value }} </span>
+      <template #table-busy>
+        <div class="text-center text-dark my-2">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
       </template>
-      <template #cell(action)>
+      <template #head(action)> <span></span></template>
+      <template #cell(name)="row">
+        <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
+        <span> {{ row.item.name }} </span>
+      </template>
+      <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
           <b-button variant="outline-primary" size="sm">
-            <b-icon icon="back"></b-icon>
+            <b-icon icon="back" @click="copyLink(row.item)"></b-icon>
           </b-button>
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
             <template #button-content>
@@ -27,7 +33,7 @@
                 <div class="dropdown-icon bg-primary text-white">
                   <b-icon icon="back"></b-icon>
                 </div>
-                <span class="ml-2">Copy Link</span>
+                <span @click="copyLink(row.item)" class="ml-2">Copy Link</span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -43,7 +49,9 @@
                 <div class="dropdown-icon bg-danger text-white">
                   <b-icon icon="trash"></b-icon>
                 </div>
-                <span class="ml-2">Delete Video</span>
+                <span @click="deleteVideo(row.item)" class="ml-2"
+                  >Delete Video</span
+                >
               </div>
             </b-dropdown-item>
           </b-dropdown>
@@ -79,86 +87,133 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      loading: false,
       currentPage: 1,
       totalRows: 1,
       perPage: 5,
-      pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
+      pageOptions: [2, 5, 10, 15, { value: 100, text: "100" }],
       fields: [
         {
-          key: 'file_name',
-          sortable: false,
+          key: "name",
+          sortable: true,
         },
         {
-          key: 'item_id',
-          sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
+          key: "item_id",
+          sortable: true,
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
         },
         {
-          key: 'created_at',
-          sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
+          key: "created_at",
+          sortable: true,
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
         },
-        'action',
+        "action",
       ],
-      items: [
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'fd.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-      ],
-    }
+      items: [],
+      link: "",
+    };
   },
-  computed:{
-    ...mapGetters(['getUser'])
+  computed: {
+    ...mapGetters(["getUser"]),
   },
   beforeMount() {
-    this.getFiles()
+    this.getFiles();
   },
-  methods:{
+  methods: {
     getFiles() {
-      const vm = this
+      this.loading = true;
+      const vm = this;
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/admin/videos',{headers:{
-          'Authorization': 'Bearer '+this.getUser.token
-        }})
+        .get(process.env.VUE_APP_API_URL + "/admin/all-videos", {
+          headers: {
+            Authorization: "Bearer " + this.getUser.token,
+          },
+        })
         .then((response) => {
-          vm.items = response.data.data
-          vm.items = response.data.data
-          this.totalRows = response.data.total
+          vm.items = response.data.data;
+          vm.loading = false;
+          vm.totalRows = response.data.total;
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading = false;
+            vm.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
+    async copyLink(data) {
+      try {
+        // if(data.url ==null){
+        //   this.link= process.env.VUE_APP_IMAGE_STORAGE_URL+data.name
+        // }else{
+        //   this.link =data.url
+        // }
+
+        const vm = this;
+        await this.$http
+          .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id)
+          .then((response) => {
+            navigator.clipboard.writeText(response.data.link);
+            vm.$toast.success(response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          })
+          .catch((errors) => {
+            if (errors.response.data) {
+              vm.$toast.error(errors.response.data.message, {
+                position: "top-right",
+                closeButton: "button",
+                icon: true,
+                rtl: false,
+              });
+            }
+          });
+      } catch ($e) {
+        alert("Cannot copy");
+      }
+    },
+    deleteVideo(video) {
+      const vm = this;
+      this.$http
+        .delete(process.env.VUE_APP_API_URL + "/admin/videos/" + video.id, {
+          headers: {
+            Authorization: "Bearer " + this.getUser.token,
+          },
+        })
+        .then((response) => {
+          vm.getFiles();
+          vm.$toast.success(response.data.message, {
+            position: "top-right",
+            closeButton: "button",
+            icon: true,
+            rtl: false,
+          });
         })
         .catch((errors) => {
           if (errors.response.data) {
             vm.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
+              position: "top-right",
+              closeButton: "button",
               icon: true,
               rtl: false,
-            })
+            });
           }
-        })
+        });
     },
-  }
-}
+  },
+};
 </script>

@@ -4,18 +4,24 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      :busy="loading"
       :items="items"
       :fields="fields"
     >
-      <template #head(action)> <span></span></template>
-      <template #cell(file_name)="data">
-        <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-        <span> {{ data.value }} </span>
+      <template #table-busy>
+        <div class="text-center text-dark my-2">
+          <b-spinner class="align-middle"></b-spinner>
+        </div>
       </template>
-      <template #cell(action)>
+      <template #head(action)> <span></span></template>
+      <template #cell(name)="row">
+        <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
+        <span> {{ row.item.name }} </span>
+      </template>
+      <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
           <b-button variant="outline-primary" size="sm">
-            <b-icon icon="back"></b-icon>
+            <b-icon icon="back" @click="copyLink(row.item)"></b-icon>
           </b-button>
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
             <template #button-content>
@@ -26,31 +32,28 @@
                 <div class="dropdown-icon bg-primary text-white">
                   <b-icon icon="back"></b-icon>
                 </div>
-                <span class="ml-2">Copy Link</span>
+                <span @click="copyLink(row.item)" class="ml-2">Copy Link</span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
               <div class="d-flex">
-                <div class="dropdown-icon bg-warning text-white">
-                  <b-icon icon="pencil-fill"></b-icon>
+                <div class="dropdown-icon bg-success text-white" >
+                  <b-icon
+                    icon="cloud-download-fill"
+                  ></b-icon>
                 </div>
-                <span class="ml-2">Rename</span>
+                <span  class="ml-2" @click="videoDownload(row.item)">
+                 <a href="#">Download</a> </span
+                >
               </div>
             </b-dropdown-item>
-            <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-success text-white">
-                  <b-icon icon="cloud-download-fill"></b-icon>
-                </div>
-                <span class="ml-2">Download</span>
-              </div>
-            </b-dropdown-item>
+        
             <b-dropdown-item>
               <div class="d-flex">
                 <div class="dropdown-icon bg-danger text-white">
                   <b-icon icon="trash"></b-icon>
                 </div>
-                <span class="ml-2">Delete</span>
+                <span @click="deleteVideo(row.item)" class="ml-2">Delete</span>
               </div>
             </b-dropdown-item>
           </b-dropdown>
@@ -84,89 +87,131 @@
 </template>
 
 <script>
+import Vue from "vue";
 export default {
   data() {
     return {
+      loading: false,
       currentPage: 1,
       totalRows: 1,
       perPage: 5,
-      pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
+      pageOptions: [2, 5, 10, 15, { value: 100, text: "100" }],
       fields: [
         {
-          key: 'file_name',
+          key: "name",
           sortable: false,
         },
         {
-          key: 'item_id',
+          key: "item_id",
           sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
         },
         {
-          key: 'created_at',
+          key: "created_at",
           sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
         },
-        'action',
+        "action",
       ],
-      items: [
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-        // {
-        //   file_name: 'something.mp4',
-        //   item_id: 'fsadf45ff125w5r54',
-        //   create_time: '6/4/2022 10:41PM',
-        // },
-      ],
-    }
+      items: [],
+      link: "",
+    };
   },
   beforeMount() {
-    this.getFiles()
-    this.totalRows = this.items.length
-          console.log(this.getUser)
-       setTimeout(function(){
-          if(this.getUser !=null)
-            this.getUser.user_type =='admin' ?
-            this.$router.push({ path: 'admin/dashboard' }) :
-            this.$router.replace('/')
-          },2000)
+    this.getFiles();
+    this.totalRows = this.items.length;
+    setTimeout(function () {
+      if (this.getUser != null)
+        this.getUser.user_type == "admin"
+          ? this.$router.push({ path: "admin/dashboard" })
+          : this.$router.replace("/");
+    }, 2000);
   },
-  methods:{
+  methods: {
+    videoDownload(dt) {
+      if (dt.url == null) {
+        this.link = process.env.VUE_APP_IMAGE_STORAGE_URL + dt.name;
+      } else {
+        this.link = dt.url;
+      }
+      // window.location.href =
+      window.open(this.link, "_blank").focus();
+    },
     getFiles() {
-      const vm = this
+      this.loading = true;
+      const vm = this;
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/videos')
+        .get(process.env.VUE_APP_API_URL + "/videos")
         .then((response) => {
-          vm.items = response.data.data
-          vm.items = response.data.data
-          this.totalRows = response.data.total
+          vm.items = response.data.data;
+          vm.loading = false;
+          vm.totalRows = response.data.total;
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading = false;
+            vm.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
+
+ async copyLink(data) {
+      try {
+
+        const vm = this;
+        await this.$http
+          .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id, {
+           
+          })
+          .then((response) => {
+            navigator.clipboard.writeText(response.data.link);
+            vm.$toast.success(response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          })
+          .catch((errors) => {
+            if (errors.response.data) {
+              vm.$toast.error(errors.response.data.message, {
+                position: "top-right",
+                closeButton: "button",
+                icon: true,
+                rtl: false,
+              });
+            }
+          });
+      } catch ($e) {
+        alert("Cannot copy");
+      }
+    },
+    deleteVideo(video) {
+      const vm = this;
+      this.$http
+        .delete(process.env.VUE_APP_API_URL + "/videos/" + video.id)
+        .then(() => {
+          Vue.$toast.success("File is Successfully Deleted");
+          vm.getFiles();
         })
         .catch((errors) => {
           if (errors.response.data) {
             vm.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
+              position: "top-right",
+              closeButton: "button",
               icon: true,
               rtl: false,
-            })
+            });
           }
-        })
+        });
     },
-  }
-
-}
+  },
+};
 </script>

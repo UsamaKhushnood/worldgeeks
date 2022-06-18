@@ -1,6 +1,8 @@
+/* eslint-disable */
 import Vue from "vue";
 import Vuex from "vuex";
 import VuexPersist from "vuex-persist";
+import axios from "axios";
 
 const vuexPersist = new VuexPersist({
   key: "my-app",
@@ -9,7 +11,7 @@ const vuexPersist = new VuexPersist({
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
   plugins: [vuexPersist.plugin],
   state: {
     openSidebar: false,
@@ -38,9 +40,9 @@ const store = new Vuex.Store({
     toggleSidebar({ commit }, payload) {
       commit("toggleSidebar", payload);
     },
-    HTTP_POST_REQUEST(data){
+    HTTP_POST_REQUEST({ commit, state },data){
       return new Promise((resolve,reject)=>{
-        this.$http.post(data.url, data.payload)
+        axios.post(data.url, data.payload)
           .then(function (response) {
             resolve(response)
           })
@@ -50,9 +52,10 @@ const store = new Vuex.Store({
       })
     },
   
-    HTTP_GET_REQUEST(url){
+    HTTP_GET_REQUEST({ commit, state },data){
+
       return new Promise((resolve,reject)=>{
-        this.$http.get(url)
+        axios.get(data.url,data.payload)
           .then(function (response) {
             resolve(response)
           })
@@ -65,4 +68,3 @@ const store = new Vuex.Store({
   },
 });
 
-export default store;

@@ -1,5 +1,10 @@
 <template>
-  <div class="manage-user p-3">
+  <div class="manage-user p-3 ">
+    <router-link to="/admin/ad-mangement/add">
+      <b-button variant="outline-primary"  class="float-right mb-3" >
+        Add AdManagement
+      </b-button>
+    </router-link>
     <b-table
       :current-page="currentPage"
       :per-page="perPage"
@@ -13,7 +18,7 @@
         <span> {{ data.item.ad_title + ' ' + data.item.last_name }} </span>
       </template>
       <template #cell(status)="data">
-        <span> {{ data.item.status ? data.item.status : '---' }} </span>
+        <span> {{ data.item.status ==1 ? "Active" : 'DisActive' }} </span>
       </template>
 
       <template #cell(action)="data">
@@ -65,11 +70,11 @@ export default {
           // tdClass: 'sm-hidden',
         },
         {
-          key: 'ad_title',
+          key: 'title',
           sortable: false,
         },
         {
-          key: 'ad_size',
+          key: 'size',
           sortable: false,
         },
         {
@@ -78,22 +83,27 @@ export default {
         },
         'action',
       ],
-      items: [{ id: 1, ad_title: 'John', ad_size: '1', status: 'Active' }],
+      items: [],
     }
   },
   created() {
-    this.getUsers()
+    this.getAdd()
   },
   methods: {
-    getUsers() {
+      getAdd() {
+      this.loading= true
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/admin/users')
+        .get(process.env.VUE_APP_API_URL + '/admin/ads')
         .then((response) => {
+          vm.loading= false
           vm.items = response.data.data
+          vm.totalRows = response.data.total
+          vm.perPage = response.data.per_page
         })
         .catch((errors) => {
           if (errors.response.data) {
+            vm.loading= false
             vm.$toast.error(errors.response.data.message, {
               position: 'top-right',
               closeButton: 'button',
@@ -103,35 +113,9 @@ export default {
           }
         })
     },
-    deleteUser(id) {
-      const vm = this
-      this.$http
-        .delete(process.env.VUE_APP_API_URL + '/admin/users/' + id)
-        .then((response) => {
-          vm.$toast.success(response.data.message, {
-            position: 'top-right',
-            closeButton: 'button',
-            icon: true,
-            rtl: false,
-          })
-          vm.getUsers()
-        })
-        .catch((errors) => {
-          // var err = ''
-          if (errors.response.data.errors) {
-            vm.$toast.error('Invalid Request', {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
-            // console.log(err)
-          }
-        })
-    },
+    
+
   },
-  mounted() {
-    this.totalRows = this.items.length
-  },
+ 
 }
 </script>
