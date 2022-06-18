@@ -12,7 +12,7 @@
       <template #cell(file_name)="data">
         <span> {{ data.value }} </span>
       </template>
-      <template #cell(action)>
+      <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
             <template #button-content>
@@ -24,7 +24,9 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <span class="ml-2">View User</span>
+                <router-link :to="'/user-details/'+row.item.id">
+                  <span class="ml-2">View User</span>
+                </router-link>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -126,8 +128,32 @@ export default {
       ],
     }
   },
+  methods:{
+    getWithDraw() {
+      this.loading= true
+      const vm = this
+      this.$http
+        .get(process.env.VUE_APP_API_URL + '/admin/withdraw')
+        .then((response) => {
+          vm.loading= false
+          vm.st = response.data.data
+          vm.totalRows = response.data.total
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading= false
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    },
+  },
   mounted() {
-    this.totalRows = this.items.length
+    this.getWithDraw()
   },
 }
 </script>
