@@ -22,6 +22,14 @@
           >
             Upload
           </router-link>
+          <router-link
+            v-if="getUser && getUser.user_type === 'user'"
+            to="/statistics"
+            tag="b-nav-item"
+            class="px-2"
+          >
+            Statistics
+          </router-link>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
