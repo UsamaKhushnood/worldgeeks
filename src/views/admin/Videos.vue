@@ -17,7 +17,7 @@
       <template #head(action)> <span></span></template>
       <template #cell(name)="row">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-        <span> {{ row.item.name }} </span>
+       <span> {{ row.item.orignal_name ? row.item.orignal_name  :"" }} </span>
       </template>
       <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
@@ -161,27 +161,35 @@ export default {
         // }
 
         const vm = this;
-        await this.$http
-          .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id)
-          .then((response) => {
-            navigator.clipboard.writeText(response.data.link);
-            vm.$toast.success(response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
-          })
-          .catch((errors) => {
-            if (errors.response.data) {
-              vm.$toast.error(errors.response.data.message, {
-                position: "top-right",
-                closeButton: "button",
-                icon: true,
-                rtl: false,
-              });
-            }
-          });
+        let url = process.env.VUE_APP_URL +'player/'+ data.item_id;
+        await  navigator.clipboard.writeText(url);
+        vm.$toast.success("Link Copied", {
+          position: "top-right",
+          closeButton: "button",
+          icon: true,
+          rtl: false,
+        });
+        // await this.$http
+        //   .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id)
+        //   .then((response) => {
+        //     navigator.clipboard.writeText(response.data.link);
+        //     vm.$toast.success(response.data.message, {
+        //       position: "top-right",
+        //       closeButton: "button",
+        //       icon: true,
+        //       rtl: false,
+        //     });
+        //   })
+        //   .catch((errors) => {
+        //     if (errors.response.data) {
+        //       vm.$toast.error(errors.response.data.message, {
+        //         position: "top-right",
+        //         closeButton: "button",
+        //         icon: true,
+        //         rtl: false,
+        //       });
+        //     }
+        //   });
       } catch ($e) {
         alert("Cannot copy");
       }

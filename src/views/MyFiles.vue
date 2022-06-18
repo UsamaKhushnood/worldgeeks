@@ -14,9 +14,9 @@
         </div>
       </template>
       <template #head(action)> <span></span></template>
-      <template #cell(name)="row">
+      <template #cell(orignal_name)="row">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-        <span> {{ row.item.name }} </span>
+        <span> {{ row.item.orignal_name ? row.item.orignal_name  :"" }} </span>
       </template>
       <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
@@ -98,7 +98,7 @@ export default {
       pageOptions: [2, 5, 10, 15, { value: 100, text: "100" }],
       fields: [
         {
-          key: "name",
+          key: "orignal_name",
           sortable: false,
         },
         {
@@ -136,7 +136,6 @@ export default {
       } else {
         this.link = dt.url;
       }
-      // window.location.href =
       window.open(this.link, "_blank").focus();
     },
     getFiles() {
@@ -164,31 +163,38 @@ export default {
 
  async copyLink(data) {
       try {
-
         const vm = this;
-        await this.$http
-          .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id, {
+        let url = process.env.VUE_APP_URL +'player/'+ data.item_id;
+        await  navigator.clipboard.writeText(url);
+        vm.$toast.success("Link Copied", {
+          position: "top-right",
+          closeButton: "button",
+          icon: true,
+          rtl: false,
+        });
+        // await this.$http
+        //   .get(process.env.VUE_APP_API_URL + "/share-url/" + data.id, {
            
-          })
-          .then((response) => {
-            navigator.clipboard.writeText(response.data.link);
-            vm.$toast.success(response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
-          })
-          .catch((errors) => {
-            if (errors.response.data) {
-              vm.$toast.error(errors.response.data.message, {
-                position: "top-right",
-                closeButton: "button",
-                icon: true,
-                rtl: false,
-              });
-            }
-          });
+        //   })
+        //   .then((response) => {
+        //     navigator.clipboard.writeText(response.data.link);
+        //     vm.$toast.success(response.data.message, {
+        //       position: "top-right",
+        //       closeButton: "button",
+        //       icon: true,
+        //       rtl: false,
+        //     });
+        //   })
+        //   .catch((errors) => {
+        //     if (errors.response.data) {
+        //       vm.$toast.error(errors.response.data.message, {
+        //         position: "top-right",
+        //         closeButton: "button",
+        //         icon: true,
+        //         rtl: false,
+        //       });
+        //     }
+        //   });
       } catch ($e) {
         alert("Cannot copy");
       }
@@ -196,21 +202,21 @@ export default {
     deleteVideo(video) {
       const vm = this;
       this.$http
-        .delete(process.env.VUE_APP_API_URL + "/videos/" + video.id)
-        .then(() => {
-          Vue.$toast.success("File is Successfully Deleted");
-          vm.getFiles();
-        })
-        .catch((errors) => {
-          if (errors.response.data) {
-            vm.$toast.error(errors.response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
-          }
-        });
+      .delete(process.env.VUE_APP_API_URL + "/videos/" + video.id)
+      .then(() => {
+        Vue.$toast.success("File is Successfully Deleted");
+        vm.getFiles();
+      })
+      .catch((errors) => {
+        if (errors.response.data) {
+          vm.$toast.error(errors.response.data.message, {
+            position: "top-right",
+            closeButton: "button",
+            icon: true,
+            rtl: false,
+          });
+        }
+      });
     },
   },
 };

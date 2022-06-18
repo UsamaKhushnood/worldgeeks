@@ -24,7 +24,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <router-link :to="'/user-details/'+row.item.id">
+                <router-link :to="'/yaiphare/user-details/'+row.item.id">
                   <span class="ml-2">View User</span>
                 </router-link>
               </div>

@@ -4,19 +4,27 @@
       <div class="video-details">
         <div
           class="video-name d-flex justify-content-between align-items-center"
+       
         >
-          <h6>video title.mp4</h6>
+          <h6>{{video.orignal_name}}</h6>
           <div class="report text-secondary">
             <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
             <span>Report</span>
           </div>
         </div>
+
         <div class="video-player position-relative mt-2">
-          <video controls style="width: 100%">
-            <source src="mov_bbb.mp4" type="video/mp4" />
-            <source src="mov_bbb.ogg" type="video/ogg" />
+          <video ref="myVideo" id="myPlayer" controls style="width: 100%" v-if="loading ==false">
+            <source v-if="video" :src="baseUrl+video.name"  type="video/mp4" />
+            <source v-if="video" :src="baseUrl+video.name" type="video/ogg" />
             Your browser does not support HTML video.
           </video>
+          <div v-else>
+           <div class="text-center text-dark my-2">
+              <b-spinner class="align-middle"></b-spinner>
+            </div>
+          </div>
+
           <div class="share-button">
             <b-dropdown
               id="dropdown-right"
@@ -35,49 +43,117 @@
               <b-dropdown-item href="#">Facebook</b-dropdown-item>
               <b-dropdown-item href="#">Instagram</b-dropdown-item>
               <b-dropdown-divider></b-dropdown-divider>
-              <b-dropdown-item href="#">More Option</b-dropdown-item>
+              <!-- <b-dropdown-item href="#">More Option</b-dropdown-item> -->
             </b-dropdown>
           </div>
         </div>
         <div class="action-button">
           <div class="row">
             <div class="col-6">
-              <b-button variant="warning" block>
+              <b-button variant="warning" @click="videoDownload()" block>
                 <b-icon icon="cloud-arrow-down"></b-icon>
                 Download
               </b-button>
             </div>
             <div class="col-6">
-              <b-button variant="warning" block>
+              <b-button variant="warning" @click="playVideo()" block>
                 <b-icon icon="play"></b-icon>
                 Play Video
               </b-button>
             </div>
           </div>
-          <div class="my-2 small text-secondary">Option2</div>
-          <div class="row">
-            <div class="col-6">
-              <b-button variant="primary" block>
-                <b-icon icon="cloud-arrow-down"></b-icon>
-                Download
-              </b-button>
-            </div>
-            <div class="col-6">
-              <b-button variant="primary" block>
-                <b-icon icon="play"></b-icon>
-                Play Video
-              </b-button>
-            </div>
-          </div>
+          
+          
         </div>
         <div class="video-info mt-5">
           <p class="small mb-0">Video Information</p>
-          <p class="small mb-0">Video Name 7 Apr 2022 368*549 37.4M</p>
+          <p class="small mb-0">Video Name {{ video.created_at }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  computed:{
+    apiUrl(){
+      return process.env.VUE_APP_API_URL
+    }
+  },
+  mounted(){
+    this.getVideo()
+    setTimeout(() => {
+      var player = document.getElementById("myPlayer");
+        let vm = this
+      player.addEventListener("play", function () {
+       vm.playVideo()
+      });
+    }, 1000);
+    
+  },
+  data() {
+    return {
+      loading:true,
+      baseUrl:process.env.VUE_APP_IMAGE_STORAGE_URL,
+      text:'',
+      link:null,
+      video:null,
+    }
+  },
+  methods: {
+    videoDownload() {
+      this.link = process.env.VUE_APP_IMAGE_STORAGE_URL +this.video.name;
+      window.open(this.link, "_blank").focus();
+    },
+    arrayRemove(arr, value) { 
+        return arr.filter(function(ele){ 
+            return ele != value; 
+        });
+    },
+    getVideo() {
+      let vm = this
+      let id =this.$route.params.id
+      vm.$http
+        .get(process.env.VUE_APP_API_URL +'/player/'+id)
+        .then((response) => {
+          this.$toast.success("File is Found Successfully")
+          vm.video =response.data.data
+          vm.loading =false
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading =false
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    },
+    playVideo() {
+      let vm = this
+      this.$refs.myVideo.play()
+      vm.$http
+        .get(process.env.VUE_APP_API_URL +'/statistics/'+this.video.id)
+        .then(() => {
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    }
+  },
+}
+</script>
+
 <style lang="scss">
 .user-player {
   max-width: 768px;

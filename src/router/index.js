@@ -246,11 +246,11 @@ const routes = [
     ],
   },
   {
-    path: "/player",
+    path: "/player/:id",
     name: "Player",
     meta: {
       layout: "universal",
-      middleware: admin,
+      // middleware: admin,
       requiresAuth: true,
     },
     component: () => import("../views/Player.vue"),
