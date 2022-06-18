@@ -79,6 +79,15 @@ const routes = [
     component: () => import("../views/UserProfile.vue"),
   },
   {
+    path: "/statistics",
+    name: "User Statistics",
+    meta: {
+      layout: "userLayout",
+      middleware: user,
+    },
+    component: () => import("../views/Stats.vue"),
+  },
+  {
     path: "*",
     name: "Page Not Found",
     meta: { layout: "userLayout" },
