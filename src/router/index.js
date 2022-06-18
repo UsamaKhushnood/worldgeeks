@@ -95,10 +95,10 @@ const routes = [
   },
   // admin links
   {
-    path: "/admin",
+    path: "/yaiphare",
     name: "Admin",
     component: () => import("../layouts/TheContainer.vue"),
-    redirect: "/admin/dashboard",
+    redirect: "/yaiphare/dashboard",
     meta: {
       middleware: admin,
       requiresAuth: true,
@@ -136,6 +136,16 @@ const routes = [
         component: () => import("../views/admin/Withdraw.vue"),
       },
       {
+        path: "set-cpm",
+        name: "Cpm",
+        meta: {
+          layout: "adminLayout",
+          middleware: admin,
+          requiresAuth: true,
+        },
+        component: () => import("../views/admin/SetCpm.vue"),
+      },
+      {
         path: "manage-user",
         name: "Manage User",
         meta: {
@@ -165,16 +175,6 @@ const routes = [
         },
         component: () => import("../views/admin/SiteSettings.vue"),
       },
-      // {
-      //   path: "upload",
-      //   name: "Upload",
-      //   meta: {
-      //     layout: "adminLayout",
-      //     requiresAuth: true,
-      //     middleware: user
-      //   },
-      //   component: () => import("../views/admin/Uploads.vue"),
-      // },
       {
         path: "earning-settings",
         name: "Earning Settings",
@@ -205,16 +205,6 @@ const routes = [
         },
         component: () => import("../views/admin/EditAd.vue"),
       },
-      // {
-      //   path: "player",
-      //   name: "Player",
-      //   meta: {
-      //     layout: "adminLayout",
-      //     requiresAuth: true,
-      //
-      //   },
-      //   component: () => import("../views/admin/Player.vue"),
-      // },
       {
         path: "user-details/:id",
         name: "User Details",

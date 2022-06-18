@@ -99,7 +99,7 @@ export default {
           vm.$store.commit('SET_USER', response.data.data)
       
           setTimeout(() => {
-            window.location.href= '/admin'
+            window.location.href= '/yaiphare'
           }, 500);
      
         })

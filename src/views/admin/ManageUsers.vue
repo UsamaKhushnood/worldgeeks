@@ -38,7 +38,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <span class="ml-2"> <router-link :to="'/admin/user-details/'+data.item.id">View User</router-link> </span>
+                <span class="ml-2"> <router-link :to="'/yaiphare/user-details/'+data.item.id">View User</router-link> </span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>

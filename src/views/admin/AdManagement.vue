@@ -1,6 +1,6 @@
 <template>
   <div class="manage-user p-3 ">
-    <router-link to="/admin/ad-mangement/add">
+    <router-link to="/yaiphare/ad-mangement/add">
       <b-button variant="outline-primary"  class="float-right mb-3" >
         Add AdManagement
       </b-button>

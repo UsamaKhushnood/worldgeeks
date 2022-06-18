@@ -1,7 +1,7 @@
 <template>
   <div class="admin-header">
     <b-navbar toggleable="lg" type="light" variant="light">
-      <router-link to="/admin/dashboard" tag="h1" class="navbar-brand mb-0">{{
+      <router-link to="/yaiphare/dashboard" tag="h1" class="navbar-brand mb-0">{{
         $appName
       }}</router-link>
 
@@ -33,7 +33,7 @@
             >{{ getUser.first_name }}
           </template>
           <router-link
-            to="/admin/profile"
+            to="/yaiphare/profile"
             tag="b-dropdown-item"
             class="text-left"
           >

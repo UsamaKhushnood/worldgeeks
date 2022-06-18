@@ -10,7 +10,7 @@ export default function admin({ next, router }) {
     store.state.user &&
     store.state.user.user_type == "admin"
   ) {
-    return router.push({ path: "/admin" });
+    return router.push({ path: "/yaiphare" });
   }
  }
  return router.push({ path: "/signin" });
