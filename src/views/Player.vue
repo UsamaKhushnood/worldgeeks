@@ -1,12 +1,25 @@
 <template>
   <div class="user-player p-3">
+    <div class="bg-light d-flex p-2 align-items-center px-4 mb-3">
+      <div class="mr-4">
+        <b-icon icon="house"></b-icon>
+      </div>
+      <b-form-input
+        size="sm"
+        class="mr-sm-2"
+        placeholder="Search"
+      ></b-form-input>
+      <b-button variant="primary" size="sm" class="d-flex align-items-center">
+        <b-icon icon="search" class="pr-1"></b-icon>
+        <span class="pl-1">Search</span>
+      </b-button>
+    </div>
     <div class="video-player-wrapper">
       <div class="video-details">
         <div
           class="video-name d-flex justify-content-between align-items-center"
-       
         >
-          <h6>{{video.orignal_name}}</h6>
+          <h6>{{ video.orignal_name }}</h6>
           <div class="report text-secondary">
             <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
             <span>Report</span>
@@ -14,13 +27,19 @@
         </div>
 
         <div class="video-player position-relative mt-2">
-          <video ref="myVideo" id="myPlayer" controls style="width: 100%" v-if="loading ==false">
-            <source v-if="video" :src="baseUrl+video.name"  type="video/mp4" />
-            <source v-if="video" :src="baseUrl+video.name" type="video/ogg" />
+          <video
+            ref="myVideo"
+            id="myPlayer"
+            controls
+            style="width: 100%; max-height: 400px"
+            v-if="loading == false"
+          >
+            <source v-if="video" :src="baseUrl + video.name" type="video/mp4" />
+            <source v-if="video" :src="baseUrl + video.name" type="video/ogg" />
             Your browser does not support HTML video.
           </video>
           <div v-else>
-           <div class="text-center text-dark my-2">
+            <div class="text-center text-dark my-2">
               <b-spinner class="align-middle"></b-spinner>
             </div>
           </div>
@@ -62,8 +81,6 @@
               </b-button>
             </div>
           </div>
-          
-          
         </div>
         <div class="video-info mt-5">
           <p class="small mb-0">Video Information</p>
@@ -75,54 +92,53 @@
 </template>
 <script>
 export default {
-  computed:{
-    apiUrl(){
+  computed: {
+    apiUrl() {
       return process.env.VUE_APP_API_URL
-    }
+    },
   },
-  mounted(){
+  mounted() {
     this.getVideo()
     setTimeout(() => {
-      var player = document.getElementById("myPlayer");
-        let vm = this
-      player.addEventListener("play", function () {
-       vm.playVideo()
-      });
-    }, 1000);
-    
+      var player = document.getElementById('myPlayer')
+      let vm = this
+      player.addEventListener('play', function () {
+        vm.playVideo()
+      })
+    }, 1000)
   },
   data() {
     return {
-      loading:true,
-      baseUrl:process.env.VUE_APP_IMAGE_STORAGE_URL,
-      text:'',
-      link:null,
-      video:null,
+      loading: true,
+      baseUrl: process.env.VUE_APP_IMAGE_STORAGE_URL,
+      text: '',
+      link: null,
+      video: null,
     }
   },
   methods: {
     videoDownload() {
-      this.link = process.env.VUE_APP_IMAGE_STORAGE_URL +this.video.name;
-      window.open(this.link, "_blank").focus();
+      this.link = process.env.VUE_APP_IMAGE_STORAGE_URL + this.video.name
+      window.open(this.link, '_blank').focus()
     },
-    arrayRemove(arr, value) { 
-        return arr.filter(function(ele){ 
-            return ele != value; 
-        });
+    arrayRemove(arr, value) {
+      return arr.filter(function (ele) {
+        return ele != value
+      })
     },
     getVideo() {
       let vm = this
-      let id =this.$route.params.id
+      let id = this.$route.params.id
       vm.$http
-        .get(process.env.VUE_APP_API_URL +'/player/'+id)
+        .get(process.env.VUE_APP_API_URL + '/player/' + id)
         .then((response) => {
-          this.$toast.success("File is Found Successfully")
-          vm.video =response.data.data
-          vm.loading =false
+          this.$toast.success('File is Found Successfully')
+          vm.video = response.data.data
+          vm.loading = false
         })
         .catch((errors) => {
           if (errors.response.data) {
-            vm.loading =false
+            vm.loading = false
             vm.$toast.error(errors.response.data.message, {
               position: 'top-right',
               closeButton: 'button',
@@ -136,9 +152,8 @@ export default {
       let vm = this
       this.$refs.myVideo.play()
       vm.$http
-        .get(process.env.VUE_APP_API_URL +'/statistics/'+this.video.id)
-        .then(() => {
-        })
+        .get(process.env.VUE_APP_API_URL + '/statistics/' + this.video.id)
+        .then(() => {})
         .catch((errors) => {
           if (errors.response.data) {
             vm.$toast.error(errors.response.data.message, {
@@ -149,7 +164,7 @@ export default {
             })
           }
         })
-    }
+    },
   },
 }
 </script>

@@ -18,6 +18,9 @@ export default {
 }
 </script>
 <style>
+#userLayout {
+  overflow-x: hidden;
+}
 .content-container {
   min-height: calc(100vh - 110px);
 }
