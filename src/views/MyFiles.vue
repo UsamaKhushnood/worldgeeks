@@ -125,7 +125,7 @@ export default {
     setTimeout(function () {
       if (this.getUser != null)
         this.getUser.user_type == "admin"
-          ? this.$router.push({ path: "admin/dashboard" })
+          ? this.$router.push({ path: "yaiphare/dashboard" })
           : this.$router.replace("/");
     }, 2000);
   },

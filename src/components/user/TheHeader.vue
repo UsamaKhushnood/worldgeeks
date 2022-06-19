@@ -35,7 +35,7 @@
         <b-navbar-nav class="ml-auto">
           <router-link
             v-if="getUser !== null"
-            to="/admin"
+            to="/yaiphare"
             tag="b-nav-item"
             class="px-2"
           >
