@@ -2,7 +2,7 @@
   <div class="add-new-user p-3">
     <div class="user-container">
       <div class="user-form-wrapper">
-        <b-form @submit.prevent="addAdd">
+        <b-form >
           <div class="row">
             <div class="col-12">
               <h3 class="text-center pb-4">{{heading}}</h3>
@@ -39,6 +39,7 @@
             </div>
             <div class="col-md-12">
               <b-button type="submit" variant="primary" class="w-100"
+              @click="addAdd()"
                 >Save</b-button
               >
             </div>
@@ -60,13 +61,16 @@ export default {
     }
   },
   beforeMount(){
-    if(this.$route.params.id){
+    if(this.$router.params.id){
       this.getAdd(this.$route.params.id)
       this.heading="Edit Ads Mangement"
     }
   },
   methods:{
     addAdd() {
+      if(this.title =='' && this.size==''){
+        return;
+      }
       const vm = this
     
       if(vm.$route.params.id){
