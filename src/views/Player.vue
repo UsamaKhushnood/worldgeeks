@@ -89,6 +89,45 @@
         </div>
       </div>
     </div>
+    <div class="blog">
+      <h3 class="my-4">Daily Trending News</h3>
+      <div class="single-post">
+        <img src="https://via.placeholder.com/700x300" class="w-100" />
+        <h4 class="blog-heading mt-1">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum
+          dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolo
+        </h4>
+        <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
+        <div class="blog-description" :class="{ truncated: readMore }">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
+            tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
+            accusantium itaque dignissimos dolore accusamus, et laborum cum
+            earum architecto atque veniam!
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
+            tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
+            accusantium itaque dignissimos dolore accusamus, et laborum cum
+            earum architecto atque veniam!
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
+            tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
+            accusantium itaque dignissimos dolore accusamus, et laborum cum
+            earum architecto atque veniam!
+          </p>
+        </div>
+        <div class="text-center read-more-btn" :class="{ truncated: readMore }">
+          <b-button
+            :variant="readMore ? 'primary' : 'danger'"
+            pill
+            @click="readMore = !readMore"
+            >Read {{ readMore ? 'More' : 'Less' }}</b-button
+          >
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -115,6 +154,7 @@ export default {
       text: '',
       link: null,
       video: null,
+      readMore: true,
     }
   },
   methods: {
@@ -178,6 +218,23 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
+  }
+}
+
+.blog-description {
+  &.truncated {
+    max-height: 70px;
+    overflow: hidden;
+  }
+}
+
+.read-more-btn {
+  margin-top: 0;
+  padding: 10px;
+  &.truncated {
+    background: linear-gradient(hsla(0, 0%, 100%, 0.8) 0.12%, #ffffffe3);
+    margin-top: -40px;
+    backdrop-filter: blur(0.1px);
   }
 }
 </style>
