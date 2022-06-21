@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import store from "../store";
-import admin from "../middleware/admin.js";
+import yaiphare from "../middleware/admin.js";
 import user from "../middleware/user.js";
 Vue.use(VueRouter);
 
@@ -91,16 +91,16 @@ const routes = [
     path: "*",
     name: "Page Not Found",
     meta: { layout: "userLayout" },
-    component: () => import("../components/admin/PageNotFound.vue"),
+    component: () => import("../components/yaiphare/PageNotFound.vue"),
   },
   // admin links
   {
     path: "/yaiphare",
-    name: "Admin",
+    name: "Yaiphare",
     component: () => import("../layouts/TheContainer.vue"),
     redirect: "/yaiphare/dashboard",
     meta: {
-      middleware: admin,
+      middleware: yaiphare,
       requiresAuth: true,
     },
     children: [
@@ -109,121 +109,121 @@ const routes = [
         name: "Dashboard",
         meta: {
           reload: true,
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/Dashboard.vue"),
+        component: () => import("../views/yaiphare/Dashboard.vue"),
       },
       {
         path: "videos",
         name: "Videos",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/Videos.vue"),
+        component: () => import("../views/yaiphare/Videos.vue"),
       },
       {
         path: "withdraws",
         name: "Withdraws Requests",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/Withdraw.vue"),
+        component: () => import("../views/yaiphare/Withdraw.vue"),
       },
       {
         path: "set-cpm",
         name: "Cpm",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/SetCpm.vue"),
+        component: () => import("../views/yaiphare/SetCpm.vue"),
       },
       {
         path: "manage-user",
         name: "Manage User",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/ManageUsers.vue"),
+        component: () => import("../views/yaiphare/ManageUsers.vue"),
       },
       {
         path: "add-user",
         name: "Add User",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/AddUser.vue"),
+        component: () => import("../views/yaiphare/AddUser.vue"),
       },
       {
         path: "site-settings",
         name: "Site Settings",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/SiteSettings.vue"),
+        component: () => import("../views/yaiphare/SiteSettings.vue"),
       },
       {
         path: "earning-settings",
         name: "Earning Settings",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/EarningSettings.vue"),
+        component: () => import("../views/yaiphare/EarningSettings.vue"),
       },
       {
         path: "ad-management",
         name: "Ad Management",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/AdManagement.vue"),
+        component: () => import("../views/yaiphare/AdManagement.vue"),
       },
       {
         path: "ad-mangement/:id",
         name: "Ad Management",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/EditAd.vue"),
+        component: () => import("../views/yaiphare/EditAd.vue"),
       },
       {
         path: "user-details/:id",
         name: "User Details",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/UserDetails.vue"),
+        component: () => import("../views/yaiphare/UserDetails.vue"),
       },
       {
         path: "profile",
         name: "Admin Profile",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
           requiresAuth: true,
         },
-        component: () => import("../views/admin/Profile.vue"),
+        component: () => import("../views/yaiphare/Profile.vue"),
       },
       {
         path: "login",
@@ -231,17 +231,17 @@ const routes = [
         meta: {
           layout: "universal",
         },
-        component: () => import("../views/admin/SigninPage.vue"),
+        component: () => import("../views/yaiphare/SigninPage.vue"),
       },
 
       {
         path: "*",
         name: "Page Not Found",
         meta: {
-          layout: "adminLayout",
-          middleware: admin,
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
         },
-        component: () => import("../components/admin/PageNotFound.vue"),
+        component: () => import("../components/yaiphare/PageNotFound.vue"),
       },
     ],
   },
@@ -250,7 +250,6 @@ const routes = [
     name: "Player",
     meta: {
       layout: "universal",
-      // middleware: admin,
       requiresAuth: true,
     },
     component: () => import("../views/Player.vue"),

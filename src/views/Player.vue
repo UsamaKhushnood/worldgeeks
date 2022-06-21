@@ -19,7 +19,7 @@
         <div
           class="video-name d-flex justify-content-between align-items-center"
         >
-          <h6>{{ video.orignal_name }}</h6>
+          <h6 v-if="loading == false">{{ video.orignal_name }}</h6>
           <div class="report text-secondary">
             <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
             <span>Report</span>
@@ -33,6 +33,7 @@
             controls
             style="width: 100%; max-height: 400px"
             v-if="loading == false"
+            poster="placeholder.png"
           >
             <source v-if="video" :src="baseUrl + video.name" type="video/mp4" />
             <source v-if="video" :src="baseUrl + video.name" type="video/ogg" />
@@ -84,7 +85,7 @@
         </div>
         <div class="video-info mt-5">
           <p class="small mb-0">Video Information</p>
-          <p class="small mb-0">Video Name {{ video.created_at }}</p>
+          <p v-if="loading == false" class="small mb-0" >Video Name {{ video.created_at }}</p>
         </div>
       </div>
     </div>

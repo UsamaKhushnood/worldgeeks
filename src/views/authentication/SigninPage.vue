@@ -110,7 +110,7 @@ export default {
               vm.$store.commit("SET_USER", response.data.data);
               // window.location.href ='/'
               response.data.data.user_type =='admin' ?
-                window.location.href= '/admin':
+                window.location.href= '/yaiphare':
                 window.location.href= '/'
       
         })

@@ -2,7 +2,7 @@
   <div id="adminLayout">
     <div class="row no-gutters">
       <div class="col-12 border-bottom">
-        <AdminHeader />
+        <YaiphareHeader />
       </div>
       <div
         class="col-md-2 col-sm-12 bg-light border-right dashboard-height"
@@ -21,12 +21,12 @@
   </div>
 </template>
 <script>
-import AdminHeader from '../components/admin/AdminHeader.vue'
-import TheSidebar from '../components/admin/TheSidebar.vue'
+import YaiphareHeader from '../components/yaiphare/YaiphareHeader.vue'
+import TheSidebar from '../components/yaiphare/TheSidebar.vue'
 export default {
   components: {
-    AdminHeader,
     TheSidebar,
+    YaiphareHeader
   },
   data() {
     return {
