@@ -133,7 +133,6 @@ export default {
       vm.$http
         .get(process.env.VUE_APP_API_URL + '/player/' + id)
         .then((response) => {
-          this.$toast.success('File is Found Successfully')
           vm.video = response.data.data
           vm.loading = false
         })

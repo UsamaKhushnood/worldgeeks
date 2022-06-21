@@ -19,6 +19,9 @@
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
        <span> {{ row.item.orignal_name ? row.item.orignal_name  :"" }} </span>
       </template>
+      <template #cell(user_name)="row">
+       <span> {{ row.item.user ? row.item.user.first_name :""}} </span>
+      </template>
       <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
           <b-button variant="outline-primary" size="sm">
@@ -41,7 +44,9 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <span class="ml-2">View User</span>
+                <router-link :to="'/yaiphare/user-details/'+row.item.user_id">
+                  <span class="ml-2">View User</span>
+                </router-link>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -103,6 +108,12 @@ export default {
         },
         {
           key: "item_id",
+          sortable: true,
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
+        },
+        {
+          key: "user_name",
           sortable: true,
           tdClass: "sm-hidden",
           thClass: "sm-hidden",

@@ -9,10 +9,13 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col-12 border p-3">
-          <h4>Total Earnings: <span>1431</span></h4>
+          <h4 v-if="getUser">Total Earnings: <span>{{getUser.earning.earning}}</span></h4>
           <div class="d-flex">
-            <b-button variant="primary" squared size="lg" class="ml-auto"
-              >Last Withdraw</b-button
+            <b-button 
+              v-if="getUser.earning.balance == 10 || getUser.earning.balance > 10 "
+              variant="primary" squared size="lg" class="ml-auto"
+              > 
+              Withdraw</b-button
             >
           </div>
         </div>
@@ -73,7 +76,7 @@
 
           <div class="pagination-options ml-auto">
             <div class="row">
-              <div class="col-3">
+              <!-- <div class="col-3">
                 <b-form-select
                   id="per-page-select"
                   v-model="perPage"
@@ -90,7 +93,7 @@
                   size="sm"
                   class="my-0"
                 ></b-pagination>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -99,6 +102,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
@@ -108,51 +112,70 @@ export default {
       pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
       fields: [
         {
-          key: 'date',
+          key: 'created_at',
           sortable: false,
         },
         {
-          key: 'unique_plays',
+          key: 'unique_play',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+        {
+          label: 'Plays (total)',
+          key: 'plays',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
         {
-          key: 'plays (total)',
+          label: 'Cpm',
+          key: 'cpm',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
-        'CPM',
-        'earnings',
+        {
+          label: 'Earning',
+          key: 'earning',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+
       ],
-      items: [
-        {
-          date: '2020-01-01',
-          unique_plays: '10',
-          'plays (total)': '100',
-          CPM: '10',
-          earnings: '100',
-        },
-        {
-          date: '2020-01-01',
-          unique_plays: '10',
-          'plays (total)': '100',
-          CPM: '10',
-          earnings: '100',
-        },
-        {
-          date: '2020-01-01',
-          unique_plays: '10',
-          'plays (total)': '100',
-          CPM: '10',
-          earnings: '100',
-        },
-      ],
+      items: [],
     }
   },
+  computed: {
+    ...mapGetters(["getUser"]),
+  },
   mounted() {
-    this.totalRows = this.items.length
+    this.getStats()
+  },
+  methods: {
+    getStats() {
+      this.loading = true;
+      const vm = this;
+      this.$http
+        .get(process.env.VUE_APP_API_URL + "/statistics")
+        .then((response) => {
+          vm.items = response.data.data;
+          vm.loading = false;
+          // vm.totalRows = response.data.total;
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading = false;
+            vm.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
   },
 }
 </script>

@@ -19,6 +19,9 @@
         <b-icon icon="person-fill" variant="primary" class="mr-2"></b-icon>
         <span> {{ data.item.first_name + ' ' + data.item.last_name }} </span>
       </template>
+      <template #cell(block)="data">
+        <span> {{ data.item.block ==1 ? 'Block' : 'Active' }} </span>
+      </template>
       <template #cell(last_login)="data">
         <span> {{ data.item.last_login ? data.item.last_login : '---' }} </span>
       </template>
@@ -46,7 +49,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="dash-circle-fill"></b-icon>
                 </div>
-                <span class="ml-2">Ban User</span>
+                <span class="ml-2" @click="blockUser(data.item.id)">Ban User</span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -112,6 +115,11 @@ export default {
           sortable: false,
         },
         {
+          label: 'User Status',
+          key: 'block',
+          sortable: false,
+        },
+        {
           key: 'last_login',
           sortable: false,
         },
@@ -172,9 +180,34 @@ export default {
           }
         })
     },
+    blockUser(id) {
+      const vm = this
+      this.$http
+        .get(process.env.VUE_APP_API_URL + '/admin/block-user/'+ id)
+        .then((response) => {
+          vm.$toast.success(response.data.message, {
+            position: 'top-right',
+            closeButton: 'button',
+            icon: true,
+            rtl: false,
+          })
+          vm.getUsers()
+        })
+        .catch((errors) => {
+          // var err = ''
+          if (errors.response.data.errors) {
+           
+              vm.$toast.error('Invalid Request', {
+                  position: 'top-right',
+                  closeButton: 'button',
+                  icon: true,
+                  rtl: false,
+                });
+            // console.log(err)
+          }
+        })
+    },
   },
-  mounted() {
-    this.totalRows = this.items.length
-  },
+
 }
 </script>

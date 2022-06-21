@@ -6,14 +6,14 @@
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
               <h4 class="text-capitalize mb-0">username</h4>
-              <p class="mb-0 text-secondary user-id">jfklsi893478</p>
+              <p class="mb-0 text-secondary user-id">{{user.first_name}}</p>
             </div>
 
             <h6 class="text-capitalize mb-0 mt-3 text-primary">
-              videos uploaded: <span class="text-dark ml-2">55</span>
+              videos uploaded: <span class="text-dark ml-2">{{user.videos.length}}</span>
             </h6>
             <h6 class="text-capitalize mb-0 text-primary">
-              total Earning <span class="text-dark ml-2">$552</span>
+              total Earning <span class="text-dark ml-2">${{user.earning.earning}}</span>
             </h6>
           </div>
         </div>
@@ -26,7 +26,7 @@
             :current-page="currentPage"
             :per-page="perPage"
             hover
-            :items="items"
+            :items="user.videos"
             :fields="videosFields"
             class="bg-white"
           >
@@ -106,14 +106,12 @@
             :current-page="currentPage"
             :per-page="perPage"
             hover
-            :items="items"
+            :items="user.withdraws"
             :fields="fields"
             class="bg-white"
           >
             <template #head(action)> <span></span></template>
-            <template #cell(file_name)="data">
-              <span> {{ data.value }} </span>
-            </template>
+        
             <template #cell(action)>
               <div class="d-flex justify-content-end align-items-center">
                 <b-dropdown
@@ -194,29 +192,40 @@ export default {
       pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
       videosFields: [
         {
-          key: 'video_link',
-          sortable: false,
+          key: "name",
+          sortable: true,
         },
         {
-          key: 'create_time',
-          sortable: false,
-          tdClass: 'sm-hidden',
-          thClass: 'sm-hidden',
+          key: "item_id",
+          sortable: true,
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
         },
-        'action',
+        {
+          key: "created_at",
+          sortable: true,
+          tdClass: "sm-hidden",
+          thClass: "sm-hidden",
+        },
       ],
       fields: [
-        {
-          key: 'Withdraw_request_id',
+            {
+          key: 'id',
           sortable: false,
         },
         {
-          key: 'create_time',
+          key: 'user_id',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
-        'action',
+ 
+        {
+          key: 'created_at',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        }
       ],
       items: [
         {
@@ -240,10 +249,34 @@ export default {
           create_time: '6/4/2022 10:41PM',
         },
       ],
+      user:null
     }
   },
+  methods:{
+    getUser() {
+      let vm = this
+      let id = this.$route.params.id
+      vm.$http
+        .get(process.env.VUE_APP_API_URL+'/admin/users/'+id)
+        .then((response) => {
+          vm.user = response.data.data
+          vm.loading = false
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading = false
+            vm.$toast.error(errors.response.data.message, {
+              position: 'top-right',
+              closeButton: 'button',
+              icon: true,
+              rtl: false,
+            })
+          }
+        })
+    },
+  },
   mounted() {
-    this.totalRows = this.items.length
+    this.getUser()
   },
 }
 </script>

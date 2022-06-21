@@ -9,9 +9,13 @@
       class="bg-white"
     >
       <template #head(action)> <span></span></template>
-      <template #cell(file_name)="data">
-        <span> {{ data.value }} </span>
-      </template>
+      <template #cell(name)="data">
+          <span> {{ data.item.user.first_name }} </span>
+        </template>
+      <template #cell(stat)="data">
+          <span> {{ data.item.status }} </span>
+        </template>
+
       <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
           <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
@@ -24,7 +28,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <router-link :to="'/yaiphare/user-details/'+row.item.id">
+                <router-link :to="'/yaiphare/user-details/'+row.item.user.id">
                   <span class="ml-2">View User</span>
                 </router-link>
               </div>
@@ -34,7 +38,7 @@
                 <div class="dropdown-icon bg-success text-white">
                   <b-icon icon="check-circle-fill"></b-icon>
                 </div>
-                <span class="ml-2">Approve</span>
+                <span class="ml-2" @click="acceptWithdraw(row.item.id,'approved')" >Approve</span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -42,7 +46,7 @@
                 <div class="dropdown-icon bg-danger text-white">
                   <b-icon icon="x-circle-fill"></b-icon>
                 </div>
-                <span class="ml-2">Reject</span>
+                <span class="ml-2" @click="acceptWithdraw(row.item.id,'reject')" >Reject</span>
               </div>
             </b-dropdown-item>
           </b-dropdown>
@@ -87,7 +91,7 @@ export default {
       pageOptions: [2, 5, 10, 15, { value: 100, text: '100' }],
       fields: [
         {
-          key: 'Withdraw_request_id',
+          key: 'id',
           sortable: false,
         },
         {
@@ -97,35 +101,27 @@ export default {
           thClass: 'sm-hidden',
         },
         {
-          key: 'create_time',
+          key: 'name',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+        {
+          Label: 'Withdraw Status',
+          key: 'status',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+        {
+          key: 'created_at',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
         'action',
       ],
-      items: [
-        {
-          Withdraw_request_id: '$10',
-          user_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          Withdraw_request_id: '$10',
-          user_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          Withdraw_request_id: '$10',
-          user_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-        {
-          Withdraw_request_id: '$10',
-          user_id: 'fsadf45ff125w5r54',
-          create_time: '6/4/2022 10:41PM',
-        },
-      ],
+      items: [],
     }
   },
   methods:{
@@ -133,10 +129,10 @@ export default {
       this.loading= true
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/admin/withdraw')
+        .get(process.env.VUE_APP_API_URL + '/admin/withdraws')
         .then((response) => {
           vm.loading= false
-          vm.st = response.data.data
+          vm.items = response.data.data
           vm.totalRows = response.data.total
         })
         .catch((errors) => {
@@ -148,6 +144,35 @@ export default {
               icon: true,
               rtl: false,
             })
+          }
+        })
+    },
+    acceptWithdraw(id,status) {
+      const vm = this
+      this.$http
+        .post(process.env.VUE_APP_API_URL + '/admin/withdraw-approved/'+ id,{
+          'status':status
+        })
+        .then((response) => {
+          vm.$toast.success(response.data.message, {
+            position: 'top-right',
+            closeButton: 'button',
+            icon: true,
+            rtl: false,
+          })
+          vm.getWithDraw()
+        })
+        .catch((errors) => {
+          // var err = ''
+          if (errors.response.data.errors) {
+           
+              vm.$toast.error('Invalid Request', {
+                  position: 'top-right',
+                  closeButton: 'button',
+                  icon: true,
+                  rtl: false,
+                });
+            // console.log(err)
           }
         })
     },
