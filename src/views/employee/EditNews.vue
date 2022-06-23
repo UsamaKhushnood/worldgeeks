@@ -2,7 +2,7 @@
   <div class="add-new-user p-3">
     <div class="user-container">
       <div class="user-form-wrapper">
-        <b-form >
+        <b-form  ref="form">
           <div class="row">
             <div class="col-12">
               <h3 class="text-center pb-4">{{heading}}</h3>
@@ -11,16 +11,12 @@
             <div class="col-md-12">
               <b-form-group>
                 <b-form-group>
-                <b-form-select
-                  v-model="size"
-                  :options="['752 x 33', '200 x 200']"
-                  placeholder="Select Location"
+                <b-form-input
+                  name="title"
+                  v-model="title"
+                  placeholder="Select Title"
                 >
-                <template #first>
-                <b-form-select-option :value="null" disabled>-- Please select an option --</b-form-select-option>
-                </template>
-
-                </b-form-select>
+                </b-form-input>
               </b-form-group>
               </b-form-group>
             </div>
@@ -28,19 +24,22 @@
             <div class="col-md-12 col-sm-12">
               <b-form-group>
                 <b-textarea
-                  id="confirm_password"
-                  placeholder="Ad Code"
-                  v-model="title"
+                  name="description"
+                  placeholder="Add New Details"
+                  v-model="description"
                   required
                 ></b-textarea>
               </b-form-group>
             </div>
             <div class="col-md-12 col-sm-12">
               <b-form-group>
-                <b-form-select
-                  v-model="status"
-                  :options="['Active', 'Inactive']"
-                ></b-form-select>
+                <b-form-file
+                  accept="image/png, image/gif, image/jpeg"
+                  type="file"
+                  ref="file"
+                  name="file"
+                  required
+                ></b-form-file>
               </b-form-group>
             </div>
             <div class="col-md-12">
@@ -60,17 +59,16 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      heading: 'Ads Mangement',
-      status: 'Active',
+      heading: 'News Mangement',
       url: null,
       title: null,
-      size: null,
+      description: null,
     }
   },
   mounted(){
     if(this.$route.params.id !='add'){
       this.getAdd(this.$route.params.id)
-      this.heading="Edit Ads Mangement"
+      this.heading="News Ads Mangement"
     }
   },
   computed:{
@@ -84,19 +82,24 @@ export default {
       const vm = this
     
       if(vm.$route.params.id !='add'){
-        vm.url=process.env.VUE_APP_API_URL + '/admin/ads/' + vm.$route.params.id
+        vm.url=process.env.VUE_APP_API_URL + '/employee/news/' + vm.$route.params.id
       }else{
-        vm.url=process.env.VUE_APP_API_URL + '/admin/ads'
+        vm.url=process.env.VUE_APP_API_URL + '/employee/news'
       }
-    
+      const formData = new FormData()
+            
+      for( var i = 0; i < this.$refs.file.files.length; i++ ){
+              let file = this.$refs.file.files[i];
+              formData.append('image', file);
+          }
+      formData.append("title", vm.title);
+      formData.append("description", vm.description);
+      formData.append("_method", vm.$route.params.id !='add' ? "PUT":"POST");
       this.$http
-        .post(vm.url,{
-          status: this.status == "Active" ? "1" : "0",
-          title: this.title,
-          size: this.size,
-          _method:vm.$route.params.id !='add' ? "PUT":"POST"
-        }, {headers: {
+        .post(vm.url,formData, {headers: {
             Authorization: "Bearer " + this.getUser.token,
+            "Content-Type": "multipart/form-data",
+         
           }})
         .then((response) => {
           vm.$toast.success(response.data.message, {
@@ -105,9 +108,10 @@ export default {
             icon: true,
             rtl: false,
           })
-          vm.size = null
+          vm.description = null
           vm.title = null
-          vm.$router.push({ path: "/yaiphare" });
+          vm.$router.push({ path: "/employee/news-management" });
+          
         })
         .catch((errors) => {
           if (errors.response.data.errors) {
@@ -124,12 +128,10 @@ export default {
       this.loading= true
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/admin/ads/'+id)
+        .get(process.env.VUE_APP_API_URL + '/employee/news/'+id+'/edit')
         .then((response) => {
           vm.loading= false
-          let st = response.data.status
-          vm.status = st ==1 ? "Active" : "Inactive",
-          vm.size = response.data.size
+          vm.description = response.data.description
           vm.title = response.data.title
         })
         .catch((errors) => {

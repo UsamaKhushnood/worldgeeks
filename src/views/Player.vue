@@ -19,9 +19,10 @@
           <span class="pl-1">Search</span>
         </b-button> -->
       </div>
-      <!-- <div style="background: #130f40" class="p-2 my-3">
-        <h3 class="text-white text-center">Ad Space</h3>
-      </div> -->
+      <div style="background: #130f40" class="p-2 my-3">
+        <!-- <h3 class="text-white text-center">Ad Space</h3> -->
+        <div class="" v-html="ads[0].title"></div>        
+      </div>
       <div class="video-player-wrapper px-3">
         <div class="video-details">
           <div
@@ -108,11 +109,36 @@
         </div>
       </div>
       <div class="text-center">
-        <img src="https://via.placeholder.com/200" />
+        <!-- <img src="https://via.placeholder.com/200" /> -->
+        <div class="" v-html="ads[1].title"></div>
       </div>
       <div class="blog px-3">
         <h3 class="my-4">Daily Trending News</h3>
-        <div class="single-post">
+        <div class="single-post" v-for="(news,index) in news_data" :key="index" >
+          <img :src="baseUrl+news.image" class="w-100" />
+          <h4 class="blog-heading mt-1" v-html="news.title">
+           
+          </h4>
+          <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
+          <div class="blog-description" :class="{ truncated: activeItem[news.id] }">
+            <p v-html="news.description">
+            </p>
+          
+          </div>
+          <div
+            class="text-center read-more-btn"
+            :class="{ truncated: activeItem[news.id]}"
+          >
+            <b-button
+              :variant="activeItem[news.id] ?  'primary' :'danger' "
+              pill
+              @click="toggleActive(news)"
+              >Read {{ activeItem[news.id] ? 'More' : 'Less' }}</b-button
+            >
+          </div>
+        </div>
+
+        <!-- <div class="single-post">
           <img src="https://via.placeholder.com/700x300" class="w-100" />
           <h4 class="blog-heading mt-1">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem
@@ -150,7 +176,7 @@
               >Read {{ readMore ? 'More' : 'Less' }}</b-button
             >
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -179,10 +205,31 @@ export default {
       text: '',
       link: null,
       video: null,
-      readMore: true,
+      activeItem: {},
+      ads: [],
+      news_data: [],
     }
   },
   methods: {
+  toggleActive(item) {
+    if (this.activeItem[item.id]) {
+      this.removeActiveItem(item);
+
+      return;
+    }
+
+    this.addActiveItem(item);
+  },
+  addActiveItem(item) {
+    this.activeItem = Object.assign({},
+      this.activeItem,
+      {[item.id]: item},
+    );
+  },
+  removeActiveItem(item) {
+    delete this.activeItem[item.id];
+    this.activeItem = Object.assign({}, this.activeItem);
+  },
     videoDownload() {
       this.link = process.env.VUE_APP_IMAGE_STORAGE_URL + this.video.name
       window.open(this.link, '_blank').focus()
@@ -199,17 +246,14 @@ export default {
         .get(process.env.VUE_APP_API_URL + '/player/' + id)
         .then((response) => {
           vm.video = response.data.data
+          vm.news_data = response.data.news
+          vm.ads = response.data.ads
           vm.loading = false
         })
         .catch((errors) => {
           if (errors.response.data) {
             vm.loading = false
-            vm.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
+             console.log(errors.response.data.message)
           }
         })
     },
@@ -221,12 +265,7 @@ export default {
         .then(() => {})
         .catch((errors) => {
           if (errors.response.data) {
-            vm.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
+            console.log(errors.response.data.message)
           }
         })
     },

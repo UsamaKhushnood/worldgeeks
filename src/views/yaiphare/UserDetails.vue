@@ -19,8 +19,9 @@
         </div>
       </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-4">
       <div class="col-12">
+        <h4>Video List</h4>
         <div class="user-videos">
           <b-table
             :current-page="currentPage"
@@ -100,7 +101,8 @@
           </div>
         </div>
       </div>
-      <div class="col-12 mt-3">
+      <div class="col-12 mt-4 ">
+        <h4>Withdraws List</h4>
         <div class="user-earning">
           <b-table
             :current-page="currentPage"

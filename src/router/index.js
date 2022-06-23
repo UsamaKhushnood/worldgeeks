@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // import store from "../store";
 import yaiphare from "../middleware/admin.js";
 import user from "../middleware/user.js";
+import employee from "../middleware/employee.js";
 Vue.use(VueRouter);
 
 const routes = [
@@ -242,6 +243,67 @@ const routes = [
           middleware: yaiphare,
         },
         component: () => import("../components/yaiphare/PageNotFound.vue"),
+      },
+    ],
+  },
+  {
+    path: "/employee",
+    name: "Employee",
+    component: () => import("../layouts/TheContainer.vue"),
+    redirect: "/employee/dashboard",
+    meta: {
+      middleware: employee,
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: "dashboard",
+        name: "Dashboard",
+        meta: {
+          reload: true,
+          layout: "employeeLayout",
+          middleware: employee,
+          requiresAuth: true,
+        },
+        component: () => import("../views/employee/Dashboard.vue"),
+      },
+      {
+        path: "news-management",
+        name: "News Management",
+        meta: {
+          layout: "employeeLayout",
+          middleware: employee,
+          requiresAuth: true,
+        },
+        component: () => import("../views/employee/NewsManagement.vue"),
+      },
+      {
+        path: "news-mangement/:id",
+        name: "News Management",
+        meta: {
+          layout: "employeeLayout",
+          middleware: employee,
+          requiresAuth: true,
+        },
+        component: () => import("../views/employee/EditNews.vue"),
+      },
+      {
+        path: "login",
+        name: "Employee Login",
+        meta: {
+          layout: "universal",
+        },
+        component: () => import("../views/employee/SigninPage.vue"),
+      },
+
+      {
+        path: "*",
+        name: "Page Not Found",
+        meta: {
+          layout: "yaiphareLayout",
+          middleware: employee,
+        },
+        component: () => import("../components/employee/PageNotFound.vue"),
       },
     ],
   },

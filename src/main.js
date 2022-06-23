@@ -24,6 +24,7 @@ Axios.defaults.headers.common['Authorization'] = 'Bearer '+token;
 Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 Axios.defaults.headers.common['Content-Type'] = 'application/json'
 Axios.defaults.headers.common['Accept'] = 'application/json'
+Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 Axios.defaults.baseURL = process.env.VUE_APP_API_URL
 
 Vue.config.productionTip = false;
