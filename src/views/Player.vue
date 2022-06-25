@@ -1,7 +1,7 @@
 <template>
   <div style="background: #eaf0f8">
     <div class="user-player bg-white">
-      <div
+      <!-- <div
         class="d-flex p-2 align-items-center px-4 mb-3"
         style="background: #130f40"
       >
@@ -9,19 +9,37 @@
           <router-link to="/" class="text-white mr-2">WorldGeeks</router-link>
           <b-icon icon="house" class="text-whtie"></b-icon>
         </div>
-        <!-- <b-form-input
+      </div> -->
+      <div class="bg-primary d-flex p-2 align-items-center px-4 mb-3">
+        <div class="mr-4 d-flex align-items-center">
+          <b-icon icon="house" variant="light" class="mr-2"></b-icon>
+          <h6 class="mb-0 text-light">WorldGeeks</h6>
+        </div>
+        <b-form-input
           size="sm"
           class="mr-sm-2"
           placeholder="Search"
         ></b-form-input>
-        <b-button variant="primary" size="sm" class="d-flex align-items-center">
-          <b-icon icon="search" class="pr-1"></b-icon>
+
+        <b-button
+          variant="success"
+          size="sm"
+          class="d-flex align-items-center ml-2 py-1"
+        >
+          <b-icon icon="search" scale="0.9"></b-icon>
           <span class="pl-1">Search</span>
-        </b-button> -->
+        </b-button>
+        <b-button
+          variant="warning"
+          size="sm"
+          class="d-flex align-items-center ml-2 py-1"
+        >
+          <b-icon icon="gift"></b-icon>
+        </b-button>
       </div>
       <div style="background: #130f40" class="p-2 my-3">
         <!-- <h3 class="text-white text-center">Ad Space</h3> -->
-        <div class="" v-html="ads[0].title"></div>        
+        <div class="" v-html="ads[0].title"></div>
       </div>
       <div class="video-player-wrapper px-3">
         <div class="video-details">
@@ -36,28 +54,18 @@
           </div>
 
           <div class="video-player position-relative mt-2">
-
-        
             <video
               ref="myVideo"
               id="myPlayer"
-             controls
+              controls
               style="width: 100%; max-height: 400px"
               v-if="loading == false"
               poster="placeholder.png"
               controlsList="nodownload"
             >
-             <!-- controls -->
-              <source
-                v-if="video"
-                :src="videoSrc"
-                type="video/mp4"
-              />
-              <source
-                v-if="video"
-                  :src="videoSrc "
-                type="video/ogg"
-              />
+              <!-- controls -->
+              <source v-if="video" :src="videoSrc" type="video/mp4" />
+              <source v-if="video" :src="videoSrc" type="video/ogg" />
               Your browser does not support HTML video.
             </video>
             <!-- <div>
@@ -127,23 +135,26 @@
       </div>
       <div class="blog px-3">
         <h3 class="my-4">Daily Trending News</h3>
-        <div class="single-post" v-for="(news,index) in news_data" :key="index" >
-          <img :src="baseUrlImage+news.image" class="w-100" />
-          <h4 class="blog-heading mt-1" v-html="news.title">
-           
-          </h4>
+        <div
+          class="single-post"
+          v-for="(news, index) in news_data"
+          :key="index"
+        >
+          <img :src="baseUrlImage + news.image" class="w-100" />
+          <h4 class="blog-heading mt-1" v-html="news.title"></h4>
           <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
-          <div class="blog-description" :class="{ truncated: activeItem[news.id] }">
-            <p v-html="news.description">
-            </p>
-          
+          <div
+            class="blog-description"
+            :class="{ truncated: activeItem[news.id] }"
+          >
+            <p v-html="news.description"></p>
           </div>
           <div
             class="text-center read-more-btn"
-            :class="{ truncated: activeItem[news.id]}"
+            :class="{ truncated: activeItem[news.id] }"
           >
             <b-button
-              :variant="activeItem[news.id] ?  'primary' :'danger' "
+              :variant="activeItem[news.id] ? 'primary' : 'danger'"
               pill
               @click="toggleActive(news)"
               >Read {{ activeItem[news.id] ? 'More' : 'Less' }}</b-button
@@ -166,54 +177,53 @@ export default {
       return process.env.VUE_APP_API_URL
     },
   },
-  components:{
-    AdScript
+  components: {
+    AdScript,
   },
   mounted() {
     this.getVideo()
-      let vm = this
+    let vm = this
     setTimeout(() => {
       var player = document.getElementById('myPlayer')
       player.addEventListener('play', function () {
         vm.playVideo()
       })
-    }, 1000)
+    }, 1000)(
+      // let externalScript = document.createElement('script')
+      // externalScript.setAttribute('src', 'https://stootsou.net/pfe/current/tag.min.js?z=5190981')
+      // externalScript.setAttribute('async',true)
+      // externalScript.setAttribute('data-cfasync', 'false')
+      // document.head.appendChild(externalScript)
 
-    // let externalScript = document.createElement('script')
-    // externalScript.setAttribute('src', 'https://stootsou.net/pfe/current/tag.min.js?z=5190981')
-    // externalScript.setAttribute('async',true)
-    // externalScript.setAttribute('data-cfasync', 'false')
-    // document.head.appendChild(externalScript)
+      // let itweepinbelltor = document.createElement('script')
+      // itweepinbelltor.setAttribute('data-cfasync', 'false')
+      // itweepinbelltor.setAttribute('src', 'https://itweepinbelltor.com/pfe/current/tag.min.js?z=5190981')
+      // document.head.appendChild(itweepinbelltor)
 
+      // let vaugroar = document.createElement('script')
+      // vaugroar.setAttribute('data-cfasync', 'false')
+      // vaugroar.setAttribute('src', 'https://vaugroar.com/pfe/current/tag.min.js?z=5190981')
+      // document.head.appendChild(vaugroar)
 
-    // let itweepinbelltor = document.createElement('script')
-    // itweepinbelltor.setAttribute('data-cfasync', 'false')
-    // itweepinbelltor.setAttribute('src', 'https://itweepinbelltor.com/pfe/current/tag.min.js?z=5190981')
-    // document.head.appendChild(itweepinbelltor)
+      // let tobaltoyon = document.createElement('script')
+      // tobaltoyon.setAttribute('data-cfasync', 'false')
+      // tobaltoyon.setAttribute('src', 'https://tobaltoyon.com/pfe/current/tag.min.js?z=5191080')
+      // document.head.appendChild(tobaltoyon)
 
-    // let vaugroar = document.createElement('script')
-    // vaugroar.setAttribute('data-cfasync', 'false')
-    // vaugroar.setAttribute('src', 'https://vaugroar.com/pfe/current/tag.min.js?z=5190981')
-    // document.head.appendChild(vaugroar)
-    
-    // let tobaltoyon = document.createElement('script')
-    // tobaltoyon.setAttribute('data-cfasync', 'false')
-    // tobaltoyon.setAttribute('src', 'https://tobaltoyon.com/pfe/current/tag.min.js?z=5191080')
-    // document.head.appendChild(tobaltoyon)
+      // let upgulpinon = document.createElement('script')
+      // upgulpinon.setAttribute('data-cfasync', 'false')
+      // upgulpinon.setAttribute('src', '//upgulpinon.com/1?z=5191279')
+      // document.head.appendChild(upgulpinon)
 
-    // let upgulpinon = document.createElement('script')
-    // upgulpinon.setAttribute('data-cfasync', 'false')
-    // upgulpinon.setAttribute('src', '//upgulpinon.com/1?z=5191279')
-    // document.head.appendChild(upgulpinon)
-    
-    (function (s, u, z, p) {
-      (s.src = u), s.setAttribute("data-zone", z), p.appendChild(s);
-    })(
-      document.createElement("script"),
-      "https://inklinkor.com/tag.min.js",
+      function (s, u, z, p) {
+        ;(s.src = u), s.setAttribute('data-zone', z), p.appendChild(s)
+      }
+    )(
+      document.createElement('script'),
+      'https://inklinkor.com/tag.min.js',
       5191284,
       document.body || document.documentElement
-    );
+    )
   },
   data() {
     return {
@@ -230,25 +240,22 @@ export default {
     }
   },
   methods: {
-  toggleActive(item) {
-    if (this.activeItem[item.id]) {
-      this.removeActiveItem(item);
+    toggleActive(item) {
+      if (this.activeItem[item.id]) {
+        this.removeActiveItem(item)
 
-      return;
-    }
+        return
+      }
 
-    this.addActiveItem(item);
-  },
-  addActiveItem(item) {
-    this.activeItem = Object.assign({},
-      this.activeItem,
-      {[item.id]: item},
-    );
-  },
-  removeActiveItem(item) {
-    delete this.activeItem[item.id];
-    this.activeItem = Object.assign({}, this.activeItem);
-  },
+      this.addActiveItem(item)
+    },
+    addActiveItem(item) {
+      this.activeItem = Object.assign({}, this.activeItem, { [item.id]: item })
+    },
+    removeActiveItem(item) {
+      delete this.activeItem[item.id]
+      this.activeItem = Object.assign({}, this.activeItem)
+    },
     videoDownload() {
       this.link = process.env.VUE_APP_IMAGE_STORAGE_URL + this.video.name
       window.open(this.link, '_blank').focus()
@@ -267,10 +274,10 @@ export default {
           vm.video = response.data.data
           vm.news_data = response.data.news
           vm.ads = response.data.ads
-           $("head"). append(response.data.script[0]);
-          $("head"). append(response.data.script[1]);
-          $("head").append(response.data.script[2])
-          $("head").append(response.data.script[3])
+          $('head').append(response.data.script[0])
+          $('head').append(response.data.script[1])
+          $('head').append(response.data.script[2])
+          $('head').append(response.data.script[3])
           // $("head").append(response.data.script[4])
           // $("head").append(response.data.script[5])
         setTimeout(function(){
@@ -279,16 +286,15 @@ export default {
         },5000)
 
         })
-     
+
         .catch((errors) => {
           if (errors.response.data) {
             vm.loading = false
-             console.log(errors.response.data.message)
+            console.log(errors.response.data.message)
           }
         })
     },
     playVideo() {
-      
       let vm = this
       this.$refs.myVideo.play()
       vm.$http
@@ -322,8 +328,6 @@ export default {
     },
   },
 }
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -367,7 +371,3 @@ export default {
 //     width: calc(100% + 30px); /* Adjust as needed */
 // }
 </style>
-
-
-
-
