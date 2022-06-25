@@ -42,6 +42,14 @@
                 ></b-form-file>
               </b-form-group>
             </div>
+            <div class="col-md-12 col-sm-12">
+              <b-form-group>
+                <b-form-select
+                  v-model="status"
+                  :options="['on', 'off']"
+                ></b-form-select>
+              </b-form-group>
+            </div>
             <div class="col-md-12">
               <b-button type="submit" variant="primary" class="w-100"
               @click.prevent="addAdd()"
@@ -62,6 +70,7 @@ export default {
       heading: 'News Mangement',
       url: null,
       title: null,
+      status: null,
       description: null,
     }
   },
@@ -93,6 +102,7 @@ export default {
               formData.append('image', file);
           }
       formData.append("title", vm.title);
+      formData.append("status", vm.status=='off' ? 0 :1);
       formData.append("description", vm.description);
       formData.append("_method", vm.$route.params.id !='add' ? "PUT":"POST");
       this.$http
@@ -133,6 +143,7 @@ export default {
           vm.loading= false
           vm.description = response.data.description
           vm.title = response.data.title
+          vm.status =  response.data.status ==1 ? 'on' :'off'
         })
         .catch((errors) => {
           if (errors.response.data) {

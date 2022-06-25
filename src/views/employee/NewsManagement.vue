@@ -17,6 +17,9 @@
       <template #cell(title)="data">
         <span> {{ data.item.title }} </span>
       </template>
+      <template #cell(status)="data">
+        <span> {{ data.item.status ===1 ? 'On' : 'OFF'  }} </span>
+      </template>
 
 
 
@@ -37,7 +40,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="eye-fill"></b-icon>
                 </div>
-                <span class="ml-2" @click="changeStatus(data.item.id,'off')"> Off News </span>
+                <span class="ml-2" @click="changeStatus(data.item.id,0)"> Off News </span>
               </div>
             </b-dropdown-item>
             <b-dropdown-item>
@@ -45,7 +48,7 @@
                 <div class="dropdown-icon bg-warning text-dark">
                   <b-icon icon="dash-circle-fill"></b-icon>
                 </div>
-                <span class="ml-2" @click="changeStatus(data.item.id,'on')">ON News</span>
+                <span class="ml-2" @click="changeStatus(data.item.id,1)">ON News</span>
               </div>
             </b-dropdown-item>
          

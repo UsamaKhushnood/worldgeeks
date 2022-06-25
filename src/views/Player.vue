@@ -31,7 +31,7 @@
             <h6 v-if="loading == false">{{ video.orignal_name }}</h6>
             <div class="report text-secondary">
               <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
-              <span>Report</span>
+              <span @click="sendReport()">Report</span>
             </div>
           </div>
 
@@ -66,7 +66,7 @@
               </div>
             </div> -->
 
-            <div class="share-button">
+            <!-- <div class="share-button">
               <b-dropdown
                 id="dropdown-right"
                 right
@@ -84,9 +84,9 @@
                 <b-dropdown-item href="#">Facebook</b-dropdown-item>
                 <b-dropdown-item href="#">Instagram</b-dropdown-item>
                 <b-dropdown-divider></b-dropdown-divider>
-                <!-- <b-dropdown-item href="#">More Option</b-dropdown-item> -->
+                <b-dropdown-item href="#">More Option</b-dropdown-item>
               </b-dropdown>
-            </div>
+            </div> -->
           </div>
           <div class="action-button">
             <div class="row">
@@ -107,8 +107,17 @@
           <div class="video-info mt-5">
             <p class="small mb-0">Video Information</p>
             <p v-if="loading == false" class="small mb-0">
-              Video Name {{ video.created_at }}
+              Video Name:{{ video.created_at }}
             </p>
+            <p v-if="loading == false" class="small mb-0">
+              Video Size: {{ video.size }} Mb
+            </p>
+            <p v-if="loading == false" class="small mb-0">
+              Video Uploader Name: {{ video.user.first_name }}
+            </p>
+
+            
+              
           </div>
         </div>
       </div>
@@ -269,7 +278,6 @@ export default {
           vm.videoSrc=vm.baseUrl+vm.video.name 
         },5000)
 
-
         })
      
         .catch((errors) => {
@@ -286,6 +294,26 @@ export default {
       vm.$http
         .get(process.env.VUE_APP_API_URL + '/statistics/' + this.video.id)
         .then(() => {})
+        .catch((errors) => {
+          if (errors.response.data) {
+            console.log(errors.response.data.message)
+          }
+        })
+    },
+    sendReport() {
+      let vm = this
+      vm.$http
+        .post(process.env.VUE_APP_API_URL + '/report',{
+          video_id:this.video.id
+        })
+        .then((response) => {
+            vm.$toast.success(response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+        })
         .catch((errors) => {
           if (errors.response.data) {
             console.log(errors.response.data.message)
@@ -327,17 +355,17 @@ export default {
     backdrop-filter: blur(0.1px);
   }
 }
-video::-internal-media-controls-download-button {
-    display:none;
-}
+// video::-internal-media-controls-download-button {
+//     display:none;
+// }
 
-video::-webkit-media-controls-enclosure {
-    overflow:hidden;
-}
+// video::-webkit-media-controls-enclosure {
+//     overflow:hidden;
+// }
 
-video::-webkit-media-controls-panel {
-    width: calc(100% + 30px); /* Adjust as needed */
-}
+// video::-webkit-media-controls-panel {
+//     width: calc(100% + 30px); /* Adjust as needed */
+// }
 </style>
 
 

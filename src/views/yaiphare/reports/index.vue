@@ -1,10 +1,6 @@
 <template>
   <div class="manage-user p-3 ">
-    <router-link to="/yaiphare/ad-mangement/add">
-      <b-button variant="outline-primary"  class="float-right mb-3" >
-        Report Management
-      </b-button>
-    </router-link>
+    
     <b-table
       :current-page="currentPage"
       :per-page="perPage"
@@ -14,21 +10,11 @@
       class="bg-white"
     >
       <template #head(action)> <span></span></template>
-      <template #cell(ad_title)="data">
-        <span> {{ data.item.ad_title + ' ' + data.item.last_name }} </span>
-      </template>
-      <template #cell(status)="data">
-        <span> {{ data.item.status ==1 ? "Active" : 'DisActive' }} </span>
+
+      <template #cell(video_name)="data">
+        <span> {{ data.item.video.orignal_name  }} </span>
       </template>
 
-      <template #cell(action)="data">
-        <div class="d-flex justify-content-end align-items-center">
-          <router-link :to="`ad-mangement/${data.item.id}`">
-            <b-button variant="outline-success" size="sm">
-              <b-icon icon="pencil"></b-icon> </b-button
-          ></router-link>
-        </div>
-      </template>
     </b-table>
     <div class="pagination-options ml-auto">
       <div class="row">
@@ -70,17 +56,18 @@ export default {
           // tdClass: 'sm-hidden',
         },
         {
-          key: 'title',
+          key: 'video_id',
           sortable: false,
         },
         {
-          key: 'size',
+          key: 'video_name',
           sortable: false,
         },
         {
-          key: 'status',
+          key: 'ip_address',
           sortable: false,
         },
+      
         'action',
       ],
       items: [],
@@ -94,7 +81,7 @@ export default {
       this.loading= true
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/admin/ads')
+        .get(process.env.VUE_APP_API_URL + '/report')
         .then((response) => {
           vm.loading= false
           vm.items = response.data.data
