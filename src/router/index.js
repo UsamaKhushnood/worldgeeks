@@ -227,6 +227,16 @@ const routes = [
         component: () => import("../views/yaiphare/Profile.vue"),
       },
       {
+        path: "reports",
+        name: "Admin Reports",
+        meta: {
+          layout: "yaiphareLayout",
+          middleware: yaiphare,
+          requiresAuth: true,
+        },
+        component: () => import("../views/yaiphare/reports/index.vue"),
+      },
+      {
         path: "login",
         name: "Admin Login",
         meta: {

@@ -1,8 +1,8 @@
 <template>
   <div class="manage-user p-3 ">
-    <router-link to="/employee/news-mangement/add">
+    <router-link to="/yaiphare/ad-mangement/add">
       <b-button variant="outline-primary"  class="float-right mb-3" >
-        Add News Management
+        Report Management
       </b-button>
     </router-link>
     <b-table
@@ -14,42 +14,19 @@
       class="bg-white"
     >
       <template #head(action)> <span></span></template>
-      <template #cell(title)="data">
-        <span> {{ data.item.title }} </span>
+      <template #cell(ad_title)="data">
+        <span> {{ data.item.ad_title + ' ' + data.item.last_name }} </span>
+      </template>
+      <template #cell(status)="data">
+        <span> {{ data.item.status ==1 ? "Active" : 'DisActive' }} </span>
       </template>
 
-
-
-
-            <template #cell(action)="data">
+      <template #cell(action)="data">
         <div class="d-flex justify-content-end align-items-center">
-         <router-link :to="`news-mangement/${data.item.id}`">
+          <router-link :to="`ad-mangement/${data.item.id}`">
             <b-button variant="outline-success" size="sm">
               <b-icon icon="pencil"></b-icon> </b-button
           ></router-link>
-          <b-dropdown class="ml-2" size="sm" variant="primary" no-caret right>
-            <template #button-content>
-              <b-icon icon="three-dots"></b-icon>
-            </template>
-
-            <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-warning text-dark">
-                  <b-icon icon="eye-fill"></b-icon>
-                </div>
-                <span class="ml-2" @click="changeStatus(data.item.id,'off')"> Off News </span>
-              </div>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <div class="d-flex">
-                <div class="dropdown-icon bg-warning text-dark">
-                  <b-icon icon="dash-circle-fill"></b-icon>
-                </div>
-                <span class="ml-2" @click="changeStatus(data.item.id,'on')">ON News</span>
-              </div>
-            </b-dropdown-item>
-         
-          </b-dropdown>
         </div>
       </template>
     </b-table>
@@ -97,14 +74,13 @@ export default {
           sortable: false,
         },
         {
-          key: 'description',
+          key: 'size',
           sortable: false,
         },
         {
           key: 'status',
           sortable: false,
         },
-        
         'action',
       ],
       items: [],
@@ -118,7 +94,7 @@ export default {
       this.loading= true
       const vm = this
       this.$http
-        .get(process.env.VUE_APP_API_URL + '/employee/news')
+        .get(process.env.VUE_APP_API_URL + '/admin/ads')
         .then((response) => {
           vm.loading= false
           vm.items = response.data.data
@@ -137,35 +113,7 @@ export default {
           }
         })
     },
-    changeStatus(id,status){
-      this.loading= true
-      const vm = this
-      this.$http
-        .post(process.env.VUE_APP_API_URL + '/employee/change-status/'+id,{
-          status:status
-        },{headers: { 'Authorization': 'Bearer '+this.$store.state.user.token }})
-        .then((response) => {
-          vm.loading= false
-          vm.getAdd()
-           vm.$toast.success(response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
-        })
-        .catch((errors) => {
-          if (errors.response.data) {
-            vm.loading= false
-            vm.$toast.error(errors.response.data.message, {
-              position: 'top-right',
-              closeButton: 'button',
-              icon: true,
-              rtl: false,
-            })
-          }
-        })
-    } 
+    
 
   },
  

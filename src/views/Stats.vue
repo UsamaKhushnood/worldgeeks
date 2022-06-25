@@ -11,6 +11,7 @@
         <div class="col-12 border p-3">
           <h4 v-if="getUser">Total Earnings: <span>{{getUser.earning.earning}}</span></h4>
           <div class="d-flex">
+            {{getUser.earning.balance}}
             <b-button 
               v-if="getUser.earning.balance == 10 || getUser.earning.balance > 10 "
               variant="primary" squared size="lg" class="ml-auto"
@@ -23,6 +24,7 @@
           <b-table
             :current-page="currentPage"
             :per-page="perPage"
+            responsive
             hover
             :items="items"
             :fields="fields"
@@ -116,6 +118,13 @@ export default {
           sortable: false,
         },
         {
+          label: 'Name',
+          key: 'name',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+        {
           key: 'unique_play',
           sortable: false,
           tdClass: 'sm-hidden',
@@ -128,6 +137,7 @@ export default {
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',
         },
+       
         {
           label: 'Cpm',
           key: 'cpm',

@@ -36,31 +36,35 @@
           </div>
 
           <div class="video-player position-relative mt-2">
+
+        
             <video
               ref="myVideo"
               id="myPlayer"
-              controls
+             controls
               style="width: 100%; max-height: 400px"
               v-if="loading == false"
               poster="placeholder.png"
+              controlsList="nodownload"
             >
+             <!-- controls -->
               <source
                 v-if="video"
-                :src="baseUrl + video.name"
+                :src="videoSrc"
                 type="video/mp4"
               />
               <source
                 v-if="video"
-                :src="baseUrl + video.name"
+                  :src="videoSrc "
                 type="video/ogg"
               />
               Your browser does not support HTML video.
             </video>
-            <div v-else>
+            <!-- <div>
               <div class="text-center text-dark my-2">
                 <b-spinner class="align-middle"></b-spinner>
               </div>
-            </div>
+            </div> -->
 
             <div class="share-button">
               <b-dropdown
@@ -115,7 +119,7 @@
       <div class="blog px-3">
         <h3 class="my-4">Daily Trending News</h3>
         <div class="single-post" v-for="(news,index) in news_data" :key="index" >
-          <img :src="baseUrl+news.image" class="w-100" />
+          <img :src="baseUrlImage+news.image" class="w-100" />
           <h4 class="blog-heading mt-1" v-html="news.title">
            
           </h4>
@@ -137,74 +141,80 @@
             >
           </div>
         </div>
-
-        <!-- <div class="single-post">
-          <img src="https://via.placeholder.com/700x300" class="w-100" />
-          <h4 class="blog-heading mt-1">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem
-            ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolo
-          </h4>
-          <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
-          <div class="blog-description" :class="{ truncated: readMore }">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-              tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
-              accusantium itaque dignissimos dolore accusamus, et laborum cum
-              earum architecto atque veniam!
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-              tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
-              accusantium itaque dignissimos dolore accusamus, et laborum cum
-              earum architecto atque veniam!
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore
-              tenetur itaque odit quia expedita omnis aspernatur eum! Placeat
-              accusantium itaque dignissimos dolore accusamus, et laborum cum
-              earum architecto atque veniam!
-            </p>
-          </div>
-          <div
-            class="text-center read-more-btn"
-            :class="{ truncated: readMore }"
-          >
-            <b-button
-              :variant="readMore ? 'primary' : 'danger'"
-              pill
-              @click="readMore = !readMore"
-              >Read {{ readMore ? 'More' : 'Less' }}</b-button
-            >
-          </div>
-        </div> -->
       </div>
     </div>
+    <ad-script />
   </div>
 </template>
+
 <script>
+/* eslint-disable */
+import $ from 'jquery'
+import AdScript from './adScript.vue'
 export default {
   computed: {
     apiUrl() {
       return process.env.VUE_APP_API_URL
     },
   },
+  components:{
+    AdScript
+  },
   mounted() {
     this.getVideo()
+      let vm = this
     setTimeout(() => {
       var player = document.getElementById('myPlayer')
-      let vm = this
       player.addEventListener('play', function () {
         vm.playVideo()
       })
     }, 1000)
+
+    // let externalScript = document.createElement('script')
+    // externalScript.setAttribute('src', 'https://stootsou.net/pfe/current/tag.min.js?z=5190981')
+    // externalScript.setAttribute('async',true)
+    // externalScript.setAttribute('data-cfasync', 'false')
+    // document.head.appendChild(externalScript)
+
+
+    // let itweepinbelltor = document.createElement('script')
+    // itweepinbelltor.setAttribute('data-cfasync', 'false')
+    // itweepinbelltor.setAttribute('src', 'https://itweepinbelltor.com/pfe/current/tag.min.js?z=5190981')
+    // document.head.appendChild(itweepinbelltor)
+
+    // let vaugroar = document.createElement('script')
+    // vaugroar.setAttribute('data-cfasync', 'false')
+    // vaugroar.setAttribute('src', 'https://vaugroar.com/pfe/current/tag.min.js?z=5190981')
+    // document.head.appendChild(vaugroar)
+    
+    // let tobaltoyon = document.createElement('script')
+    // tobaltoyon.setAttribute('data-cfasync', 'false')
+    // tobaltoyon.setAttribute('src', 'https://tobaltoyon.com/pfe/current/tag.min.js?z=5191080')
+    // document.head.appendChild(tobaltoyon)
+
+    // let upgulpinon = document.createElement('script')
+    // upgulpinon.setAttribute('data-cfasync', 'false')
+    // upgulpinon.setAttribute('src', '//upgulpinon.com/1?z=5191279')
+    // document.head.appendChild(upgulpinon)
+    
+    (function (s, u, z, p) {
+      (s.src = u), s.setAttribute("data-zone", z), p.appendChild(s);
+    })(
+      document.createElement("script"),
+      "https://inklinkor.com/tag.min.js",
+      5191284,
+      document.body || document.documentElement
+    );
   },
   data() {
     return {
       loading: true,
       baseUrl: process.env.VUE_APP_IMAGE_STORAGE_URL,
+      baseUrlImage: process.env.VUE_APP_IMAGE_URL,
       text: '',
       link: null,
       video: null,
+      videoSrc: null,
       activeItem: {},
       ads: [],
       news_data: [],
@@ -248,8 +258,20 @@ export default {
           vm.video = response.data.data
           vm.news_data = response.data.news
           vm.ads = response.data.ads
+           $("head"). append(response.data.script[0]);
+          $("head"). append(response.data.script[1]);
+          $("head").append(response.data.script[2])
+          $("head").append(response.data.script[3])
+          // $("head").append(response.data.script[4])
+          // $("head").append(response.data.script[5])
+        setTimeout(function(){
           vm.loading = false
+          vm.videoSrc=vm.baseUrl+vm.video.name 
+        },5000)
+
+
         })
+     
         .catch((errors) => {
           if (errors.response.data) {
             vm.loading = false
@@ -258,6 +280,7 @@ export default {
         })
     },
     playVideo() {
+      
       let vm = this
       this.$refs.myVideo.play()
       vm.$http
@@ -271,9 +294,11 @@ export default {
     },
   },
 }
+
+
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .user-player {
   max-width: 768px;
   width: 100%;
@@ -302,4 +327,19 @@ export default {
     backdrop-filter: blur(0.1px);
   }
 }
+video::-internal-media-controls-download-button {
+    display:none;
+}
+
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
 </style>
+
+
+
+

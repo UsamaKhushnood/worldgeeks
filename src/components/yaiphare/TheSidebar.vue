@@ -22,6 +22,8 @@
     <router-link to="/yaiphare/ad-management" class="sidebar-link">
       <b-icon icon="badge-ad"></b-icon> Ad Management</router-link
     >
+    <router-link to="/yaiphare/reports" class="sidebar-link">
+    <b-icon icon="calculator-fill"></b-icon> Reports</router-link>
     <router-link to="/yaiphare/set-cpm" class="sidebar-link">
     <b-icon icon="calculator-fill"></b-icon> Set CPM</router-link>
     <router-link to="/yaiphare/site-settings" class="sidebar-link">

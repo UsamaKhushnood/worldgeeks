@@ -2,8 +2,8 @@
   <div
     class="the-footer d-flex align-items-center p-3 bg-light border-top small"
   >
-    Copyright &copy; {{ new Date().getFullYear() }} {{ $appName }}. All rights
-    Reserved.
+    <!-- Copyright &copy; {{ new Date().getFullYear() }} {{ $appName }}. All rights
+    Reserved. -->
   </div>
 </template>
 <style>
