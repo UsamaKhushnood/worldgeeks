@@ -7,11 +7,11 @@
       </p>
     </div>
     <div class="container mt-5">
-      <div class="row">
-         <b-alert variant="success" show >Withdraw Status : Paid </b-alert>
+      <div class="row" v-if="payment.status =='approved'">
+         <b-alert variant="success" show  > <h4 class="alert-heading">Last Withdraw Status : Paid </h4></b-alert>
         </div>  
-        <div class="row">
-          <b-alert variant="info" show>Withdraw Status :  Pending</b-alert>
+        <div class="row" v-if="payment.status =='pending'">
+          <b-alert variant="info" show><h4 class="alert-heading">Last Withdraw Status :  Pending</h4></b-alert>
         </div> 
       <div class="row">
          
@@ -163,6 +163,7 @@ export default {
 
       ],
       items: [],
+      payment: [],
     }
   },
   computed: {
@@ -170,6 +171,7 @@ export default {
   },
   mounted() {
     this.getStats()
+   
   },
   methods: {
     getStats() {
@@ -179,6 +181,7 @@ export default {
         .get(process.env.VUE_APP_API_URL + "/statistics")
         .then((response) => {
           vm.items = response.data.data;
+          vm.payment = response.data.data.payment;
           vm.loading = false;
           // vm.totalRows = response.data.total;
         })
@@ -202,6 +205,7 @@ export default {
         .then((response) => {
        
           vm.loading = false;
+          vm.payment = response.data.data;
            vm.$toast.success(response.data.message, {
               position: "top-right",
               closeButton: "button",
@@ -221,6 +225,7 @@ export default {
           }
         });
     },
+    
   },
 }
 </script>
