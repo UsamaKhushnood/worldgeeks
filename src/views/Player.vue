@@ -1,7 +1,8 @@
 <template>
-  <div style="background: #eaf0f8">
-    <div class="user-player bg-white">
-      <!-- <div
+  <div style="background: #eaf0f8" class="position-relative">
+    <b-overlay :show="bottomSheet" variant="dark" spinner-type="none">
+      <div class="user-player bg-white">
+        <!-- <div
         class="d-flex p-2 align-items-center px-4 mb-3"
         style="background: #130f40"
       >
@@ -10,93 +11,78 @@
           <b-icon icon="house" class="text-whtie"></b-icon>
         </div>
       </div> -->
-      <div class="bg-primary d-flex p-2 align-items-center px-4 mb-3">
-        <div class="mr-4 d-flex align-items-center">
-          <b-icon icon="house" variant="light" class="mr-2"></b-icon>
-          <h6 class="mb-0 text-light">WorldGeeks</h6>
-        </div>
-        <b-form-input
-          size="sm"
-          class="mr-sm-2"
-          placeholder="Search"
-        ></b-form-input>
-
-        <b-button
-          variant="success"
-          size="sm"
-          class="d-flex align-items-center ml-2 py-1"
-        >
-          <b-icon icon="search" scale="0.9"></b-icon>
-          <span class="pl-1">Search</span>
-        </b-button>
-        <b-button
-          variant="warning"
-          size="sm"
-          class="d-flex align-items-center ml-2 py-1"
-        >
-          <b-icon icon="gift"></b-icon>
-        </b-button>
-      </div>
-      <div style="background: #130f40" class="p-2 my-3">
-        <!-- <h3 class="text-white text-center">Ad Space</h3> -->
-        <div class="" v-html="ads[0].title" style="width: 100% !important; overflow: hidden;"></div>
-      </div>
-      <div class="video-player-wrapper px-3">
-        <div class="video-details">
-          <div
-            class="video-name d-flex justify-content-between align-items-center"
-          >
-            <h6 v-if="loading == false">{{ video.orignal_name }}</h6>
-            <div class="report text-secondary">
-     
-              <span ></span>
-                <b-dropdown
-                id="dropdown-right"
-                right
-                variant="warning"
-                class="m-2"
-                no-caret
-                size="sm"
-              >
-                <template #button-content>
-                  <span class="d-block">
-                    <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
-                  </span>
-                  <span class="sm">Report</span>
-                </template>
-                <b-dropdown-item href="#" @click="sendReport('spam')">Spam</b-dropdown-item>
-                <b-dropdown-item href="#" @click="sendReport('violence')">Violence</b-dropdown-item>
-                <b-dropdown-item href="#" @click="sendReport('pronography')">Pronography</b-dropdown-item>
-                <b-dropdown-item href="#" @click="sendReport('child abuse')">Child Abuse</b-dropdown-item>
-                <b-dropdown-item href="#" @click="sendReport('copyright')">Copyright</b-dropdown-item>
-                <b-dropdown-item href="#" @click="sendReport('other')">Other</b-dropdown-item>
-                <b-dropdown-divider></b-dropdown-divider>
-              </b-dropdown>
-            </div>
+        <div class="bg-primary d-flex p-2 align-items-center px-4 mb-3">
+          <div class="mr-4 d-flex align-items-center">
+            <b-icon icon="house" variant="light" class="mr-2"></b-icon>
+            <h6 class="mb-0 text-light">WorldGeeks</h6>
           </div>
+          <b-form-input
+            size="sm"
+            class="mr-sm-2"
+            placeholder="Search"
+          ></b-form-input>
 
-          <div class="video-player position-relative mt-2">
-            <video
-              ref="myVideo"
-              id="myPlayer"
-              controls
-              style="width: 100%; max-height: 400px"
-              v-if="loading == false"
-              poster="placeholder.png"
-              controlsList="nodownload"
+          <b-button
+            variant="success"
+            size="sm"
+            class="d-flex align-items-center ml-2 py-1"
+          >
+            <b-icon icon="search" scale="0.9"></b-icon>
+            <span class="pl-1">Search</span>
+          </b-button>
+          <b-button
+            variant="warning"
+            size="sm"
+            class="d-flex align-items-center ml-2 py-1"
+          >
+            <b-icon icon="gift"></b-icon>
+          </b-button>
+        </div>
+        <div style="background: #130f40" class="p-2 my-3">
+          <!-- <h3 class="text-white text-center">Ad Space</h3> -->
+          <div
+            class=""
+            v-html="ads[0].title"
+            style="width: 100% !important; overflow: hidden"
+          ></div>
+        </div>
+        <div class="video-player-wrapper px-3">
+          <div class="video-details">
+            <div
+              class="video-name d-flex justify-content-between align-items-center"
             >
-              <!-- controls -->
-              <source v-if="video" :src="videoSrc" type="video/mp4" />
-              <source v-if="video" :src="videoSrc" type="video/ogg" />
-              Your browser does not support HTML video.
-            </video>
-            <!-- <div>
+              <h6 v-if="loading == false">{{ video.orignal_name }}</h6>
+              <div
+                class="report text-dark btn-warning btn btn-sm"
+                @click="bottomSheet = true"
+              >
+                <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
+                <span>Report</span>
+              </div>
+            </div>
+
+            <div class="video-player position-relative mt-2">
+              <video
+                ref="myVideo"
+                id="myPlayer"
+                controls
+                style="width: 100%; max-height: 400px"
+                v-if="loading == false"
+                poster="placeholder.png"
+                controlsList="nodownload"
+              >
+                <!-- controls -->
+                <source v-if="video" :src="videoSrc" type="video/mp4" />
+                <source v-if="video" :src="videoSrc" type="video/ogg" />
+                Your browser does not support HTML video.
+              </video>
+              <!-- <div>
               <div class="text-center text-dark my-2">
                 <b-spinner class="align-middle"></b-spinner>
               </div>
             </div> -->
 
-            <!-- <div class="share-button">
+              <!-- <div class="share-button">
               <b-dropdown
                 id="dropdown-right"
                 right
@@ -117,72 +103,92 @@
                 <b-dropdown-item href="#">More Option</b-dropdown-item>
               </b-dropdown>
             </div> -->
-          </div>
-          <div class="action-button">
-            <div class="row">
-              <div class="col-6">
-                <b-button variant="warning" @click="videoDownload()" block>
-                  <b-icon icon="cloud-arrow-down"></b-icon>
-                  Download
-                </b-button>
-              </div>
-              <div class="col-6">
-                <b-button variant="warning" @click="playVideo()" block>
-                  <b-icon icon="play"></b-icon>
-                  Play Video
-                </b-button>
+            </div>
+            <div class="action-button">
+              <div class="row">
+                <div class="col-6">
+                  <b-button variant="warning" @click="videoDownload()" block>
+                    <b-icon icon="cloud-arrow-down"></b-icon>
+                    Download
+                  </b-button>
+                </div>
+                <div class="col-6">
+                  <b-button variant="warning" @click="playVideo()" block>
+                    <b-icon icon="play"></b-icon>
+                    Play Video
+                  </b-button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="video-info mt-5">
-            <p class="small mb-0">Video Information</p>
-            <p v-if="loading == false" class="small mb-0">
-              Video Name:{{ video.orignal_name }}
-            </p>
-            <p v-if="loading == false" class="small mb-0">
-              Video Size: {{ video.size }} Mb
-            </p>
-            <p v-if="loading == false" class="small mb-0">
-              Video Uploader Name: {{ video.user.first_name }}
-            </p>
-
-            
-              
+            <div class="video-info mt-5">
+              <p class="small mb-0">Video Information</p>
+              <p v-if="loading == false" class="small mb-0">
+                Video Name:{{ video.orignal_name }}
+              </p>
+              <p v-if="loading == false" class="small mb-0">
+                Video Size: {{ video.size }} Mb
+              </p>
+              <p v-if="loading == false" class="small mb-0">
+                Video Uploader Name: {{ video.user.first_name }}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="text-center">
-        <!-- <img src="https://via.placeholder.com/200" /> -->
-        <div class="" v-html="ads[1].title"></div>
-      </div>
-      <div class="blog px-3">
-        <h3 class="my-4">Daily Trending News</h3>
-        <div
-          class="single-post"
-          v-for="(news, index) in news_data"
-          :key="index"
-        >
-          <img :src="baseUrlImage + news.image" class="w-100" />
-          <h4 class="blog-heading mt-1" v-html="news.title"></h4>
-          <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
+        <div class="text-center">
+          <!-- <img src="https://via.placeholder.com/200" /> -->
+          <div class="" v-html="ads[1].title"></div>
+        </div>
+        <div class="blog px-3">
+          <h3 class="my-4">Daily Trending News</h3>
           <div
-            class="blog-description"
-            :class="{ truncated: activeItem[news.id] }"
+            class="single-post"
+            v-for="(news, index) in news_data"
+            :key="index"
           >
-            <p v-html="news.description"></p>
-          </div>
-          <div
-            class="text-center read-more-btn"
-            :class="{ truncated: activeItem[news.id] }"
-          >
-            <b-button
-              :variant="activeItem[news.id] ? 'primary' : 'danger'"
-              pill
-              @click="toggleActive(news)"
-              >Read {{ activeItem[news.id] ? 'More' : 'Less' }}</b-button
+            <img :src="baseUrlImage + news.image" class="w-100" />
+            <h4 class="blog-heading mt-1" v-html="news.title"></h4>
+            <p class="text-secondary small mb-2">Jan 20, 2020, 11:48AM</p>
+            <div
+              class="blog-description"
+              :class="{ truncated: activeItem[news.id] }"
             >
+              <p v-html="news.description"></p>
+            </div>
+            <div
+              class="text-center read-more-btn"
+              :class="{ truncated: activeItem[news.id] }"
+            >
+              <b-button
+                :variant="activeItem[news.id] ? 'primary' : 'danger'"
+                pill
+                @click="toggleActive(news)"
+                >Read {{ activeItem[news.id] ? 'More' : 'Less' }}</b-button
+              >
+            </div>
           </div>
         </div>
+      </div>
+    </b-overlay>
+    <div
+      class="report-bottom-sheet p-3"
+      :class="{ showbottomSheet: bottomSheet }"
+    >
+      <div class="bs-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0">Report video</h6>
+        <b-icon icon="x" scale="1.5" @click="bottomSheet = false"></b-icon>
+      </div>
+      <div class="bs-body">
+        <b-form-group class="mt-2">
+          <b-form-radio
+            v-for="(option, index) in options"
+            :key="index"
+            v-model="selected"
+            name="report-radios"
+            class="mb-1"
+            :value="option"
+            >{{ option }}</b-form-radio
+          >
+        </b-form-group>
       </div>
     </div>
     <ad-script />
@@ -198,7 +204,6 @@ export default {
     apiUrl() {
       return process.env.VUE_APP_API_URL
     },
-  
   },
   components: {
     AdScript,
@@ -247,12 +252,20 @@ export default {
       5191284,
       document.body || document.documentElement
     )
- 
-    
   },
   data() {
     return {
+      selected: null,
+      options: [
+        'Spam',
+        'Violence',
+        'Pornography',
+        'Child Abuse',
+        'Copyright',
+        'Other',
+      ],
       loading: true,
+      bottomSheet: false,
       baseUrl: process.env.VUE_APP_IMAGE_STORAGE_URL,
       baseUrlImage: process.env.VUE_APP_IMAGE_URL,
       text: '',
@@ -305,11 +318,10 @@ export default {
           $('head').append(response.data.script[3])
           // $("head").append(response.data.script[4])
           // $("head").append(response.data.script[5])
-        setTimeout(function(){
-          vm.loading = false
-          vm.videoSrc=vm.baseUrl+vm.video.name 
-        },5000)
-
+          setTimeout(function () {
+            vm.loading = false
+            vm.videoSrc = vm.baseUrl + vm.video.name
+          }, 5000)
         })
 
         .catch((errors) => {
@@ -334,23 +346,31 @@ export default {
     sendReport(status) {
       let vm = this
       vm.$http
-        .post(process.env.VUE_APP_API_URL + '/report',{
-          video_id:this.video.id,
-          status:status
+        .post(process.env.VUE_APP_API_URL + '/report', {
+          video_id: this.video.id,
+          status: status,
         })
         .then((response) => {
-            vm.$toast.success(response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
+          vm.$toast.success(response.data.message, {
+            position: 'top-right',
+            closeButton: 'button',
+            icon: true,
+            rtl: false,
+          })
         })
         .catch((errors) => {
           if (errors.response.data) {
             console.log(errors.response.data.message)
           }
         })
+    },
+  },
+  watch: {
+    selected(newVal, oldVal) {
+      this.sendReport(newVal)
+      console.log(oldVal)
+      this.selected = null
+      this.bottomSheet = false
     },
   },
 }
@@ -385,6 +405,21 @@ export default {
     backdrop-filter: blur(0.1px);
   }
 }
+
+.report-bottom-sheet {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background: #fff;
+  height: 220px;
+  display: none;
+  z-index: 9999;
+}
+
+.showbottomSheet {
+  display: block;
+}
+
 // video::-internal-media-controls-download-button {
 //     display:none;
 // }
