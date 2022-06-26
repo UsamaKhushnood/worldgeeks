@@ -180,7 +180,6 @@ export default {
   },
   mounted() {
     this.getStats()
-
   },
   methods: {
     getStats() {
@@ -189,14 +188,9 @@ export default {
       this.$http
         .get(process.env.VUE_APP_API_URL + '/statistics')
         .then((response) => {
-<<<<<<< HEAD
           vm.items = response.data.data
+          vm.payment = response.data.data.payment
           vm.loading = false
-=======
-          vm.items = response.data.data;
-          vm.payment = response.data.data.payment;
-          vm.loading = false;
->>>>>>> ca4b7791665eeb768f3fff1715faa4de7346c0c1
           // vm.totalRows = response.data.total;
         })
         .catch((errors) => {
@@ -217,25 +211,14 @@ export default {
       this.$http
         .post(process.env.VUE_APP_API_URL + '/withdraw')
         .then((response) => {
-<<<<<<< HEAD
           vm.loading = false
+          vm.payment = response.data.data
           vm.$toast.success(response.data.message, {
             position: 'top-right',
             closeButton: 'button',
             icon: true,
             rtl: false,
           })
-=======
-
-          vm.loading = false;
-          vm.payment = response.data.data;
-           vm.$toast.success(response.data.message, {
-              position: "top-right",
-              closeButton: "button",
-              icon: true,
-              rtl: false,
-            });
->>>>>>> ca4b7791665eeb768f3fff1715faa4de7346c0c1
         })
         .catch((errors) => {
           if (errors.response.data) {
@@ -249,7 +232,6 @@ export default {
           }
         })
     },
-
   },
 }
 </script>
