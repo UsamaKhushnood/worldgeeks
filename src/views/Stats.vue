@@ -8,6 +8,13 @@
     </div>
     <div class="container mt-5">
       <div class="row">
+         <b-alert variant="success" show >Withdraw Status : Paid </b-alert>
+        </div>  
+        <div class="row">
+          <b-alert variant="info" show>Withdraw Status :  Pending</b-alert>
+        </div> 
+      <div class="row">
+         
         <div class="col-12 border p-3">
           <h4 v-if="getUser">Total Earnings: <span>{{getUser.earning.earning}}</span></h4>
           <div class="d-flex">
@@ -15,6 +22,7 @@
             <b-button 
               v-if="getUser.earning.balance == 10 || getUser.earning.balance > 10 "
               variant="primary" squared size="lg" class="ml-auto"
+              @click="withdraw()"
               > 
               Withdraw</b-button
             >
@@ -173,6 +181,33 @@ export default {
           vm.items = response.data.data;
           vm.loading = false;
           // vm.totalRows = response.data.total;
+        })
+        .catch((errors) => {
+          if (errors.response.data) {
+            vm.loading = false;
+            vm.$toast.error(errors.response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+          }
+        });
+    },
+    withdraw() {
+      this.loading = true;
+      const vm = this;
+      this.$http
+        .post(process.env.VUE_APP_API_URL + "/withdraw")
+        .then((response) => {
+       
+          vm.loading = false;
+           vm.$toast.success(response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
         })
         .catch((errors) => {
           if (errors.response.data) {

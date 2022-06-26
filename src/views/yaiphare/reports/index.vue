@@ -5,6 +5,7 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      responsive
       :items="items"
       :fields="fields"
       class="bg-white"
@@ -67,7 +68,10 @@ export default {
           key: 'ip_address',
           sortable: false,
         },
-      
+        {
+          key: 'status',
+          sortable: false,
+        },
         'action',
       ],
       items: [],

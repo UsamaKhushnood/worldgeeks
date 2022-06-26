@@ -4,6 +4,7 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      responsive
       :items="items"
       :fields="fields"
       class="bg-white"
@@ -102,6 +103,12 @@ export default {
         },
         {
           key: 'name',
+          sortable: false,
+          tdClass: 'sm-hidden',
+          thClass: 'sm-hidden',
+        },
+        {
+          key: 'amount',
           sortable: false,
           tdClass: 'sm-hidden',
           thClass: 'sm-hidden',

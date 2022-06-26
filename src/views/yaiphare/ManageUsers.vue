@@ -4,6 +4,7 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      responsive
       :busy="loading"
       :items="items.data"
       :fields="fields"

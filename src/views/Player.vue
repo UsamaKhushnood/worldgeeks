@@ -39,7 +39,7 @@
       </div>
       <div style="background: #130f40" class="p-2 my-3">
         <!-- <h3 class="text-white text-center">Ad Space</h3> -->
-        <div class="" v-html="ads[0].title"></div>
+        <div class="" v-html="ads[0].title" style="width: 100% !important; overflow: hidden;"></div>
       </div>
       <div class="video-player-wrapper px-3">
         <div class="video-details">
@@ -48,8 +48,30 @@
           >
             <h6 v-if="loading == false">{{ video.orignal_name }}</h6>
             <div class="report text-secondary">
-              <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
-              <span @click="sendReport()">Report</span>
+     
+              <span ></span>
+                <b-dropdown
+                id="dropdown-right"
+                right
+                variant="warning"
+                class="m-2"
+                no-caret
+                size="sm"
+              >
+                <template #button-content>
+                  <span class="d-block">
+                    <b-icon icon="exclamation-triangle" class="mr-1"></b-icon>
+                  </span>
+                  <span class="sm">Report</span>
+                </template>
+                <b-dropdown-item href="#" @click="sendReport('spam')">Spam</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendReport('violence')">Violence</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendReport('pronography')">Pronography</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendReport('child abuse')">Child Abuse</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendReport('copyright')">Copyright</b-dropdown-item>
+                <b-dropdown-item href="#" @click="sendReport('other')">Other</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+              </b-dropdown>
             </div>
           </div>
 
@@ -115,7 +137,7 @@
           <div class="video-info mt-5">
             <p class="small mb-0">Video Information</p>
             <p v-if="loading == false" class="small mb-0">
-              Video Name:{{ video.created_at }}
+              Video Name:{{ video.orignal_name }}
             </p>
             <p v-if="loading == false" class="small mb-0">
               Video Size: {{ video.size }} Mb
@@ -176,6 +198,7 @@ export default {
     apiUrl() {
       return process.env.VUE_APP_API_URL
     },
+  
   },
   components: {
     AdScript,
@@ -224,6 +247,8 @@ export default {
       5191284,
       document.body || document.documentElement
     )
+ 
+    
   },
   data() {
     return {
@@ -306,11 +331,12 @@ export default {
           }
         })
     },
-    sendReport() {
+    sendReport(status) {
       let vm = this
       vm.$http
         .post(process.env.VUE_APP_API_URL + '/report',{
-          video_id:this.video.id
+          video_id:this.video.id,
+          status:status
         })
         .then((response) => {
             vm.$toast.success(response.data.message, {

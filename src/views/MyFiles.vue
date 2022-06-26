@@ -4,6 +4,7 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      responsive
       :busy="loading"
       :items="items"
       :fields="fields"
@@ -16,7 +17,7 @@
       <template #head(action)> <span></span></template>
       <template #cell(orignal_name)="row">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-        <span> {{ row.item.orignal_name ? row.item.orignal_name  :"" }} </span>
+        <span> {{ row.item.orignal_name ? row.item.orignal_name :"" }} </span>
       </template>
       <template #cell(action)="row">
         <div class="d-flex justify-content-end align-items-center">
@@ -87,8 +88,10 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Vue from "vue";
 export default {
+
   data() {
     return {
       loading: false,
@@ -128,6 +131,10 @@ export default {
           ? this.$router.push({ path: "yaiphare/dashboard" })
           : this.$router.replace("/");
     }, 2000);
+  },
+  mounted(){
+
+
   },
   methods: {
     videoDownload(dt) {
@@ -218,6 +225,8 @@ export default {
         }
       });
     },
+   
   },
+
 };
 </script>

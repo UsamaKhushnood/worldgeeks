@@ -5,6 +5,7 @@
       :items="items"
       :busy="loading"
       :fields="fields"
+      responsive
       class="bg-white"
       :current-page="currentPage"
       :per-page="perPage"
@@ -17,7 +18,7 @@
       <template #head(action)> <span></span></template>
       <template #cell(name)="row">
         <b-icon icon="folder-fill" variant="warning" class="mr-2"></b-icon>
-       <span> {{ row.item.orignal_name ? row.item.orignal_name  :"" }} </span>
+       <span> {{ row.item.orignal_name ? row.item.orignal_name :"" }} </span>
       </template>
       <template #cell(user_name)="row">
        <span> {{ row.item.user ? row.item.user.first_name :""}} </span>
@@ -92,6 +93,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -132,6 +134,7 @@ export default {
   },
   computed: {
     ...mapGetters(["getUser"]),
+ 
   },
   beforeMount() {
     this.getFiles();
@@ -233,6 +236,7 @@ export default {
           }
         });
     },
+    
   },
 };
 </script>

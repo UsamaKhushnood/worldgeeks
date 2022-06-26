@@ -9,6 +9,7 @@
       :current-page="currentPage"
       :per-page="perPage"
       hover
+      responsive
       :items="items"
       :fields="fields"
       class="bg-white"
