@@ -7,11 +7,17 @@
       </p>
     </div>
     <div class="container mt-5">
-      <div class="row">
-        <b-alert variant="success" show>Withdraw Status : Paid </b-alert>
+      <div class="row" v-if="payment.status == 'approved'">
+        <b-alert variant="success" show>
+          <h4 class="alert-heading">Last Withdraw Status : Paid</h4></b-alert
+        >
       </div>
-      <div class="row">
-        <b-alert variant="info" show>Withdraw Status : Pending</b-alert>
+      <div class="row" v-if="payment.status == 'pending'">
+        <b-alert variant="info" show
+          ><h4 class="alert-heading">
+            Last Withdraw Status : Pending
+          </h4></b-alert
+        >
       </div>
       <div class="row">
         <div class="col-12 border p-3">
@@ -166,6 +172,7 @@ export default {
         },
       ],
       items: [],
+      payment: [],
     }
   },
   computed: {
@@ -173,6 +180,7 @@ export default {
   },
   mounted() {
     this.getStats()
+
   },
   methods: {
     getStats() {
@@ -181,8 +189,14 @@ export default {
       this.$http
         .get(process.env.VUE_APP_API_URL + '/statistics')
         .then((response) => {
+<<<<<<< HEAD
           vm.items = response.data.data
           vm.loading = false
+=======
+          vm.items = response.data.data;
+          vm.payment = response.data.data.payment;
+          vm.loading = false;
+>>>>>>> ca4b7791665eeb768f3fff1715faa4de7346c0c1
           // vm.totalRows = response.data.total;
         })
         .catch((errors) => {
@@ -203,6 +217,7 @@ export default {
       this.$http
         .post(process.env.VUE_APP_API_URL + '/withdraw')
         .then((response) => {
+<<<<<<< HEAD
           vm.loading = false
           vm.$toast.success(response.data.message, {
             position: 'top-right',
@@ -210,6 +225,17 @@ export default {
             icon: true,
             rtl: false,
           })
+=======
+
+          vm.loading = false;
+          vm.payment = response.data.data;
+           vm.$toast.success(response.data.message, {
+              position: "top-right",
+              closeButton: "button",
+              icon: true,
+              rtl: false,
+            });
+>>>>>>> ca4b7791665eeb768f3fff1715faa4de7346c0c1
         })
         .catch((errors) => {
           if (errors.response.data) {
@@ -223,6 +249,7 @@ export default {
           }
         })
     },
+
   },
 }
 </script>
