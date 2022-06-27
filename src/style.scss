@@ -50,3 +50,25 @@ input:focus {
 th div {
   white-space: nowrap !important;
 }
+
+.login-page-title h1 {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.login-page input {
+  border: none;
+  background: #f5f5f5;
+  padding: 24px 10px !important;
+}
+
+.login-page button {
+  padding: 10px;
+
+  &.btn-outline-primary {
+    background: #dfecfc;
+    &:hover {
+      color: black;
+    }
+  }
+}
