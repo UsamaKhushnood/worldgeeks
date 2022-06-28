@@ -73,7 +73,7 @@
               >
                 <!-- controls -->
                 <source v-if="video" :src="videoSrc" type="video/mp4" />
-                <source v-if="video" :src="videoSrc" type="video/ogg" />
+                <!-- <source v-if="video" :src="videoSrc" type="video/ogg" /> -->
                 Your browser does not support HTML video.
               </video>
               <!-- <div>
@@ -186,6 +186,7 @@
             name="report-radios"
             class="mb-1"
             :value="option"
+            @change="sendReport()"
             >{{ option }}</b-form-radio
           >
         </b-form-group>
@@ -343,12 +344,13 @@ export default {
           }
         })
     },
-    sendReport(status) {
+    sendReport() {
       let vm = this
+      this.bottomSheet = false
       vm.$http
         .post(process.env.VUE_APP_API_URL + '/report', {
           video_id: this.video.id,
-          status: status,
+          status: this.selected,
         })
         .then((response) => {
           vm.$toast.success(response.data.message, {
@@ -366,12 +368,12 @@ export default {
     },
   },
   watch: {
-    selected(newVal, oldVal) {
-      this.sendReport(newVal)
-      console.log(oldVal)
-      this.selected = null
-      this.bottomSheet = false
-    },
+    // selected(newVal, oldVal) {
+    //   this.sendReport(newVal)
+    //   console.log(oldVal)
+    //   this.selected = null
+    //   this.bottomSheet = false
+    // },
   },
 }
 </script>

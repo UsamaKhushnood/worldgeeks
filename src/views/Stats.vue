@@ -188,9 +188,10 @@ export default {
       this.$http
         .get(process.env.VUE_APP_API_URL + '/statistics')
         .then((response) => {
-          vm.items = response.data.data
-          vm.payment = response.data.data.payment
+          vm.items = response.data.data.order
           vm.loading = false
+          if(response.data.data.payment)
+          vm.payment = response.data.data.payment || null
           // vm.totalRows = response.data.total;
         })
         .catch((errors) => {

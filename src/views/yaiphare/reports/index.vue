@@ -13,7 +13,7 @@
       <template #head(action)> <span></span></template>
 
       <template #cell(video_name)="data">
-        <span> {{ data.item.video.orignal_name  }} </span>
+        <span> {{ data.item.video.orignal_name ? data.item.video.orignal_name :""  }} </span>
       </template>
 
     </b-table>
