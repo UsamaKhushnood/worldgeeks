@@ -422,6 +422,10 @@ export default {
   display: block;
 }
 
+video#myPlayer {
+  background: linear-gradient(180deg, #002c4e, #00010c);
+}
+
 // video::-internal-media-controls-download-button {
 //     display:none;
 // }
